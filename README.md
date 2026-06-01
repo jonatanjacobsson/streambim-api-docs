@@ -82,6 +82,16 @@ The StreamBIM backend is optimized for loads matching the StreamBIM app. Be caut
 
 Misuse may result in client blocking. Contact `cto@rendra.io` with questions.
 
+## Building widgets
+
+StreamBIM widgets are web apps loaded in an iframe inside the viewer. They use the official **[streambim-widget-api](https://github.com/streambim/streambim-widget-api)** package (v3: `connectToParent` / `connectToChild`, methods on `StreamBIM.API`).
+
+- **Agent-oriented guide:** [AGENTS.md](AGENTS.md)
+- **Full Widget API reference:** [api/widget-api.md](api/widget-api.md) (method index, ecosystem repos, examples)
+- **Community catalog:** [StreamBIM Marketplace](https://streambim-marketplace.vercel.app/?widget=true)
+
+Widgets require the **WIDGET** project feature and URL whitelisting (`support@rendra.io`). For server-side automation without a 3D viewer, use the REST sections below instead.
+
 ## API Sections
 
 | Section | File | Description |
@@ -104,7 +114,7 @@ Misuse may result in client blocking. Contact `cto@rendra.io` with questions.
 | Infrastructure | [infrastructure.md](api/infrastructure.md) | Health check, client logging, batch requests, cache invalidation |
 | BCF | [bcf.md](api/bcf.md) | BCF 2.1 API for BIM Collaboration Format |
 | Regions | [regions.md](api/regions.md) | Region/environment discovery |
-| Widget API | [widget-api.md](api/widget-api.md) | JavaScript library for embedded viewer control (50+ methods) |
+| Widget API | [widget-api.md](api/widget-api.md) | JavaScript v3 SDK for widgets & embedded viewer (see [AGENTS.md](AGENTS.md)) |
 
 ## Privilege Levels
 

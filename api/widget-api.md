@@ -2,7 +2,181 @@
 
 JavaScript library for interacting with the StreamBIM 3D viewer from within an embedded widget or by embedding StreamBIM in your own page/app.
 
-**Source:** [github.com/streambim/streambim-widget-api](https://github.com/streambim/streambim-widget-api) (MIT License, Rendra AS)
+**Official source:** [github.com/streambim/streambim-widget-api](https://github.com/streambim/streambim-widget-api) (MIT, Rendra AS) — **v3.0.0** on `master` (Penpal 7, `StreamBIM.API` namespace).
+
+**Agent entry point:** [AGENTS.md](../AGENTS.md) · **Community widgets:** [StreamBIM Marketplace](https://streambim-marketplace.vercel.app/?widget=true)
+
+---
+
+## Agent quick reference
+
+Read this section first when implementing or documenting a widget.
+
+### Choose an integration mode
+
+| Mode | Connect with | Your app runs… |
+|------|----------------|----------------|
+| Widget in StreamBIM | `StreamBIM.connectToParent(window, callbacks)` | Inside an iframe panel in StreamBIM |
+| Embedded viewer | `StreamBIM.connectToChild(iframe, callbacks)` | On your page; StreamBIM is the iframe |
+| Popup window | `StreamBIM.connectToWindow(win, url, callbacks)` | On your page; StreamBIM is a separate window |
+
+All viewer commands go through **`StreamBIM.API.<method>()`** after the connect promise resolves. Every method returns a `Promise`.
+
+### Bootstrap template (widget inside StreamBIM)
+
+```javascript
+import StreamBIM from 'streambim-widget-api';
+
+await StreamBIM.connectToParent(window, {
+  pickedObject({ guid, point }) { /* handle pick */ },
+  beforeInit() {
+    StreamBIM.API.setStyles('.message-container { background: white; }');
+    StreamBIM.API.setNavigationMode(1);
+  },
+});
+
+const projectId = await StreamBIM.API.getProjectId();
+const email = await StreamBIM.API.getUserEmail();
+```
+
+### When to use REST instead
+
+| Need | Use |
+|------|-----|
+| Highlight, camera, in-viewer search visualization | Widget API (`StreamBIM.API.*`) |
+| Create topics, upload IFC, converter jobs, org admin | REST — [README.md](../README.md) |
+| IFC search/export from inside the viewer without a separate token | `StreamBIM.API.makeApiRequest` → [ifc-searches.md](ifc-searches.md) |
+
+### Error handling
+
+```javascript
+try {
+  await StreamBIM.API.highlightObject(guid);
+} catch (e) {
+  // e.code: invalid | notFound | unknown | unauthorized | notAllowed
+  // e.detail: debug info
+}
+```
+
+### Prerequisites (not optional)
+
+1. **WIDGET** feature enabled on the StreamBIM project.
+2. Widget origin URL **whitelisted** by StreamBIM (contact **support@rendra.io**).
+3. Viewer URL must include **`embedded=true`** for embedded/popup modes.
+
+---
+
+## Method index (v3)
+
+Catalog derived from the official repo demos (`demo_embedded`, `demo_2`, `demo_window`) and README. Beta methods need the `taskctrl` webapp flavor — see [Beta Methods](#beta-methods).
+
+| Method | Category | Notes |
+|--------|----------|-------|
+| `setAuthToken` | Auth | Call in `beforeInit` for custom Bearer auth |
+| `getProjectId` | Project | |
+| `getUserEmail` | Project | |
+| `getBuildingId` | Project | |
+| `getCameraState` | Camera | |
+| `setCameraState` | Camera | |
+| `setCameraPosition` | Camera | |
+| `getViewportState` | Camera | Includes hidden/highlighted objects, layers, clipping |
+| `setViewportState` | Camera | |
+| `applyViewpoint` | Camera | Saved viewpoint shortcut |
+| `gotoObject` | Navigation | |
+| `gotoSpace` | Navigation | |
+| `gotoFloor` | Navigation | |
+| `goHome` | Navigation | |
+| `highlightObject` | Visibility | |
+| `deHighlightObject` | Visibility | |
+| `deHighlightAllObjects` | Visibility | |
+| `hideObject` | Visibility | |
+| `showObject` | Visibility | |
+| `showAllObjects` | Visibility | |
+| `highlightSystem` | Visibility | Beta (`taskctrl`) |
+| `getObjectInfo` | Info | |
+| `getFloors` | Info | |
+| `getSpaces` | Info | Spaces under current camera |
+| `valuesForObjectProperty` | Info | Distinct values for `psetName~propKey` |
+| `findObjects` | Search | Does not change viewer selection |
+| `applyObjectSearch` | Search | Active selection in viewer |
+| `getObjectInfoForSearch` | Search | |
+| `resetObjectSearch` | Search | |
+| `setSearchVisualizationMode` | Search | `HIDDEN`, `FADED`, `ORIGINAL` |
+| `zoomToSearchResult` | Search | |
+| `quickSearch` | Search | Freetext |
+| `colorCodeObjects` | Color | GUID → hex |
+| `colorCodeObjectsWithLegends` | Color | Beta |
+| `colorCodeSpaces` | Color | |
+| `colorCodeSpacesWithLegends` | Color | Beta |
+| `colorCodeByProperty` | Color | Pass `null` to reset |
+| `getLayers` | Layers | |
+| `setLayers` | Layers | |
+| `showGrids` | Layers | |
+| `hideGrids` | Layers | |
+| `takeScreenshot` | Media | PNG data URL |
+| `getMapImage` | Media | `{ width, height, resolution }` |
+| `getAnnotatedFloorplan` | Media | PDF from world position |
+| `createObject` | Annotations | `{ center, name }` → GUID |
+| `setStyles` | UI | Inject CSS into viewer |
+| `setSkyColor` | UI | |
+| `setNavigationMode` | UI | `0` walk, `1` orbit |
+| `setExpanded` | UI | Widget panel fullscreen |
+| `setShowExpandButton` | UI | |
+| `toggleShowAllFloors` | UI | Multi-floor grid |
+| `setViewLayout` | UI | Beta: `ALL_FLOORS`, `SMALL_2D` |
+| `clipToFloor` | UI | Beta |
+| `makeApiRequest` | Low-level | Authenticated REST from viewer context |
+| `toggleHideNoResultsFloors` | UI | Seen in demos only; not in official README — treat as experimental |
+
+**Callbacks** (second argument to `connect*`): `pickedObject`, `spacesChanged`, `floorChanged`, `cameraChanged`, `beforeInit`, `didExpand`, `didContract`.
+
+---
+
+## Widget ecosystem & GitHub connections
+
+Inventory of repositories accessible to **jonatanjacobsson** and orgs **byggstyrning**, **BEAst-AB**, **PingstLSE** that relate to the Widget API (June 2026). Use these as reference implementations.
+
+### Official
+
+| Repository | Role |
+|------------|------|
+| [streambim/streambim-widget-api](https://github.com/streambim/streambim-widget-api) | Official SDK (v3), demos, `dist/streambim-widget-api.min.js` |
+| [streambim-marketplace](https://streambim-marketplace.vercel.app/?widget=true) | Community widget catalog & developer guide |
+
+### Your account (`jonatanjacobsson`)
+
+| Repository | Visibility | Connection to Widget API |
+|------------|------------|---------------------------|
+| [streambim-api-docs](https://github.com/jonatanjacobsson/streambim-api-docs) | public | This unofficial REST + Widget reference |
+| [streambim-widget-api](https://github.com/jonatanjacobsson/streambim-widget-api) | public | Fork of official SDK — track `upstream/master` |
+| [n8n-nodes-streambim](https://github.com/jonatanjacobsson/n8n-nodes-streambim) | private | REST automation (complements widgets, not iframe SDK) |
+| [douwidget](https://github.com/jonatanjacobsson/douwidget) | public | Widget project (name suggests StreamBIM widget) |
+
+### Organization: `byggstyrning`
+
+| Repository | Visibility | Marketplace / notes |
+|------------|------------|---------------------|
+| [idswidget](https://github.com/byggstyrning/idswidget) | public | **IDS Widget** — IDS validation in-browser (Pyodide); uses widget hosting |
+| [streambim-cesium-widget](https://github.com/byggstyrning/streambim-cesium-widget) | private | **Topo Map** — Cesium terrain synced to StreamBIM camera |
+| [streambimissuedashboard](https://github.com/byggstyrning/streambimissuedashboard) | private | Issue dashboard integration |
+| [streambim-project-dashboard](https://github.com/byggstyrning/streambim-project-dashboard) | private | Project dashboard |
+| [dewidget](https://github.com/byggstyrning/dewidget) | — | Delentreprenad Widget |
+| [styrwidget](https://github.com/byggstyrning/styrwidget) | — | Styr widget |
+
+### Community (linked from marketplace)
+
+| Repository | Listed as |
+|------------|-----------|
+| [terjefjeldberg/IDS-SVV-widget](https://github.com/terjefjeldberg/IDS-SVV-widget) | IDS SVV Widget (Statens vegvesen) |
+
+Marketplace also lists StreamBIM-maintained examples (**IFC Hierarchy**, **WMS Map**, **NVDB**) that may live in private or monorepo hosting — use marketplace cards for descriptions and contact authors.
+
+### Suggested reading order for new widget authors
+
+1. Official `demo_embedded/index.html` — full `StreamBIM.API` exercise UI.
+2. Official `demo_2/index.html` — color coding, `makeApiRequest`, beta layout/clip.
+3. [byggstyrning/idswidget](https://github.com/byggstyrning/idswidget) — production widget with heavy client-side logic.
+4. This file’s [Complete Examples](#complete-examples) and REST cross-links.
 
 ---
 
@@ -29,11 +203,7 @@ All API methods are accessed via `StreamBIM.API.*` and return Promises. On error
 
 ### Include the library
 
-```html
-<script src="streambim-widget-api.min.js"></script>
-```
-
-Or via npm:
+**npm** (align with official `master`, currently **3.0.0**):
 
 ```bash
 npm install streambim-widget-api
@@ -42,6 +212,19 @@ npm install streambim-widget-api
 ```javascript
 import StreamBIM from 'streambim-widget-api';
 ```
+
+**Script tag** — copy [`dist/streambim-widget-api.min.js`](https://github.com/streambim/streambim-widget-api/blob/master/dist/streambim-widget-api.min.js) into your app (StreamBIM does not host a public CDN):
+
+```html
+<script src="./vendor/streambim-widget-api.min.js"></script>
+<script>
+  StreamBIM.connectToParent(window, {}).then(function () {
+    StreamBIM.API.getProjectId().then(console.log);
+  });
+</script>
+```
+
+Pin npm or vendor the file from a tagged release on [streambim/streambim-widget-api](https://github.com/streambim/streambim-widget-api).
 
 ### Embedded mode (StreamBIM in your iframe)
 
@@ -983,4 +1166,5 @@ v3 added `StreamBIM.connectToWindow(childWindow, url, methods)` for controlling 
 - All methods return a `Promise`. On error, the promise rejects with `{ code: string, detail?: any }`.
 - GUIDs are StreamBIM IFC GUIDs unless a method explicitly uses a floor ID.
 - Colors accept HEX strings only (e.g. `'ff0000'`, `'red'`).
-- The library uses [Penpal](https://github.com/nicbarker/penpal) for cross-frame communication.
+- The library uses [Penpal](https://github.com/nicbarker/penpal) v7 (`WindowMessenger`) for cross-frame communication.
+- The npm package version should match **3.x** on GitHub `master`; v2 used `StreamBIM.connect()` and flat `StreamBIM.getProjectId()` — see [Migration from v2 to v3](#migration-from-v2-to-v3).
