@@ -88,6 +88,7 @@ StreamBIM widgets are web apps loaded in an iframe inside the viewer. They use t
 
 - **Agent-oriented guide:** [AGENTS.md](AGENTS.md)
 - **Full Widget API reference:** [api/widget-api.md](api/widget-api.md) (method index, ecosystem repos, examples)
+- **Project widget config** (`sources`, `lookups`, query params): [api/widget-config.md](api/widget-config.md)
 - **Community catalog:** [StreamBIM Marketplace](https://streambim-marketplace.vercel.app/?widget=true)
 
 Widgets require the **WIDGET** project feature and URL whitelisting (`support@rendra.io`). For server-side automation without a 3D viewer, use the REST sections below instead.
@@ -115,6 +116,7 @@ Widgets require the **WIDGET** project feature and URL whitelisting (`support@re
 | BCF | [bcf.md](api/bcf.md) | BCF 2.1 API for BIM Collaboration Format |
 | Regions | [regions.md](api/regions.md) | Region/environment discovery |
 | Widget API | [widget-api.md](api/widget-api.md) | JavaScript v3 SDK for widgets & embedded viewer (see [AGENTS.md](AGENTS.md)) |
+| Widget config | [widget-config.md](api/widget-config.md) | Per-project `sources` / `lookups` and links to IFC searches |
 
 ## Privilege Levels
 

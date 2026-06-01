@@ -7,6 +7,7 @@ This repository is **unofficial** StreamBIM API documentation for programmatic a
 | Goal | Start here |
 |------|------------|
 | Build a **widget** (iframe inside StreamBIM) | [api/widget-api.md](api/widget-api.md) — JavaScript viewer SDK (v3) |
+| Configure **contextual links** (sources / lookups / query params) | [api/widget-config.md](api/widget-config.md) — per-project JSON, ties to IFC properties |
 | Automate **projects, topics, IFC, sync** from a backend | [README.md](README.md) → [api/authentication.md](api/authentication.md) → relevant REST section |
 | **Search / export IFC** from a widget | [api/widget-api.md](api/widget-api.md) (`makeApiRequest`) + [api/ifc-searches.md](api/ifc-searches.md) |
 | **BCF / collaboration** | [api/bcf.md](api/bcf.md), [api/topics.md](api/topics.md) |

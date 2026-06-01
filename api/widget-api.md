@@ -197,6 +197,14 @@ All API methods are accessed via `StreamBIM.API.*` and return Promises. On error
 - Widgets must be **whitelisted** and enabled per StreamBIM project. Contact `support@rendra.io` to set up a custom widget.
 - For OIDC authentication, provide your identity server details to StreamBIM. StreamBIM opens your login screen in a popup and persists the token per user across sessions.
 
+### Project widget configuration (`sources` / `lookups`)
+
+StreamBIM also stores a **per-project JSON config** (not in the npm package) that maps picked IFC objects to external URLs and embedded apps: `widgets[]` (registry) and `sources[]` (contextual links with `lookups` that read `pset` + `property` into query params like `value`, `room_id`, or `contractid`).
+
+That property model is the **same** as IFC searches and `getObjectInfo` — e.g. `BIP` / `ContractID`, `StreamBIM` / `Name and Numbers: Room ID`, `kindPattern: "^Space$"` for space-only links.
+
+**Full reference:** [widget-config.md](widget-config.md) (schema, examples, connection to queries & Widget API).
+
 ---
 
 ## Install & Setup
