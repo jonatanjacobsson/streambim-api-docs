@@ -605,6 +605,10 @@ curl -X DELETE \
 | s3-path | string | S3 object path |
 | uploaded-date | string | ISO 8601 timestamp |
 | url | string | External URL (for url category) |
+| is-deleted | boolean | Soft-delete flag |
+| deleted-at | string \| null | ISO 8601 timestamp of soft deletion |
+
+Relationships also include `uploaded-by` and `deleted-by` (type `users`, id = user email).
 
 ## Category values
 
@@ -698,6 +702,8 @@ Links an existing project document to a single IFC element identified by its Glo
 }
 ```
 
+> **Note:** The web client also sends `"is-deleted": false` in `attributes`; it is optional. Newer responses additionally include `deleted-at` / `is-deleted` attributes and `deleted-by` / `uploaded-by` relationships (type `users`, id = user email) — attachments are soft-deleted.
+
 > **Note:** The `category` in the response may differ from the request value (e.g. `topic-image` instead of `document`). The `type` on `parent-ifc-object` is `ifc-objects` (plural) in the response vs `ifc-object` (singular) in the request.
 
 **cURL example**
@@ -748,6 +754,12 @@ ifcelement~BIP~TypeID~str~GPPD-UT
 | `{propertyValue}` | The property value that groups the elements | `GPPD-UT` |
 
 The encoding uses base64url (RFC 4648 §5), where `+` is replaced by `-` and `/` by `_`, with no padding.
+
+The string is **UTF-8 encoded before base64url encoding**, so values with spaces and non-ASCII characters work as-is. For example, `aWZjZWxlbWVudH5CSVB-VHlwZURlc2NyaXB0aW9ufnN0cn5Bcm1lcmFkIHB1dHMgcMOlIHB1dHNiw6RyYXJlIHV0b21odXM` decodes to:
+
+```
+ifcelement~BIP~TypeDescription~str~Armerad puts på putsbärare utomhus
+```
 
 The request body is identical to attaching by element, except `parent-ifc-object.id` is the encoded property-based ID instead of a standard Global ID.
 
@@ -830,6 +842,7 @@ Returns all attachments linked to a specific IFC object (element or property-bas
 |-----------|------|----------|-------------|
 | filter[object] | string | Yes | IFC object Global ID or encoded property-based ID |
 | filter[building] | string | Yes | Building ID |
+| withDeletedAttachments | boolean | No | `true` includes soft-deleted attachments (check `is-deleted` / `deleted-at`). Sent by the web client. |
 
 **Response (200 OK)**
 
