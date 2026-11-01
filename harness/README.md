@@ -96,6 +96,7 @@ return (await rest(`/project-{projectId}/api/v1/ifc-searches/export/json?searchI
 | `tools/discover-flavours.mjs` | Find `/webapp/<flavour>/` builds and compare their widget API |
 | `tools/extract-widget-methods.mjs <bundle> <out>` | Pull StreamBIM's host-side method table out of its JS bundle |
 | `tools/build-widget-docs.mjs` | Generate `../widget/` pages |
+| `tools/make-gif.mjs <frames.json> <out.gif>` | Captioned GIF from screenshots with ffmpeg (made `docs/media/agent-demo.gif`) |
 
 ## Security
 

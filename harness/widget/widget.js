@@ -31,7 +31,7 @@
     const rows = [
       ['Project', state.info.projectId],
       ['Building', state.info.buildingId],
-      ['User', state.info.userEmail],
+      // No user e-mail here: the pane ends up in screenshots and screen recordings.
       ['Client', state.clientId],
     ].filter(([, v]) => v != null && v !== '');
     $('meta').replaceChildren(...rows.flatMap(([k, v]) => {

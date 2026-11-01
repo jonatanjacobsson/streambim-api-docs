@@ -4,6 +4,11 @@ Everything you need to build **StreamBIM widgets** and **AI agents that drive St
 verified widget API docs, unofficial REST API docs, copy-paste example widgets, and a local
 MCP server that lets Claude, Cursor or any MCP client control a live StreamBIM viewer.
 
+![An AI agent driving StreamBIM through the widget: it renders a door report, colours rooms by checklist answer, isolates external doors and flies to one](docs/media/agent-demo.gif)
+
+*An MCP agent driving a live StreamBIM viewer through the [agent harness](harness/README.md).
+Each step is one tool call: the captions name the tool, and the widget's Activity log shows the call.*
+
 > Unofficial and community-maintained. Not affiliated with Rendra / StreamBIM. Everything in
 > `widget/` was tested against app.streambim.com on 2026-11-01, and each example on those
 > pages shows its real output.
