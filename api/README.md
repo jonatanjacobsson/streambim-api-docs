@@ -110,6 +110,7 @@ Misuse may result in client blocking. Contact `cto@rendra.io` with questions.
 | BCF | [bcf.md](bcf.md) | BCF 2.1 API for BIM Collaboration Format |
 | Regions | [regions.md](regions.md) | Region/environment discovery |
 | Widget API | [../widget/README.md](../widget/README.md) | Verified widget API reference (the older notes in [widget-api.md](widget-api.md) are superseded) |
+| Widget config | [widget-config.md](widget-config.md) | Per-project widget `sources` / `lookups` (contextual links) and how they map to IFC searches |
 
 ## Privilege Levels
 

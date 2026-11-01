@@ -82,6 +82,16 @@ The official `streambim-widget-api` helper's `connectToParent` **fails inside St
 (`document.referrer` is empty), so talk penpal directly as above. Details:
 [connecting a widget](widget/README.md#connecting-a-widget).
 
+Going further:
+
+- **Agent-oriented guide:** [AGENTS.md](AGENTS.md)
+- **Official SDK summary and ecosystem repos:** [api/widget-api.md](api/widget-api.md) (superseded by `widget/` where they disagree)
+- **Project widget config** (`sources`, `lookups`, query params): [api/widget-config.md](api/widget-config.md)
+- **Community catalog:** [StreamBIM Marketplace](https://streambim-marketplace.vercel.app/?widget=true)
+
+Shipping a widget needs the **WIDGET** project feature and URL whitelisting (`support@rendra.io`).
+For server-side automation without a 3D viewer, use the [REST API](api/README.md) instead.
+
 ## Things that will save you an hour
 
 Verified on app.streambim.com (default flavour), 2026-11-01:
