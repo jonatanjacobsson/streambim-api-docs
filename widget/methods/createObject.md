@@ -12,7 +12,7 @@ StreamBIM.API.createObject(opts: { center: [x, y, z], name: string }): Promise<s
 
 | Name | Type | Required | Description |
 |---|---|---|---|
-| `opts.center` | `[number, number, number]` | yes | World point (same axes as `getCameraState().position`). |
+| `opts.center` | `[number, number, number]` | yes | Viewer point, the same axes as `pickedObject.point` and `getCameraState().position`. Pass a picked point as is. |
 | `opts.name` | `string` | yes | Stored as the `Name` property. |
 
 ## Returns
@@ -21,7 +21,7 @@ StreamBIM.API.createObject(opts: { center: [x, y, z], name: string }): Promise<s
 
 ## What StreamBIM does
 
-`store.createRecord("ifcObject", { center: [x, z, -y], properties: { Name, "@kind": "Annotation" } })` on the current building, then `save()`. The axis swap converts from widget (z-up) to the store's y-up coordinates. It is saved to the project for everyone: the test model shows existing `Annotation` objects in `valuesForObjectProperty("@kind")`.
+`store.createRecord("ifcObject", { center: [x, z, -y], properties: { Name, "@kind": "Annotation" } })` on the current building, then `save()` (`POST /v2/ifc-objects`). The swap converts viewer axes to building coordinates: viewer points are building `[x, y, z]` written as `[x, -z, y]` (a clicked door at building `[-9.96, 7.92, 3.15]` was picked as `[-9.96, -3.15, 7.92]`). So the annotation lands exactly at a picked point. The object is saved to the project for everyone, and **can't be deleted**: `DELETE /v2/ifc-objects/{id}` answers 200 but the annotation stays. Rename it, give it property sets or attachments over REST: see the [custom objects guide](../guides/annotations-custom-objects.md).
 
 ## Errors
 

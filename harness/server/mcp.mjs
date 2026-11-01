@@ -32,6 +32,7 @@ Before relying on a method, read its verified page: streambim_docs path "widget/
 - deHighlightObject always rejects; use setViewportState({ highlightedObjects }).
 - Custom colours: colorCodeSpaces({ spaceGuid: "#rrggbb" }) renders them in every flavour. For objects, colorCodeObjects ignores the colours (search green) in the default flavour; in the taskctrl flavour (/webapp/taskctrl/#/...&forceFlavor=true) colorCodeObjectsWithLegends({ data: {guid: "rrggbb"}, legends: {label: "rrggbb"} }) colours objects. colorCodeByProperty uses the viewer palette.
 - Rejections are { code, debug }.
+- Custom objects (zones, annotations, property sets): POST/PATCH (full record)/DELETE /v2/ifc-objects?building=. Pset value types follow the JSON type (number→float8, bool→bool, string→str). Annotations can't be deleted. Guide: widget/guides/annotations-custom-objects.md.
 
 Generative UI: streambim_render_openui renders OpenUI Lang (https://www.openui.com) in the widget pane. Call streambim_openui_spec first for the components and rules. Buttons drive the viewer with @ToAssistant("label", {streambim: {method: "colorCodeSpaces", args: [{...}]}}) or @OpenUrl("streambim://gotoObject/<guid>"); clicks come back as "openuiAction" events (streambim_get_events). Guide: streambim_docs path "openui/README.md".
 

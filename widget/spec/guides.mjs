@@ -47,6 +47,47 @@ async function patch(type, id, changes = {}, relChanges = {}) {
 }
 const newest = (list) => list.sort((a, b) => Number(b.id) - Number(a.id))[0];`;
 
+// Shared by the custom-object examples (run before each one, shown once on the page).
+const OBJ = `const projectId = await StreamBIM.API.getProjectId();
+const buildingId = await StreamBIM.API.getBuildingId();
+const objects = '/project-' + projectId + '/api/v1/v2/ifc-objects';
+const url = (id) => objects + '/' + encodeURIComponent(id) + '?building=' + buildingId;
+const get = async (id) => JSON.parse(await StreamBIM.API.makeApiRequest({ url: url(id) + '&_=' + Date.now() })).data;
+const exists = async (id) => { try { await get(id); return true; } catch (err) { return false; } };
+const SERVER_PROPS = ['Global Id', '@Building Storey', '@Group Layer', '@Document Id', '@Building Id', 'Timestamp', 'groups', 'BaseType', 'uri'];
+const SERVER_GROUPS = ['Location', 'Geometry', 'Custom'];
+// One property in a property set. The server keeps the JSON type of value (see Property sets).
+const prop = (key, value, measure = '', unit = '') =>
+  ({ key, value, valueType: typeof value === 'number' ? 'float8' : typeof value === 'boolean' ? 'bool' : 'str', measure, unit, valueItem: '' });
+const typed = (p) => p.valueType === 'float8' || p.valueType === 'int64' ? Number(p.value) : p.valueType === 'bool' ? p.value === 'true' : p.value;
+// Full-record PATCH. change(attributes) edits name, groups or geometry in place.
+async function save(id, change) {
+  const cur = await get(id);
+  const a = cur.attributes;
+  const attributes = {
+    layer: null,
+    properties: Object.fromEntries(Object.entries(a.properties).filter(([k]) => !SERVER_PROPS.includes(k))),
+    groups: a.groups.filter((g) => !SERVER_GROUPS.includes(g.label))
+      .map((g) => ({ label: g.label, content: { properties: g.content.properties.map((p) => prop(p.key, typed(p), p.measure, p.unit)) } })),
+    center: a.center, bbox: a.bbox, boundary: a.boundary,
+  };
+  change(attributes);
+  const relationships = { building: cur.relationships.building, floors: cur.relationships.floors };
+  return JSON.parse(await StreamBIM.API.makeApiRequest({ url: url(id), method: 'PATCH', body: { data: { id, type: 'ifc-objects', attributes, relationships } } })).data;
+}
+// The request the Add zone editor sends. outline is [x1, y1, x2, y2, ...] in metres.
+async function createZone({ name, floorId, outline, bottom, top, groups = [] }) {
+  const xs = outline.filter((v, i) => i % 2 === 0), ys = outline.filter((v, i) => i % 2 === 1);
+  const bbox = [Math.min(...xs), Math.min(...ys), bottom, Math.max(...xs), Math.max(...ys), top];
+  const attributes = { layer: null, properties: { Name: name, 'Long Name': '', '@kind': 'Space', Description: '' }, groups,
+    boundary: outline, bbox, center: [(bbox[0] + bbox[3]) / 2, (bbox[1] + bbox[4]) / 2, (bottom + top) / 2] };
+  const relationships = { building: { data: { type: 'buildings', id: String(buildingId) } }, floors: { data: [{ type: 'floors', id: String(floorId) }] } };
+  return JSON.parse(await StreamBIM.API.makeApiRequest({ url: objects, method: 'POST', body: { data: { type: 'ifc-objects', attributes, relationships } } })).data;
+}
+const remove = async (id) => (await StreamBIM.API.makeApiRequest({ url: url(id), method: 'DELETE' })).trim();
+const groupsOf = (record) => record.attributes.groups.filter((g) => g.label !== 'Custom')
+  .map((g) => ({ label: g.label, values: Object.fromEntries(g.content.properties.map((p) => [p.key, p.value + ' : ' + p.valueType])) }));`;
+
 const DEMO_CHECKLIST = 'Widget demo: door inspection';
 
 export const guides = [
@@ -216,54 +257,250 @@ The \`/pgw/project-{id}/…\` form used in older notes did **not** work from the
 
   {
     slug: 'annotations-custom-objects',
-    title: 'Annotations (custom IFC objects)',
-    intro: `StreamBIM lets users and widgets add their own objects to a building: points with a name, stored as IFC objects with \`@kind: "Annotation"\`. In the UI they are called *custom objects* (default name "Custom object"). They have no geometry from a model file (\`layer: ""\`, no \`document\`), can carry **attachments**, and appear in search like any other object.
+    title: 'Custom objects: annotations, zones and property sets',
+    intro: `StreamBIM lets users and widgets add their own objects to a building. They are stored as IFC objects (\`/v2/ifc-objects\`) with an empty \`layer\` and no source \`document\`, so the UI calls them *user created*. There are two kinds:
 
-From a widget you create them with \`StreamBIM.API.createObject\`. Everything else (reading the full record, attachments, deleting) goes through the REST API with \`makeApiRequest\`.
+- **Annotations** (\`@kind: "Annotation"\`): a named point. The widget API creates them with \`createObject\`.
+- **Zones** (\`@kind: "Space"\`): a floor outline with a height, a name, a description and property sets. The UI creates them with **Object information → ⋯ → Add zone**. A widget creates them over REST.
 
-> These examples write to the project. They were run on the demo project used for verification (\`npm run verify -- --include-writes\` in \`harness/\`).`,
+Both kinds can carry **property sets** (groups) with typed values, and **attachments**. A widget can do everything the UI does through \`makeApiRequest\`: create, edit property sets and values, move, attach files and delete.
+
+> These examples write to the project. They were run on the demo project used for verification (\`npm run verify -- --include-writes\` in \`harness/\`). The zone examples delete what they create. Annotations can't be deleted, see [Delete](#delete).`,
     sections: [
       {
-        heading: 'Data model',
-        text: `Ember model \`ifc-object\` (JSON:API type \`ifc-objects\`), with the \`with-attachments\` mixin:
+        heading: 'What a widget can do',
+        text: `Verified on app.streambim.com, 2026-11-01:
 
-| Field | Annotation value |
-|-------|------------------|
-| \`id\` | New 22-char IFC-style GUID, generated by the backend |
-| \`properties\` | \`{ "@kind": "Annotation", "Name": <name> }\` on create; the server adds \`Global Id\`, \`@Building Storey\` (floor by position), \`BaseType: "ifcelement"\` and empty \`Long Name\`, \`Description\`, \`uri\` |
-| \`center\` | Point in **store coordinates**: widget \`[x, y, z]\` is saved as \`[x, z, -y]\` |
-| \`bbox\` / \`boundary\` | Degenerate box at the centre / \`null\` (a point object) |
-| \`layer\` | \`""\` (model objects have their IFC file's layer). The UI treats empty layer as *user created* |
-| \`building\` | Current building |
-| \`groups\` | Server-computed property groups: \`Location\` (floor by position), \`Geometry\`, and \`Custom\` (Created/Updated At/By) |
-| \`relationships.attachments\` | Attachment records (files, images) |`,
+| Task | How | Result |
+|------|-----|--------|
+| Create an annotation | \`StreamBIM.API.createObject({ center, name })\` | Resolves with the new GUID |
+| Create a zone | \`POST /v2/ifc-objects\` (the same request the **Add zone** editor sends) | **200** with the full record |
+| Read | \`GET /v2/ifc-objects/{id}?building={buildingId}\` | Full record with server-made groups |
+| Edit name, property sets, values, outline | Full-record \`PATCH /v2/ifc-objects/{id}?building={buildingId}\` | **200** with the updated record |
+| Attach a link or a file | \`POST /v2/attachments\` with \`parent-ifc-object\` (files: upload ticket → S3 \`PUT\` → attachment) | **200**; the S3 PUT works from the widget with \`fetch\` |
+| Delete a zone | \`DELETE /v2/ifc-objects/{id}?building={buildingId}\` | **200** \`{"data":null}\`, then GET answers **404** |
+| Delete an annotation | Same request | **200**, but the object stays (only its \`Custom\` group goes) |
+| Find with search | \`findObjects\` | Found by \`@kind\` at once. Not found by other properties (e.g. \`Name\`) until the building is **reprocessed** |
+| Show in 3D | n/a | A new zone was not drawn in 3D before reprocessing |
+
+POST and PATCH answer with the record **as you sent it**. Read it back with GET to see what was stored (see [value types](#property-sets-and-value-types)).
+
+**The UI tools and their requests.** In **Object information**, the panel's ⋯ menu has **Add zone**: draw the outline on the floor plan, pick a storey, height and offset from the floor, fill in Name, Long Name and Description, and add property sets and properties (+ New property set, + Add property). **Save** sends one \`POST /v2/ifc-objects\`. For a user-created object, the ⋯ menu also has **Edit** (the same editor, saved with a full-record \`PATCH\`), **Duplicate** (a \`POST\` of a copy named "<Name> Copy") and **Delete** (\`DELETE\`). A widget can make every one of these requests.
+
+After **Add zone** the UI itself says: *"Zone created. You need to reprocess the model before you can search for objects within the new zone."* \`getObjectInfo(id)\` works at once, but it returns the viewer's cached copy. After a PATCH or DELETE it keeps showing the old record until the page reloads, so read over REST to see the current state.`,
       },
       {
-        heading: 'Create',
-        text: '`createObject({ center, name })` builds the record in the StreamBIM page and saves it. It resolves with the new id.',
-        examples: [{ title: 'Create an annotation at the camera and read it back', writes: true, code: `const { position } = await StreamBIM.API.getCameraState();\nconst id = await StreamBIM.API.createObject({ center: position, name: 'Docs example annotation' });\nconst info = await StreamBIM.API.getObjectInfo(id);\nreturn { id, widgetPosition: position, storedCenter: info.center, properties: info.properties, layer: info.layer };` }],
+        heading: 'Data model',
+        text: `Ember model \`ifc-object\` (JSON:API type \`ifc-objects\`). Stored coordinates are metres in the building's coordinate system, z up: the same frame as every object's \`bbox\` and \`center\`. Points that the widget API hands out (\`pickedObject.point\`, \`getCameraState().position\`) use the viewer's axes instead: building \`[x, y, z]\` arrives as \`[x, -z, y]\`. A door at building \`[-9.96, 7.92, 3.15]\` was picked as \`[-9.96, -3.15, 7.92]\`.
+
+| Field | Annotation | Zone |
+|-------|------------|------|
+| \`id\` | New 22-char IFC GUID from the backend | Same |
+| \`properties\` | \`{ "@kind": "Annotation", "Name" }\` | \`{ "Name", "Long Name", "@kind": "Space", "Description" }\` |
+| server-added properties | \`Global Id\`, \`@Building Storey\` (floor by position), \`BaseType: "ifcelement"\`, \`uri\`, \`Timestamp\`, … | Same, with \`BaseType: "ifcspatialstructureelement"\` |
+| \`center\` | Point. \`createObject\` converts the widget point \`[a, b, c]\` to \`[a, c, -b]\` | \`[cx, cy, (bottom + top) / 2]\` |
+| \`boundary\` | \`[x, y]\` | Flat outline \`[x1, y1, x2, y2, …]\` in plan |
+| \`bbox\` | Degenerate box at the centre | \`[minX, minY, bottom, maxX, maxY, top]\` |
+| \`layer\` | \`""\` (\`null\` on write) | Same |
+| \`relationships.floors\` | Set by the server from the height | Set by the client. The editor uses the chosen storey |
+| \`groups\` (property sets) | Your groups, plus server groups \`Location\`, \`Geometry\`, \`Custom\` | Your groups (the editor starts with \`BaseQuantities:\`), plus \`Location\` and \`Custom\` |
+
+\`Custom\` holds Created/Updated At/By (with the user's email). \`Location\` holds *Floor by position*. The server recomputes both: send only your own groups when you write.
+
+The **Add zone** editor fills \`BaseQuantities:\` from the outline: \`GrossFloorArea\` and \`GrossCeilingArea\` (\`square_metre\`) and \`GrossPerimeter\` (\`millimetre\`). The server doesn't compute them, so a widget that changes the outline should update them too.`,
+      },
+      {
+        heading: 'Helpers used below',
+        text: `The examples share these helpers. \`save()\` does what the StreamBIM UI does: it sends the whole user-editable part of the record. A partial PATCH isn't applied (the same as other \`/v2\` records). It also drops the server-made properties and groups, and re-types values, because GET returns every value as a string.
+
+\`\`\`js
+${OBJ}
+\`\`\``,
+      },
+      {
+        heading: 'Create a zone',
+        text: `A zone needs a floor and a height range. This example borrows both from an existing room. It then draws a 2 × 2 m square around the room's centre, reads the zone back, and deletes it again.`,
+        examples: [{ title: 'Create, read and delete a zone', writes: true, prelude: OBJ, code: `const [roomId] = await StreamBIM.API.findObjects({ key: '@kind', value: 'Space', limit: 1 });
+const room = await get(roomId);
+const [cx, cy] = room.attributes.center;
+const [, , bottom, , , top] = room.attributes.bbox;
+const zone = await createZone({
+  name: 'Docs example zone',
+  floorId: room.relationships.floors.data[0].id,
+  outline: [cx - 1, cy + 1, cx - 1, cy - 1, cx + 1, cy - 1, cx + 1, cy + 1],
+  bottom, top,
+  groups: [{ label: 'BaseQuantities:', content: { properties: [prop('GrossFloorArea', 4, 'area', 'square_metre'), prop('GrossPerimeter', 8000, 'length', 'millimetre')] } }],
+});
+const cached = await StreamBIM.API.getObjectInfo(zone.id);
+const foundBySearch = {
+  byName: (await StreamBIM.API.findObjects({ key: 'Name', value: 'Docs example zone', limit: 5 })).includes(zone.id),
+  byKind: (await StreamBIM.API.findObjects({ key: '@kind', value: 'Space', limit: 5000 })).includes(zone.id),
+};
+const deleteResponse = await remove(zone.id);
+return {
+  id: zone.id,
+  properties: zone.attributes.properties,
+  bbox: zone.attributes.bbox,
+  floors: zone.relationships.floors.data.map((f) => f.id),
+  groups: groupsOf(zone),
+  getObjectInfoKind: cached.properties['@kind'],
+  foundBySearch,
+  deleteResponse,
+  existsAfterDelete: await exists(zone.id),
+};` }],
+      },
+      {
+        heading: 'Property sets and value types',
+        text: `A property set is a group: \`{ label, content: { properties: [{ key, value, valueType, measure, unit, valueItem }] } }\`. The UI's property editor offers **Decimal**, **Text**, **Integer** and **True/false** (\`float8\`, \`str\`, \`int64\`, \`bool\`), and lets you add, rename and delete properties and groups. All of it is saved with the same full-record PATCH.
+
+**The server stores the JSON type of \`value\`, not \`valueType\`:** a number becomes \`float8\` (also when you ask for \`int64\`), a boolean becomes \`bool\`, and a string becomes \`str\`. The UI's own editor sends Decimal values as strings, so a Decimal typed in the UI is saved as \`str\`. Send real numbers and booleans. There is no way to store \`int64\`. GET returns every value as a string together with its stored \`valueType\`. The POST and PATCH responses echo your request, so only GET shows the stored types (compare \`response\` and \`stored\` below).`,
+        examples: [{ title: 'Add a property set, edit values, see the stored types', writes: true, prelude: OBJ, code: `const [roomId] = await StreamBIM.API.findObjects({ key: '@kind', value: 'Space', limit: 1 });
+const room = await get(roomId);
+const [cx, cy] = room.attributes.center;
+const zone = await createZone({
+  name: 'Docs example zone (psets)', floorId: room.relationships.floors.data[0].id,
+  outline: [cx - 1, cy + 1, cx - 1, cy - 1, cx + 1, cy - 1, cx + 1, cy + 1], bottom: room.attributes.bbox[2], top: room.attributes.bbox[5],
+  // What the UI editor sends for Decimal 4.5: a string with valueType float8.
+  groups: [{ label: 'Widget_Pset', content: { properties: [{ key: 'Score', value: '4.5', valueType: 'float8', measure: '', unit: '', valueItem: '' }] } }],
+});
+// POST and PATCH responses echo the request: read back with GET to see what was stored.
+const created = { response: groupsOf(zone), stored: groupsOf(await get(zone.id)) };
+const response = await save(zone.id, (a) => {
+  a.properties['Long Name'] = 'Edited by a widget';
+  a.properties.Description = 'Status set from a widget';
+  a.groups = [{ label: 'Widget_Pset', content: { properties: [
+    prop('Status', 'Inspected'),
+    prop('Score', 4.5),
+    { key: 'Count', value: 7, valueType: 'int64', measure: '', unit: '', valueItem: '' },
+    prop('Approved', true),
+  ] } }];
+});
+const stored = await get(zone.id);
+await remove(zone.id);
+return {
+  created,
+  patched: { response: groupsOf(response), stored: groupsOf(stored) },
+  names: [stored.attributes.properties.Name, stored.attributes.properties['Long Name']],
+  existsAfterDelete: await exists(zone.id),
+};` }],
+      },
+      {
+        heading: 'Move or reshape a zone',
+        text: `Change \`boundary\`, \`bbox\` and \`center\` together in one PATCH, and update \`BaseQuantities:\` if you keep them. To move a zone to another storey, change \`relationships.floors\` as well. The \`save()\` helper keeps the current floor.`,
+        examples: [{ title: 'Grow a zone from 2 × 2 m to 4 × 3 m', writes: true, prelude: OBJ, code: `const [roomId] = await StreamBIM.API.findObjects({ key: '@kind', value: 'Space', limit: 1 });
+const room = await get(roomId);
+const [cx, cy] = room.attributes.center;
+const [, , bottom, , , top] = room.attributes.bbox;
+const zone = await createZone({ name: 'Docs example zone (move)', floorId: room.relationships.floors.data[0].id,
+  outline: [cx - 1, cy + 1, cx - 1, cy - 1, cx + 1, cy - 1, cx + 1, cy + 1], bottom, top });
+const [x0, y0, x1, y1] = [cx - 2, cy - 1.5, cx + 2, cy + 1.5];
+const moved = await save(zone.id, (a) => {
+  a.boundary = [x0, y1, x0, y0, x1, y0, x1, y1];
+  a.bbox = [x0, y0, bottom, x1, y1, top];
+  a.center = [cx, cy, (bottom + top) / 2];
+  a.groups = [{ label: 'BaseQuantities:', content: { properties: [prop('GrossFloorArea', (x1 - x0) * (y1 - y0), 'area', 'square_metre'), prop('GrossPerimeter', 2000 * ((x1 - x0) + (y1 - y0)), 'length', 'millimetre')] } }];
+});
+await remove(zone.id);
+return { before: zone.attributes.bbox, after: moved.attributes.bbox, quantities: groupsOf(moved).find((g) => g.label === 'BaseQuantities:').values };` }],
+      },
+      {
+        heading: 'Attachments',
+        text: `Custom objects can carry attachments, the same records topics use, with \`parent-ifc-object\`. See [attachments.md](../../api/attachments.md) for every field. From a widget:
+
+- **Link:** \`POST /v2/attachments\` with \`category: "url"\` and a \`url\`.
+- **File:** \`POST /v2/upload-tickets\` with \`filename\` and \`file-size\` → \`PUT\` the bytes to \`s3presignedurl\` with the widget's own \`fetch\` (S3 allows it) → \`POST /v2/attachments\` with the \`upload-ticket\`. A file sent with \`category: "file"\` was stored as \`topic-image\`.
+- **Project document:** the UI's *add documents to object* sends \`category: "document"\` with a \`linked-document\` relationship.
+
+All of these POSTs answered 200 with the record. \`DELETE /v2/attachments/{id}\` removes an attachment.`,
+        examples: [{ title: 'Attach a link and a file to a zone, list, clean up', writes: true, prelude: OBJ, code: `const v2 = '/project-' + projectId + '/api/v1/v2/';
+const [roomId] = await StreamBIM.API.findObjects({ key: '@kind', value: 'Space', limit: 1 });
+const room = await get(roomId);
+const [cx, cy] = room.attributes.center;
+const zone = await createZone({ name: 'Docs example zone (attachments)', floorId: room.relationships.floors.data[0].id,
+  outline: [cx - 1, cy + 1, cx - 1, cy - 1, cx + 1, cy - 1, cx + 1, cy + 1], bottom: room.attributes.bbox[2], top: room.attributes.bbox[5] });
+const parent = { 'parent-ifc-object': { data: { type: 'ifc-object', id: zone.id } } };
+const post = async (path, data) => JSON.parse(await StreamBIM.API.makeApiRequest({ url: v2 + path, method: 'POST', body: { data } })).data;
+
+const link = await post('attachments', { type: 'attachments', attributes: { category: 'url', url: 'https://github.com/jonatanjacobsson/streambim-api-docs' }, relationships: parent });
+
+const file = new Blob(['Written by a StreamBIM widget'], { type: 'text/plain' });
+const ticket = await post('upload-tickets', { type: 'attachments', attributes: { filename: 'widget-note.txt', 'file-size': file.size } });
+const s3 = await fetch(ticket.attributes.s3presignedurl, { method: 'PUT', headers: { 'Content-Type': 'text/plain' }, body: file });
+const uploaded = await post('attachments', { type: 'attachments', attributes: { category: 'file' },
+  relationships: { ...parent, 'upload-ticket': { data: { type: 'upload-tickets', id: ticket.id } } } });
+
+const list = JSON.parse(await StreamBIM.API.makeApiRequest({ url: v2 + 'attachments?filter[object]=' + zone.id + '&filter[building]=' + buildingId })).data;
+for (const a of list) await StreamBIM.API.makeApiRequest({ url: v2 + 'attachments/' + a.id, method: 'DELETE' });
+await remove(zone.id);
+return {
+  s3Status: s3.status,
+  attached: list.map((a) => ({ category: a.attributes.category, filename: a.attributes.filename, filesize: a.attributes.filesize, url: a.attributes.url })),
+  linkId: link.id, fileId: uploaded.id,
+};` }],
+      },
+      {
+        heading: 'Create an annotation',
+        text: `\`createObject({ center, name })\` builds the record in the StreamBIM page and saves it with the same \`POST /v2/ifc-objects\` (\`properties: { Name, "@kind": "Annotation" }\`, \`groups: []\`, no floor). It resolves with the new id. The centre is converted from \`[a, b, c]\` to \`[a, c, -b]\`, which turns a viewer point into building coordinates. So pass a \`pickedObject.point\` or the camera position as is. To place an annotation at building coordinates \`[x, y, z]\` (e.g. a zone's centre), pass \`[x, -z, y]\`. The server picks the floor from the resulting height, and a point below every floor makes later writes fail with *"floors get at height: no rows in result set"*.
+
+You can then edit an annotation like a zone: rename it, give it property sets, attach files. This example leaves its annotation in the project, because annotations can't be deleted.`,
+        examples: [{ title: 'Create an annotation at the camera, then add a property set', writes: true, prelude: OBJ, code: `const { position } = await StreamBIM.API.getCameraState();
+const id = await StreamBIM.API.createObject({ center: position, name: 'Docs example annotation' });
+const created = await get(id);
+const edited = await save(id, (a) => {
+  a.properties.Description = 'Placed by a widget';
+  a.groups = [{ label: 'Widget_Pset', content: { properties: [prop('Status', 'Open'), prop('Priority', 2)] } }];
+});
+return {
+  id,
+  widgetPosition: position,
+  storedCenter: created.attributes.center,
+  properties: { Name: edited.attributes.properties.Name, Description: edited.attributes.properties.Description, kind: edited.attributes.properties['@kind'] },
+  floors: edited.relationships.floors.data.map((f) => f.id),
+  groups: groupsOf(edited),
+};` }],
       },
       {
         heading: 'Read the full record over REST',
-        text: '`getObjectInfo` returns the viewer\'s cached copy. The REST record has the server-side groups and the attachments relationship.',
+        text: '`getObjectInfo` returns the viewer\'s cached copy. The REST record has the current server-side groups and the attachments relationship.',
         examples: [{ title: 'GET /v2/ifc-objects/{id}', code: `const projectId = await StreamBIM.API.getProjectId();\nconst buildingId = await StreamBIM.API.getBuildingId();\nconst [id] = await StreamBIM.API.findObjects({ key: '@kind', value: 'Annotation', limit: 1 });\nconst { data } = JSON.parse(await StreamBIM.API.makeApiRequest({ url: '/project-' + projectId + '/api/v1/v2/ifc-objects/' + id + '?building=' + buildingId }));\nreturn {\n  id: data.id,\n  properties: data.attributes.properties,\n  groups: data.attributes.groups.map((g) => ({ label: g.label, keys: g.content.properties.map((p) => p.key) })),\n  relationships: Object.fromEntries(Object.entries(data.relationships).map(([k, v]) => [k, v.data])),\n};` }],
       },
       {
         heading: 'List annotations',
-        text: 'Annotations are searchable by `@kind`. Model files can also contain IFC annotations (e.g. Revit model lines exported as `IfcAnnotation`); tell them apart by `layer` (non-empty for model objects).',
+        text: 'Indexed annotations are searchable by `@kind`. Model files can also contain IFC annotations (e.g. Revit model lines exported as `IfcAnnotation`); tell them apart by `layer` (non-empty for model objects).',
         examples: [{ title: 'User-made vs model annotations', code: `const ids = await StreamBIM.API.findObjects({ key: '@kind', value: 'Annotation', limit: 100 });\nconst rows = [];\nfor (const id of ids) {\n  const info = await StreamBIM.API.getObjectInfo(id);\n  rows.push({ id, name: info.properties.Name, userCreated: !info.layer });\n}\nreturn rows;` }],
       },
       {
-        heading: 'Attachments on an annotation',
-        text: 'Files are attached through the attachments API (upload ticket → S3 upload → attachment record with `parent-ifc-object`). See [attachments.md](../../api/attachments.md) for the upload flow. Reading what is attached:',
-        examples: [{ title: 'Attachments of each annotation', code: `const projectId = await StreamBIM.API.getProjectId();\nconst buildingId = await StreamBIM.API.getBuildingId();\nconst ids = await StreamBIM.API.findObjects({ key: '@kind', value: 'Annotation', limit: 20 });\nconst out = {};\nfor (const id of ids) {\n  const res = JSON.parse(await StreamBIM.API.makeApiRequest({ url: '/project-' + projectId + '/api/v1/v2/attachments?filter[object]=' + id + '&filter[building]=' + buildingId }));\n  out[id] = res.data.map((a) => ({ id: a.id, name: a.attributes.name || a.attributes.filename, category: a.attributes.category }));\n}\nreturn out;` }],
+        heading: 'Delete',
+        text: `There is no widget method. The StreamBIM UI (**Object information → ⋯ → Delete**) calls Ember Data \`destroyRecord()\`, which sends \`DELETE /project-{id}/api/v1/v2/ifc-objects/{id}?building={buildingId}\`, and then reloads the floors' zone outlines. A widget can send the same request.
+
+**Observed (2026-11-01):**
+
+- **Zones** are deleted. The DELETE answers \`{"data":null}\`, and the next GET answers 404 *"no such object exists"*.
+- **Annotations are not.** The DELETE answers \`{"data":null}\` as well, but only the \`Custom\` group (Created/Updated At/By) is removed. The object is still served by GET and found by search, with \`jobdeleted: 0\`, also after a second DELETE and hours later. To retire an annotation, rename it or mark it with a property instead, and filter those out in your widget.
+- If the object's height is below every floor, the DELETE fails with 500 *"delete space geojson cache … floors get at height: sql: no rows in result set"*.
+- \`getObjectInfo\` keeps returning the deleted object until the page reloads.`,
+        examples: [{ title: 'Delete an annotation, then check that it is still there', writes: true, prelude: OBJ, code: `const { position } = await StreamBIM.API.getCameraState();
+const id = await StreamBIM.API.createObject({ center: position, name: 'Docs example (deleted)' });
+const groupsBefore = (await get(id)).attributes.groups.map((g) => g.label);
+const deleteResponse = await remove(id);
+let groupsAfter;
+try { groupsAfter = (await get(id)).attributes.groups.map((g) => g.label); } catch (err) { groupsAfter = 'not found'; }
+return { id, groupsBefore, deleteResponse, groupsAfterDelete: groupsAfter };` }],
       },
       {
-        heading: 'Delete',
-        text: `There is no widget method. The StreamBIM UI deletes with Ember Data \`destroyRecord()\`, which sends \`DELETE /project-{id}/api/v1/v2/ifc-objects/{id}?building={buildingId}\`. The same request works from a widget and answers \`{"data":null}\`.
+        heading: 'Project property catalogue (read only)',
+        text: `\`GET /v2/ifc-properties?buildingId={buildingId}\` lists every property set and property in the building: \`pset\`, \`name\`, \`datatype\`, \`basetype\`, how many objects use it, and admin flags (\`promote\`, \`hide\`, \`optimizeForSearch\`, \`ignoreForHistory\`). A widget can use it to offer existing pset and property names. The UI changes the flags with \`POST /ifc-properties?buildingId=\` in project admin. That's project configuration, so this guide doesn't write to it.`,
+        examples: [{ title: 'Property sets in this building', code: `const projectId = await StreamBIM.API.getProjectId();\nconst buildingId = await StreamBIM.API.getBuildingId();\nconst { data } = JSON.parse(await StreamBIM.API.makeApiRequest({ url: '/project-' + projectId + '/api/v1/v2/ifc-properties?buildingId=' + buildingId }));\nconst psets = {};\nfor (const p of data) psets[p.attributes.pset] = (psets[p.attributes.pset] || 0) + 1;\nconst [first] = data;\nreturn { properties: data.length, psets: Object.keys(psets).length, largest: Object.entries(psets).sort((a, b) => b[1] - a[1]).slice(0, 5), sample: { pset: first.attributes.pset, name: first.attributes.name, datatype: first.attributes.datatype, basetype: first.attributes.basetype, objectsWithProperty: first.attributes.objectsWithProperty } };` }],
+      },
+      {
+        heading: 'Ideas for widgets',
+        text: `- **Work zones:** draw temporary areas (safety zones, deliveries, takt areas) from a widget form, with dates and a responsible person in a property set, and delete them when the work is done.
+- **Status per room:** keep inspection or cleaning status in a zone's property set and colour the zones with \`colorCodeSpaces\` once they are indexed.
+- **Point notes:** drop an annotation at the clicked point (\`pickedObject\` → \`createObject\`), then attach a photo or a link to a document.
+- **Import:** create zones from a CSV or GIS outline, with \`BaseQuantities:\` computed in the widget.
+- **Data entry:** use a zone's property sets as a small form backed by StreamBIM, with no extra server.
 
-**Observed (2026-11-01):** right after the DELETE, the object is still served by \`GET /v2/ifc-objects/{id}\` and still found by search. Only its \`Custom\` group (Created/Updated At/By) is gone. \`getObjectInfo\` keeps returning the cached record until the page reloads. Treat deletion as eventually consistent, and don't rely on the object disappearing at once.`,
-        examples: [{ title: 'Create, then delete with the UI\'s request', writes: true, code: `const projectId = await StreamBIM.API.getProjectId();\nconst buildingId = await StreamBIM.API.getBuildingId();\nconst { position } = await StreamBIM.API.getCameraState();\nconst id = await StreamBIM.API.createObject({ center: position, name: 'Docs example (deleted)' });\nconst url = '/project-' + projectId + '/api/v1/v2/ifc-objects/' + id + '?building=' + buildingId;\nconst groupsBefore = JSON.parse(await StreamBIM.API.makeApiRequest({ url })).data.attributes.groups.map((g) => g.label);\nconst deleted = await StreamBIM.API.makeApiRequest({ url, method: 'DELETE' });\nlet after;\ntry {\n  after = JSON.parse(await StreamBIM.API.makeApiRequest({ url })).data.attributes.groups.map((g) => g.label);\n} catch (err) {\n  after = 'not found';\n}\nreturn { id, groupsBefore, deleteResponse: deleted.trim(), groupsAfterDelete: after };` }],
+Plan for the limits above: new objects are found by \`@kind\` but not by their properties, and aren't drawn in 3D, until the building is reprocessed. Annotations can't be removed. Keep your own list of the GUIDs you create (e.g. in a property such as \`Source: my-widget\`, or in your widget's storage).`,
       },
     ],
   },

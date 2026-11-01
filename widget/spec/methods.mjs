@@ -729,11 +729,11 @@ export const methods = [
     summary: 'Create a persistent annotation object in the building.',
     signature: 'createObject(opts: { center: [x, y, z], name: string }): Promise<string>',
     params: [
-      { name: 'opts.center', type: '[number, number, number]', required: true, desc: 'World point (same axes as `getCameraState().position`).' },
+      { name: 'opts.center', type: '[number, number, number]', required: true, desc: 'Viewer point, the same axes as `pickedObject.point` and `getCameraState().position`. Pass a picked point as is.' },
       { name: 'opts.name', type: 'string', required: true, desc: 'Stored as the `Name` property.' },
     ],
     returns: { type: 'string', desc: 'Id of the new object.' },
-    host: '`store.createRecord("ifcObject", { center: [x, z, -y], properties: { Name, "@kind": "Annotation" } })` on the current building, then `save()`. The axis swap converts from widget (z-up) to the store\'s y-up coordinates. It is saved to the project for everyone: the test model shows existing `Annotation` objects in `valuesForObjectProperty("@kind")`.',
+    host: '`store.createRecord("ifcObject", { center: [x, z, -y], properties: { Name, "@kind": "Annotation" } })` on the current building, then `save()` (`POST /v2/ifc-objects`). The swap converts viewer axes to building coordinates: viewer points are building `[x, y, z]` written as `[x, -z, y]` (a clicked door at building `[-9.96, 7.92, 3.15]` was picked as `[-9.96, -3.15, 7.92]`). So the annotation lands exactly at a picked point. The object is saved to the project for everyone, and **can\'t be deleted**: `DELETE /v2/ifc-objects/{id}` answers 200 but the annotation stays. Rename it, give it property sets or attachments over REST: see the [custom objects guide](../guides/annotations-custom-objects.md).',
     errors: ['Save errors are rejected as-is (Ember Data error object).'],
     note: 'Not run by default because it writes to the project. `npm run verify -- --include-writes` (in `harness/`) runs it.',
     examples: [{ title: 'Drop an annotation at the camera', writes: true, code: `const { position } = await StreamBIM.API.getCameraState();\nconst id = await StreamBIM.API.createObject({ center: position, name: 'Widget test annotation' });\nreturn id;` }],

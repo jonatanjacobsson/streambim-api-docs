@@ -15,7 +15,7 @@ Each step is one tool call: the captions name the tool, and the widget's Activit
 
 | Folder | What's in it |
 |---|---|
-| [`widget/`](widget/README.md) | **Widget API reference.** One page per method (55), with what StreamBIM really does, real errors, and live-tested examples. Plus guides: [REST from a widget](widget/guides/rest-api-from-widgets.md), [checklists + colour by value](widget/guides/checklists-and-colour-by-value.md), [annotations](widget/guides/annotations-custom-objects.md), [events](widget/events.md) |
+| [`widget/`](widget/README.md) | **Widget API reference.** One page per method (55), with what StreamBIM really does, real errors, and live-tested examples. Plus guides: [REST from a widget](widget/guides/rest-api-from-widgets.md), [checklists + colour by value](widget/guides/checklists-and-colour-by-value.md), [custom objects: annotations, zones, property sets](widget/guides/annotations-custom-objects.md), [events](widget/events.md) |
 | [`api/`](api/README.md) | **REST API reference** (unofficial): auth, projects, topics, checklists, documents, IFC searches, BCF, … |
 | [`examples/`](examples/README.md) | **Standalone widgets** to copy: minimal starter, colour by checklist answer, OpenUI dashboard |
 | [`harness/`](harness/README.md) | **Agent harness**: local MCP server + "localhost" widget. Agents run JS in the viewer, call the REST API and render UI |
@@ -116,7 +116,7 @@ Verified on app.streambim.com (default flavour), 2026-11-01:
 api/                 REST API reference (markdown, one file per area)
 widget/              widget API reference (generated: edit widget/spec/*.mjs, then npm run build-docs)
   methods/           one page per method
-  guides/            REST from widgets, checklists + colour by value, annotations
+  guides/            REST from widgets, checklists + colour by value, custom objects (zones, psets)
   spec/              source of truth: method specs + runnable examples
   verification/      raw results of the live test runs (probe, examples, REST sweep, flavours)
 examples/            standalone widgets (served with `npm run example -- ../examples/<name>`)

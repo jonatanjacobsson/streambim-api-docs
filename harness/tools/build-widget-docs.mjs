@@ -67,7 +67,9 @@ function fmtOutput(value, maxLines = 60) {
 
 const missingVerification = [];
 function renderExample(id, ex, depth = '../') {
-  const out = [`#### ${ex.title}`, '', '```js', ex.code, '```', ''];
+  // A prelude (shared helpers) runs before the example and is shown once in its guide section.
+  const code = ex.prelude ? `// Uses the helpers above.\n${ex.code}` : ex.code;
+  const out = [`#### ${ex.title}`, '', '```js', code, '```', ''];
   const r = examples.data.results[id];
   if (ex.skip) {
     out.push('_Not executed: only runs in an embedding page, not in a side-panel widget._', '');
@@ -197,7 +199,7 @@ const index = [
   '',
   '- [Connecting a widget](#connecting-a-widget)',
   '- [Calling the REST API from a widget](guides/rest-api-from-widgets.md)',
-  '- [Annotations (custom IFC objects)](guides/annotations-custom-objects.md)',
+  '- [Custom objects: annotations, zones and property sets](guides/annotations-custom-objects.md)',
   '- [Checklists from a widget, and colouring objects by checklist values](guides/checklists-and-colour-by-value.md)',
   '- [Events / callbacks](events.md)',
   '',
@@ -255,7 +257,7 @@ const index = [
   '- Broken: `deHighlightObject` always rejects (`deSelectObject is not a function`). `colorCodeObjects` ignores the colours (objects show in search green). `colorCodeSpaces` **does** render custom GUID → colour maps, and `colorCodeByProperty` renders the viewer palette. Objects take custom colours in the `taskctrl` flavour via `colorCodeObjectsWithLegends`.',
   '- `applyObjectSearch` resolves `true` and has no `replace` argument. `valuesForObjectProperty` returns `{ value: count }`. `getAnnotatedFloorplan` returns an https URL with a microtoken. `getSpaces` returns only the spaces the camera is inside.',
   '- Undocumented: `applyStyles`, `goHome(resetCamera)`, `setViewportState({ highlightedLayer })`, the `pickedObject.shiftKey` field, the `modelReady` event.',
-  '- `createObject` stores the centre as `[x, z, -y]` and creates a persistent `Annotation`.',
+  '- `createObject` turns a viewer point `[a, b, c]` into building coordinates `[a, c, -b]`, so a `pickedObject.point` can be passed as is. The `Annotation` it creates cannot be deleted (DELETE answers 200, the object stays).',
   '- `beforeInit` is only called in embedded (`connectToChild`) mode.',
   '',
   '## Re-verifying',

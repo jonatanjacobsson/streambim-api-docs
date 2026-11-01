@@ -100,7 +100,7 @@ Misuse may result in client blocking. Contact `cto@rendra.io` with questions.
 | Attachments | [attachments.md](attachments.md) | File attachments, upload tickets, S3 uploads, downloads, microtokens, floor downloads |
 | Exports | [exports.md](exports.md) | JSON/XLSX export endpoints for documents, topics, checklists, users, IFC files (PowerBI) |
 | IFC Searches | [ifc-searches.md](ifc-searches.md) | IFC model search, JSON/IFC export, freetext search, color coding |
-| IFC objects / annotations | [annotations guide](../widget/guides/annotations-custom-objects.md) | Creating, reading and deleting custom objects (`/v2/ifc-objects`) |
+| IFC objects: annotations, zones, psets | [custom objects guide](../widget/guides/annotations-custom-objects.md) | Creating zones and annotations, editing property sets and values, attachments, delete (`/v2/ifc-objects`), property catalogue (`/v2/ifc-properties`) |
 | Converter Jobs | [converter-jobs.md](converter-jobs.md) | IFC model conversion job management and monitoring |
 | Sync | [sync.md](sync.md) | External file source synchronization (e.g. Sharepoint, Interaxo) |
 | Takt Planning | [takt-planning.md](takt-planning.md) | Trains and wagons for lean construction scheduling |

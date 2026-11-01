@@ -64,7 +64,8 @@ for (const job of jobs) {
   if (only && !only.has(job.owner)) continue;
   if (job.ex.skip) { results[job.id] = { status: 'skipped', reason: 'not executable in a side-panel widget' }; continue; }
   if (job.ex.writes && !includeWrites) { results[job.id] = { status: 'skipped', reason: 'writes to the project (run with --include-writes)' }; continue; }
-  const res = await call('streambim_execute_js', { code: wrap(job.ex.code), timeoutMs: 30000 });
+  const code = job.ex.prelude ? `${job.ex.prelude}\n\n${job.ex.code}` : job.ex.code;
+  const res = await call('streambim_execute_js', { code: wrap(code), timeoutMs: 30000 });
   const body = JSON.parse(res.content[0].text);
   const images = [];
   for (const c of res.content.slice(1)) {

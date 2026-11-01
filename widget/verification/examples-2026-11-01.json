@@ -1,5 +1,5 @@
 {
-  "verifiedAt": "2026-11-01T16:34:41.752Z",
+  "verifiedAt": "2026-11-01T18:14:06.213Z",
   "origin": "https://app.streambim.com",
   "projectId": "15974",
   "buildingId": "1000",
@@ -995,166 +995,195 @@
     "annotations-custom-objects-1": {
       "status": "ok",
       "value": {
-        "id": "2_gBGbsOr5IhOnI5YKNzTA",
-        "widgetPosition": [
-          -23.640774376590556,
-          -10.580858081397219,
-          21.783979926923017
-        ],
-        "storedCenter": [
-          -23.640774376590556,
-          21.783979926923017,
-          10.580858081397219
-        ],
+        "id": "0jmPsCnvj6aPq4iNaYFqS3",
         "properties": {
-          "@kind": "Annotation",
-          "Name": "Docs example annotation"
+          "@kind": "Space",
+          "Description": "",
+          "Long Name": "",
+          "Name": "Docs example zone"
         },
-        "layer": ""
+        "bbox": [
+          -21.312375606587533,
+          14.735207810601292,
+          2.5500000000000003,
+          -19.312375606587533,
+          16.735207810601292,
+          4.95
+        ],
+        "floors": [
+          "1000"
+        ],
+        "groups": [
+          {
+            "label": "BaseQuantities:",
+            "values": {
+              "GrossFloorArea": "4 : float8",
+              "GrossPerimeter": "8000 : float8"
+            }
+          }
+        ],
+        "getObjectInfoKind": "Space",
+        "foundBySearch": {
+          "byName": false,
+          "byKind": true
+        },
+        "deleteResponse": "{\"data\":null}",
+        "existsAfterDelete": false
       },
       "images": [],
-      "durationMs": 80
+      "durationMs": 766
     },
     "annotations-custom-objects-2": {
       "status": "ok",
       "value": {
-        "id": "09kOeA2yv9swf1lMzXvRd7",
-        "properties": {
-          "@kind": "Annotation",
-          "Name": "Model Lines:2588784",
-          "Long Name": "",
-          "Description": "",
-          "uri": "",
-          "Global Id": "09kOeA2yv9swf1lMzXvRd7",
-          "@Group Layer": "GRNSAKSSTIGEN24",
-          "@Document Id": 1000,
-          "@Building Id": 0,
-          "Timestamp": "2025-08-18 08:00:48 +0000 UTC",
-          "groups": null,
-          "BaseType": "ifcelement"
+        "created": {
+          "response": [
+            {
+              "label": "Widget_Pset",
+              "values": {
+                "Score": "4.5 : float8"
+              }
+            }
+          ],
+          "stored": [
+            {
+              "label": "Location",
+              "values": {
+                "Floor by position": "Plan 2 : "
+              }
+            },
+            {
+              "label": "Widget_Pset",
+              "values": {
+                "Score": "4.5 : str"
+              }
+            }
+          ]
         },
-        "groups": [
-          {
-            "label": "_Information",
-            "keys": [
-              "Höjd Bröstning",
-              "Längd"
-            ]
-          },
-          {
-            "label": "Location",
-            "keys": [
-              "Global Y",
-              "Global Z",
-              "Global X"
-            ]
-          },
-          {
-            "label": "BIP",
-            "keys": [
-              "StatusConstruction",
-              "Length"
-            ]
-          }
+        "patched": {
+          "response": [
+            {
+              "label": "Widget_Pset",
+              "values": {
+                "Status": "Inspected : str",
+                "Score": "4.5 : float8",
+                "Count": "7 : int64",
+                "Approved": "true : bool"
+              }
+            }
+          ],
+          "stored": [
+            {
+              "label": "Location",
+              "values": {
+                "Floor by position": "Plan 2 : "
+              }
+            },
+            {
+              "label": "Widget_Pset",
+              "values": {
+                "Count": "7 : float8",
+                "Approved": "true : bool",
+                "Status": "Inspected : str",
+                "Score": "4.5 : float8"
+              }
+            }
+          ]
+        },
+        "names": [
+          "Docs example zone (psets)",
+          "Edited by a widget"
         ],
-        "relationships": {
-          "attachments": [],
-          "building": {
-            "id": "1000",
-            "type": "buildings"
-          },
-          "classes": [],
-          "document": {
-            "id": "1000",
-            "type": "documents"
-          },
-          "duplicates": [],
-          "floors": [],
-          "spaces": []
-        }
+        "existsAfterDelete": false
       },
       "images": [],
-      "durationMs": 143
+      "durationMs": 742
     },
     "annotations-custom-objects-3": {
       "status": "ok",
-      "value": [
-        {
-          "id": "09kOeA2yv9swf1lMzXvRd7",
-          "name": "Model Lines:2588784",
-          "userCreated": false
-        },
-        {
-          "id": "0cNP0TnuH3tRVcgHb$44hd",
-          "name": "Widget test annotation",
-          "userCreated": true
-        },
-        {
-          "id": "0iuKUCTUHE5v8ERBpXPzpM",
-          "name": "Agent bridge test annotation",
-          "userCreated": true
-        },
-        {
-          "id": "1Op$uFGPv2Kxe2w1_moHPI",
-          "name": "Model Lines:2704768",
-          "userCreated": false
-        },
-        {
-          "id": "1RdkULdn961P83Qb7xhbwC",
-          "name": "Model Lines:2512953",
-          "userCreated": false
-        },
-        {
-          "id": "2U2960tA58aff4lecI2G0y",
-          "name": "Custom object",
-          "userCreated": true
-        },
-        {
-          "id": "2b798tP0HEpA23JeWb5sNX",
-          "name": "Custom object",
-          "userCreated": true
-        },
-        {
-          "id": "2_gBGbsOr5IhOnI5YKNzTA",
-          "name": "Docs example annotation",
-          "userCreated": true
+      "value": {
+        "before": [
+          -21.312375606587533,
+          14.735207810601292,
+          2.5500000000000003,
+          -19.312375606587533,
+          16.735207810601292,
+          4.95
+        ],
+        "after": [
+          -22.312375606587533,
+          14.235207810601292,
+          2.5500000000000003,
+          -18.312375606587533,
+          17.235207810601292,
+          4.95
+        ],
+        "quantities": {
+          "GrossFloorArea": "12 : float8",
+          "GrossPerimeter": "14000 : float8"
         }
-      ],
+      },
       "images": [],
-      "durationMs": 93
+      "durationMs": 605
     },
     "annotations-custom-objects-4": {
       "status": "ok",
       "value": {
-        "09kOeA2yv9swf1lMzXvRd7": [],
-        "0cNP0TnuH3tRVcgHb$44hd": [],
-        "0iuKUCTUHE5v8ERBpXPzpM": [],
-        "1Op$uFGPv2Kxe2w1_moHPI": [],
-        "1RdkULdn961P83Qb7xhbwC": [],
-        "2U2960tA58aff4lecI2G0y": [],
-        "2b798tP0HEpA23JeWb5sNX": [],
-        "2_gBGbsOr5IhOnI5YKNzTA": []
+        "s3Status": 200,
+        "attached": [
+          {
+            "category": "url",
+            "filename": "",
+            "filesize": 0,
+            "url": "https://github.com/jonatanjacobsson/streambim-api-docs"
+          },
+          {
+            "category": "topic-image",
+            "filename": "widget-note.txt",
+            "filesize": 29,
+            "url": ""
+          }
+        ],
+        "linkId": "24",
+        "fileId": "25"
       },
       "images": [],
-      "durationMs": 494
+      "durationMs": 1069
     },
     "annotations-custom-objects-5": {
       "status": "ok",
       "value": {
-        "id": "3iMXGLpkHDlRbqb2$Gbg8C",
-        "groupsBefore": [
-          "Location",
-          "Geometry",
-          "Custom"
+        "id": "0qACYXK6jEdu9uh6BRIUT7",
+        "widgetPosition": [
+          -5.311,
+          -6.468,
+          17.349
         ],
-        "deleteResponse": "{\"data\":null}",
-        "groupsAfterDelete": [
-          "Location",
-          "Geometry"
+        "storedCenter": [
+          -5.311,
+          17.349,
+          6.468
+        ],
+        "properties": {
+          "Name": "Docs example annotation",
+          "Description": "Placed by a widget",
+          "kind": "Annotation"
+        },
+        "floors": [
+          "1012"
+        ],
+        "groups": [
+          {
+            "label": "Widget_Pset",
+            "values": {
+              "Status": "Open : str",
+              "Priority": "2 : float8"
+            }
+          }
         ]
       },
       "images": [],
-      "durationMs": 290
+      "durationMs": 429
     },
     "colorCodeObjects-2": {
       "status": "ok",
@@ -1398,6 +1427,205 @@
       },
       "images": [],
       "durationMs": 241
+    },
+    "annotations-custom-objects-6": {
+      "status": "ok",
+      "value": {
+        "id": "09kOeA2yv9swf1lMzXvRd7",
+        "properties": {
+          "@kind": "Annotation",
+          "Name": "Model Lines:2588784",
+          "Long Name": "",
+          "Description": "",
+          "uri": "",
+          "Global Id": "09kOeA2yv9swf1lMzXvRd7",
+          "@Group Layer": "GRNSAKSSTIGEN24",
+          "@Document Id": 1000,
+          "@Building Id": 0,
+          "Timestamp": "2025-08-18 08:00:48 +0000 UTC",
+          "groups": null,
+          "BaseType": "ifcelement"
+        },
+        "groups": [
+          {
+            "label": "_Information",
+            "keys": [
+              "Höjd Bröstning",
+              "Längd"
+            ]
+          },
+          {
+            "label": "Location",
+            "keys": [
+              "Global Y",
+              "Global Z",
+              "Global X"
+            ]
+          },
+          {
+            "label": "BIP",
+            "keys": [
+              "StatusConstruction",
+              "Length"
+            ]
+          }
+        ],
+        "relationships": {
+          "attachments": [],
+          "building": {
+            "id": "1000",
+            "type": "buildings"
+          },
+          "classes": [],
+          "document": {
+            "id": "1000",
+            "type": "documents"
+          },
+          "duplicates": [],
+          "floors": [],
+          "spaces": []
+        }
+      },
+      "images": [],
+      "durationMs": 145
+    },
+    "annotations-custom-objects-7": {
+      "status": "ok",
+      "value": [
+        {
+          "id": "09kOeA2yv9swf1lMzXvRd7",
+          "name": "Model Lines:2588784",
+          "userCreated": false
+        },
+        {
+          "id": "0cNP0TnuH3tRVcgHb$44hd",
+          "name": "Widget test annotation",
+          "userCreated": true
+        },
+        {
+          "id": "0iuKUCTUHE5v8ERBpXPzpM",
+          "name": "Agent bridge test annotation",
+          "userCreated": true
+        },
+        {
+          "id": "0j_E2DTQz3DQRfP2MO4LOo",
+          "name": "Docs example annotation",
+          "userCreated": true
+        },
+        {
+          "id": "0qACYXK6jEdu9uh6BRIUT7",
+          "name": "Docs example annotation",
+          "userCreated": true
+        },
+        {
+          "id": "1Op$uFGPv2Kxe2w1_moHPI",
+          "name": "Model Lines:2704768",
+          "userCreated": false
+        },
+        {
+          "id": "1RdkULdn961P83Qb7xhbwC",
+          "name": "Model Lines:2512953",
+          "userCreated": false
+        },
+        {
+          "id": "2U2960tA58aff4lecI2G0y",
+          "name": "Custom object",
+          "userCreated": true
+        },
+        {
+          "id": "2b798tP0HEpA23JeWb5sNX",
+          "name": "Custom object",
+          "userCreated": true
+        },
+        {
+          "id": "2dgdFtTN1DdhKW$xJjtGva",
+          "name": "Docs example (deleted)",
+          "userCreated": true
+        },
+        {
+          "id": "2g4ORfTSzCfw7U4moAc$Di",
+          "name": "Docs example annotation",
+          "userCreated": true
+        },
+        {
+          "id": "2mmJy7vBf5sPM0D6ibTHHS",
+          "name": "Delete test annotation",
+          "userCreated": true
+        },
+        {
+          "id": "2_gBGbsOr5IhOnI5YKNzTA",
+          "name": "Docs example annotation",
+          "userCreated": true
+        },
+        {
+          "id": "3iMXGLpkHDlRbqb2$Gbg8C",
+          "name": "Docs example (deleted)",
+          "userCreated": true
+        },
+        {
+          "id": "3tNKl_Hur0Vh5ysITIcz2B",
+          "name": "Docs example (deleted)",
+          "userCreated": true
+        }
+      ],
+      "images": [],
+      "durationMs": 90
+    },
+    "annotations-custom-objects-8": {
+      "status": "ok",
+      "value": {
+        "id": "2bHrqaPGH6HQC24btLqYFs",
+        "groupsBefore": [
+          "Location",
+          "Geometry",
+          "Custom"
+        ],
+        "deleteResponse": "{\"data\":null}",
+        "groupsAfterDelete": [
+          "Location",
+          "Geometry"
+        ]
+      },
+      "images": [],
+      "durationMs": 353
+    },
+    "annotations-custom-objects-9": {
+      "status": "ok",
+      "value": {
+        "properties": 572,
+        "psets": 68,
+        "largest": [
+          [
+            "BIP",
+            206
+          ],
+          [
+            "Material",
+            60
+          ],
+          [
+            "Other",
+            38
+          ],
+          [
+            "_Information",
+            22
+          ],
+          [
+            "BaseQuantities",
+            21
+          ]
+        ],
+        "sample": {
+          "pset": "Pset_CoveringCommon",
+          "name": "Reference",
+          "datatype": "str",
+          "basetype": "ifcelement",
+          "objectsWithProperty": 8
+        }
+      },
+      "images": [],
+      "durationMs": 275
     }
   }
 }
