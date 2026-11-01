@@ -16,7 +16,7 @@ All BCF endpoints require a Bearer token in the `Authorization` header:
 Authorization: Bearer <your_access_token>
 ```
 
-Obtain a token via the [authentication endpoint](/docs/api/authentication.md).
+Obtain a token via the [authentication endpoint](authentication.md).
 
 ---
 

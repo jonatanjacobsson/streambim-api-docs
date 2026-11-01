@@ -1,121 +1,124 @@
-# StreamBIM API Documentation
+# StreamBIM developer kit (unofficial)
 
-Comprehensive reference for the StreamBIM public API. This documentation is intended for agentic and programmatic use -- each section file is self-contained with all required context.
+Everything you need to build **StreamBIM widgets** and **AI agents that drive StreamBIM**:
+verified widget API docs, unofficial REST API docs, copy-paste example widgets, and a local
+MCP server that lets Claude, Cursor or any MCP client control a live StreamBIM viewer.
 
-## Base URL
+> Unofficial and community-maintained. Not affiliated with Rendra / StreamBIM. Everything in
+> `widget/` was tested against app.streambim.com on 2026-11-01, and each example on those
+> pages shows its real output.
 
-```
-https://{environment}.streambim.com
-```
+| Folder | What's in it |
+|---|---|
+| [`widget/`](widget/README.md) | **Widget API reference.** One page per method (55), with what StreamBIM really does, real errors, and live-tested examples. Plus guides: [REST from a widget](widget/guides/rest-api-from-widgets.md), [checklists + colour by value](widget/guides/checklists-and-colour-by-value.md), [annotations](widget/guides/annotations-custom-objects.md), [events](widget/events.md) |
+| [`api/`](api/README.md) | **REST API reference** (unofficial): auth, projects, topics, checklists, documents, IFC searches, BCF, … |
+| [`examples/`](examples/README.md) | **Standalone widgets** to copy: minimal starter, colour by checklist answer, OpenUI dashboard |
+| [`harness/`](harness/README.md) | **Agent harness**: local MCP server + "localhost" widget. Agents run JS in the viewer, call the REST API and render UI |
+| [`openui/`](openui/README.md) | **Generative UI** with [OpenUI](https://www.openui.com): agents render dashboards, tables and charts in the widget, and their buttons drive the viewer |
 
-| Environment | URL |
-|-------------|-----|
-| Production | `https://{environment}.streambim.com` (e.g. `app`) |
-| Sweden | `https://sweden.streambim.com` |
-| Japan | `https://japan.streambim.com` |
-| Australia | `https://australia.streambim.com` |
-| Staging | `https://staging.streambim.com` |
-| Dev | `https://dev.streambim.com` |
+## Quickstart (10 minutes)
 
-## Authentication
+**You need:** Node 20+, Chrome or Edge, and a StreamBIM project where the **`localhost`
+widget** is enabled. That widget simply loads `http://localhost:3000/` in the side panel.
+Widgets are enabled per project by Rendra (`support@rendra.io`); hackathon organisers usually
+set this up for you.
 
-All API requests (except login) require a Bearer token in the `Authorization` header:
-
-```
-Authorization: Bearer {idToken}
-```
-
-**Authentication flow:**
-
-1. Call `POST /auth/v1/login` with `username` and `password` to obtain tokens.
-2. If the response `result` is `SUCCESS`, use the returned `idToken` as the Bearer token.
-3. If the response `result` is `CHALLENGE_REQUESTED` (MFA enabled), call `POST /auth/v1/mfa/verify` with the `session` and a TOTP `code` to complete authentication.
-4. When the `idToken` expires (see `expiresIn`), call `POST /auth/v1/refresh` with the expired `idToken` and your `refreshToken` to obtain a new `idToken`.
-
-See [authentication.md](api/authentication.md) for full endpoint details.
-
-## Content Types
-
-The API uses two content type conventions depending on the endpoint group:
-
-| Endpoint prefix | Content-Type |
-|-----------------|-------------|
-| `/auth/v1/*` | `application/json; charset=utf-8` (request) / `application/json` (response) |
-| `/mgw/api/*` | `application/vnd.api+json` (JSON:API format) |
-| `/project-{id}/api/*` | `application/vnd.api+json` (JSON:API format) |
-| `/cmv3/*` | `application/vnd.api+json` (JSON:API format) |
-| `/bcf/2.1/*` | `application/json` |
-
-## URL Variables
-
-- **`{environment}`** -- The region subdomain (see table above).
-- **`{projectId}`** -- The numeric project ID. Obtain via `GET /mgw/api/v3/projects` or `GET /mgw/api/v3/project-links`.
-- **`{projectUUID}`** -- The project BCF UUID. Obtain via `GET /bcf/2.1/projects`.
-
-## Pagination
-
-Project-level endpoints that return lists support limit-offset pagination:
-
-```
-?page[skip]=0&page[limit]=10
+```bash
+git clone https://github.com/jonatanjacobsson/streambim-api-docs.git
+cd streambim-api-docs/harness
+npm install
 ```
 
-- `page[skip]` -- Number of items to skip (default: 0).
-- `page[limit]` -- Maximum number of items to return (default: all).
+### A. Run an example widget
 
-## Filtering
-
-Many list endpoints accept `filter` query parameters in deep-object style:
-
-```
-?filter[fieldName]=value
+```bash
+npm run example -- ../examples/minimal-widget
 ```
 
-Multiple filters can be combined. See individual endpoint documentation for available filter options.
+Open your project with the localhost widget:
 
-## Rate Limiting and Fair Use
+```
+https://app.streambim.com/webapp/default/#/viewer/objectinfo/widget/localhost?projectId=<PROJECT_ID>
+```
 
-The StreamBIM backend is optimized for loads matching the StreamBIM app. Be cautious with:
-- Overriding default pagination limits
-- High-frequency polling
-- Large batch operations
+The side panel shows the widget, connected to the viewer. Click a button, or click an object
+in 3D. Edit `examples/minimal-widget/index.html` and reload the panel. That's your widget.
 
-Misuse may result in client blocking. Contact `cto@rendra.io` with questions.
+### B. Let an AI agent drive the viewer
 
-## API Sections
+```bash
+npm start                      # widget + MCP server on http://localhost:3000
+```
 
-| Section | File | Description |
-|---------|------|-------------|
-| Authentication | [authentication.md](api/authentication.md) | Login, token refresh, MFA, federation, OAuth2 providers, password management |
-| Users | [users.md](api/users.md) | User management, groups, organizations, customer user profiles, password reset |
-| Projects | [projects.md](api/projects.md) | Project CRUD, members, links, templates |
-| Topics | [topics.md](api/topics.md) | Topics (issues/RFIs), viewpoints, comments, labels, statuses, priorities, trends |
-| Workflows | [workflows.md](api/workflows.md) | Workflow configuration and management |
-| Checklists | [checklists.md](api/checklists.md) | Checklist management, export, grouped checklist resolution |
-| Documents | [documents.md](api/documents.md) | Document management, revisions, download links, stars, labels, label groups, folders |
-| Attachments | [attachments.md](api/attachments.md) | File attachments, upload tickets, S3 uploads, downloads, microtokens, floor downloads |
-| Exports | [exports.md](api/exports.md) | JSON/XLSX export endpoints for documents, topics, checklists, users, IFC files (PowerBI) |
-| IFC Searches | [ifc-searches.md](api/ifc-searches.md) | IFC model search, JSON/IFC export, freetext search, color coding |
-| Converter Jobs | [converter-jobs.md](api/converter-jobs.md) | IFC model conversion job management and monitoring |
-| Sync | [sync.md](api/sync.md) | External file source synchronization (e.g. Sharepoint, Interaxo) |
-| Takt Planning | [takt-planning.md](api/takt-planning.md) | Trains and wagons for lean construction scheduling |
-| Tileserver | [tileserver.md](api/tileserver.md) | 2D document images, 3D model tiles, document viewer |
-| Realtime Events | [realtime.md](api/realtime.md) | Server-Sent Events (SSE) for status updates and notifications |
-| Infrastructure | [infrastructure.md](api/infrastructure.md) | Health check, client logging, batch requests, cache invalidation |
-| BCF | [bcf.md](api/bcf.md) | BCF 2.1 API for BIM Collaboration Format |
-| Regions | [regions.md](api/regions.md) | Region/environment discovery |
-| Widget API | [widget-api.md](api/widget-api.md) | JavaScript library for embedded viewer control (50+ methods) |
+Open the same project URL. The panel shows **Agent Bridge** with *StreamBIM connected* and
+*MCP bridge connected*. Then connect your agent:
 
-## Privilege Levels
+```bash
+claude mcp add --transport http streambim http://localhost:3000/mcp   # Claude Code
+```
 
-Used across user and project-member endpoints:
+Claude Code started in this repo picks it up automatically from [`.mcp.json`](.mcp.json).
+Other MCP clients: point them at `http://localhost:3000/mcp` (Streamable HTTP), or launch
+`node harness/server/index.mjs --stdio`.
 
-| Level | Role |
-|-------|------|
-| 0 | Inactive |
-| 5 | Guest |
-| 10 | User |
-| 15 | Workflows Admin |
-| 20 | Project Admin |
-| 25 | Customer Admin |
-| 30 | Owner |
+Then ask things like:
+
+- *"Colour all rooms by floor and take a screenshot"*
+- *"Run a door query and show me a dashboard of door types"*
+- *"Which checklists exist in this project? Colour the rooms by the answers of the first one"*
+
+## Build a widget in 5 lines
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/penpal@7.0.6/dist/penpal.min.js"></script>
+<script>
+  const messenger = new Penpal.WindowMessenger({ remoteWindow: window.parent, allowedOrigins: [location.ancestorOrigins[0]] });
+  Penpal.connect({ messenger, methods: { pickedObject: (e) => console.log('clicked', e.guid) } }).promise
+    .then(async (api) => console.log(await api.getProjectId(), await api.getFloors()));
+</script>
+```
+
+The official `streambim-widget-api` helper's `connectToParent` **fails inside StreamBIM**
+(`document.referrer` is empty), so talk penpal directly as above. Details:
+[connecting a widget](widget/README.md#connecting-a-widget).
+
+## Things that will save you an hour
+
+Verified on app.streambim.com (default flavour), 2026-11-01:
+
+1. **Rejections are `{ code, debug }`**, not `{ code, detail }`. `debug` may be a cloned `Error`.
+2. **These never resolve** (don't `await` them): `setCameraPosition`, `deHighlightAllObjects`, `applyStyles`. `deHighlightObject` always fails.
+3. **Custom colours:** `colorCodeSpaces({ guid: '#rrggbb' })` works. `colorCodeObjects` draws everything in search green on the default flavour; objects take your colours only in the **taskctrl** flavour via `colorCodeObjectsWithLegends`. See [flavours](widget/README.md#flavours).
+4. **`makeApiRequest`**: use `/project-{id}/api/v1/v2/...` (JSON:API, default Accept) or `/project-{id}/api/v1/...` (`contentType: 'application/json'`). **201 and 204 responses arrive as a `DataCloneError`** even though the write succeeded, and real HTTP errors look the same. See [REST from a widget](widget/guides/rest-api-from-widgets.md).
+5. **Colour updates take ~200–400 ms** to show (each call re-runs a search). That's about 2–3 steps per second for animation.
+6. **Checklist answers** live in `checklist-item-instances`, which the server creates from the checklist's IFC query. You PATCH them (full record); you can't POST them. See [the checklist guide](widget/guides/checklists-and-colour-by-value.md).
+7. **Debug in a normal browser.** The widget's console is inside a cross-origin iframe: select the `localhost` frame in DevTools. The Claude desktop app's built-in browser blocks `localhost`.
+8. Seven methods in the official README don't exist on the default webapp (`highlightSystem`, `toggleShowAllFloors`, …). [Full list of corrections](widget/README.md#corrections-to-the-official-readme).
+
+## Repository layout
+
+```
+api/                 REST API reference (markdown, one file per area)
+widget/              widget API reference (generated: edit widget/spec/*.mjs, then npm run build-docs)
+  methods/           one page per method
+  guides/            REST from widgets, checklists + colour by value, annotations
+  spec/              source of truth: method specs + runnable examples
+  verification/      raw results of the live test runs (probe, examples, REST sweep, flavours)
+examples/            standalone widgets (served with `npm run example -- ../examples/<name>`)
+harness/             MCP server, agent widget, verification tools
+openui/              OpenUI generative UI in the widget
+```
+
+## Contributing
+
+Docs are **verified, not written from memory**. To add or fix a widget page, edit
+`widget/spec/methods.mjs` or `widget/spec/guides.mjs`, open a project with the harness
+widget, then:
+
+```bash
+cd harness
+npm run verify -- --only <methodName>   # runs the examples in the live viewer
+npm run build-docs                      # regenerates widget/ (fails if an example has no passing run)
+```
+
+REST pages in `api/` are plain markdown. PRs with corrections from real usage are very welcome.

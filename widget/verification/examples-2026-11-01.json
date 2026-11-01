@@ -1,0 +1,1403 @@
+{
+  "verifiedAt": "2026-11-01T16:34:41.752Z",
+  "origin": "https://app.streambim.com",
+  "projectId": "15974",
+  "buildingId": "1000",
+  "results": {
+    "getProjectId-1": {
+      "status": "ok",
+      "value": "15974",
+      "images": [],
+      "durationMs": 1
+    },
+    "getBuildingId-1": {
+      "status": "ok",
+      "value": "1000",
+      "images": [],
+      "durationMs": 1
+    },
+    "getUserEmail-1": {
+      "status": "ok",
+      "value": "j…@example.com",
+      "images": [],
+      "durationMs": 1
+    },
+    "getCameraState-1": {
+      "status": "ok",
+      "value": {
+        "position": [
+          -15.540310729342849,
+          -0.8707097899909151,
+          10.097361940201292
+        ],
+        "quaternion": [
+          -0.6183583964900597,
+          -0.0478399581899093,
+          -0.7835296960076222,
+          0.03775509720332987
+        ]
+      },
+      "images": [],
+      "durationMs": 1
+    },
+    "setCameraState-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 9
+    },
+    "setCameraState-2": {
+      "status": "ok",
+      "value": {
+        "code": "invalid",
+        "debug": "state.position must be an array of 3 floats"
+      },
+      "images": [],
+      "durationMs": 8
+    },
+    "setCameraPosition-1": {
+      "status": "ok",
+      "value": {
+        "before": 10.097361940201292,
+        "after": 15.097361940201292
+      },
+      "images": [],
+      "durationMs": 317
+    },
+    "setCameraPosition-2": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 8
+    },
+    "getViewportState-1": {
+      "status": "ok",
+      "value": {
+        "cameraState": {
+          "position": [
+            -15.540310729342849,
+            -0.8707097899909151,
+            10.097361940201292
+          ],
+          "quaternion": [
+            -0.6183583964900597,
+            -0.0478399581899093,
+            -0.7835296960076222,
+            0.03775509720332987
+          ]
+        },
+        "hiddenObjects": "0 GUIDs",
+        "highlightedObjects": [
+          "048mvnhWPDHefuPHQ5uMBr"
+        ],
+        "hiddenLayers": [],
+        "highlightedLayers": null,
+        "clippingPlanes": []
+      },
+      "images": [],
+      "durationMs": 1
+    },
+    "setViewportState-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 10
+    },
+    "setViewportState-2": {
+      "status": "ok",
+      "value": {
+        "hidden": false
+      },
+      "images": [],
+      "durationMs": 113
+    },
+    "gotoObject-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 93
+    },
+    "gotoSpace-1": {
+      "status": "ok",
+      "value": {
+        "space": "0A0ainOlD3Dg0Lq_ZFZGQI",
+        "inside": [
+          "0A0ainOlD3Dg0Lq_ZFZGQI"
+        ]
+      },
+      "images": [],
+      "durationMs": 183
+    },
+    "gotoFloor-1": {
+      "status": "ok",
+      "value": {
+        "name": "PLAN 1",
+        "height": 0,
+        "id": "1004"
+      },
+      "images": [],
+      "durationMs": 3
+    },
+    "goHome-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "highlightObject-1": {
+      "status": "ok",
+      "value": {
+        "door": "048mvnhWPDHefuPHQ5uMBr",
+        "highlightedObjects": [
+          "048mvnhWPDHefuPHQ5uMBr"
+        ]
+      },
+      "images": [],
+      "durationMs": 117
+    },
+    "deHighlightObject-1": {
+      "status": "ok",
+      "value": {
+        "code": "unknown",
+        "debug": "e.get(...).deSelectObject is not a function"
+      },
+      "images": [],
+      "durationMs": 92
+    },
+    "deHighlightObject-2": {
+      "status": "ok",
+      "value": [],
+      "images": [],
+      "durationMs": 106
+    },
+    "deHighlightAllObjects-1": {
+      "status": "ok",
+      "value": [],
+      "images": [],
+      "durationMs": 288
+    },
+    "deHighlightAllObjects-2": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 2
+    },
+    "hideObject-1": {
+      "status": "ok",
+      "value": {
+        "first": true,
+        "second": false
+      },
+      "images": [],
+      "durationMs": 88
+    },
+    "showObject-1": {
+      "status": "ok",
+      "value": false,
+      "images": [],
+      "durationMs": 99
+    },
+    "showAllObjects-1": {
+      "status": "ok",
+      "value": {
+        "hiddenBefore": 0,
+        "hiddenAfterShowAll": 0
+      },
+      "images": [],
+      "durationMs": 2
+    },
+    "getObjectInfo-1": {
+      "status": "ok",
+      "value": {
+        "topLevelKeys": [
+          "layer",
+          "properties",
+          "groups",
+          "center",
+          "bbox",
+          "boundary",
+          "jobcreated",
+          "jobdeleted",
+          "classes",
+          "floors",
+          "spaces",
+          "document",
+          "building",
+          "duplicates"
+        ],
+        "properties": {
+          "@kind": "Door",
+          "Name": "Single Door:D8:2649638",
+          "Long Name": "2649638",
+          "Description": "",
+          "uri": "",
+          "Global Id": "048mvnhWPDHefuPHQ5uMBr",
+          "Type Object Global Id": "T~2Y5Yp$IeJununxjdY37DoD",
+          "@Building Storey": {
+            "@iid": "1004",
+            "Name": "PLAN 1"
+          },
+          "@Group Layer": "GRNSAKSSTIGEN24",
+          "@Document Id": 1000,
+          "@Building Id": 0,
+          "Timestamp": "2025-08-18 08:00:48 +0000 UTC",
+          "groups": null,
+          "BaseType": "ifcelement"
+        }
+      },
+      "images": [],
+      "durationMs": 94
+    },
+    "getObjectInfo-2": {
+      "status": "ok",
+      "value": {
+        "code": "notFound",
+        "debug": "Requested resource cannot be found: object not found: get object: get object: no such object exists: no rows in result set"
+      },
+      "images": [],
+      "durationMs": 71
+    },
+    "getFloors-1": {
+      "status": "ok",
+      "value": [
+        {
+          "name": "PLAN 1",
+          "height": 0,
+          "id": "1004"
+        },
+        {
+          "name": "Plan 2",
+          "height": 2.55,
+          "id": "1000"
+        },
+        {
+          "name": "PLAN 2",
+          "height": 3,
+          "id": "1007"
+        },
+        {
+          "name": "PLAN 3",
+          "height": 6,
+          "id": "1012"
+        },
+        {
+          "name": "PLAN 4",
+          "height": 9,
+          "id": "1010"
+        },
+        {
+          "name": "PLAN 5",
+          "height": 12,
+          "id": "1013"
+        },
+        {
+          "name": "MARKNIVÅ",
+          "height": 14,
+          "id": "1011"
+        },
+        {
+          "name": "VÅNING 10 - BY 16",
+          "height": 15.76,
+          "id": "1014"
+        },
+        {
+          "name": "ACH",
+          "height": 17.91,
+          "id": "1018"
+        },
+        {
+          "name": "VÅNING 10 - BY 5, 7, 8",
+          "height": 18.61,
+          "id": "1015"
+        },
+        {
+          "name": "VÅNING 10 - BY 4",
+          "height": 18.82,
+          "id": "1019"
+        },
+        {
+          "name": "VÅNING 10 - BY 3",
+          "height": 19.25,
+          "id": "1008"
+        },
+        {
+          "name": "VÅNING 10 - BY 17",
+          "height": 19.33,
+          "id": "1009"
+        },
+        {
+          "name": "VÅNING 10 - BY 1",
+          "height": 19.66,
+          "id": "1020"
+        },
+        {
+          "name": "VÅNING 10 - BY 9, 10",
+          "height": 19.75,
+          "id": "1016"
+        },
+        {
+          "name": "VÅNING 10 - BY 10",
+          "height": 20.36,
+          "id": "1021"
+        },
+        {
+          "name": "VÅNING 10 - BY 2",
+          "height": 20.45,
+          "id": "1017"
+        }
+      ],
+      "images": [],
+      "durationMs": 1
+    },
+    "getSpaces-1": {
+      "status": "ok",
+      "value": {
+        "outside": [],
+        "afterGotoSpace": [
+          "0A0ainOlD3Dg0Lq_ZFZGQI"
+        ]
+      },
+      "images": [],
+      "durationMs": 182
+    },
+    "valuesForObjectProperty-1": {
+      "status": "ok",
+      "value": [
+        [
+          "Covering",
+          3711
+        ],
+        [
+          "Duct segment",
+          3486
+        ],
+        [
+          "Duct fitting",
+          2496
+        ],
+        [
+          "Air terminal",
+          471
+        ],
+        [
+          "Damper",
+          456
+        ],
+        [
+          "Duct silencer",
+          208
+        ],
+        [
+          "Wall",
+          82
+        ],
+        [
+          "Building element proxy",
+          81
+        ],
+        [
+          "Furniture",
+          72
+        ],
+        [
+          "Opening element",
+          64
+        ]
+      ],
+      "images": [],
+      "durationMs": 145
+    },
+    "findObjects-1": {
+      "status": "ok",
+      "value": [
+        "048mvnhWPDHefuPHQ5uMBr",
+        "0FdTIYaE1DKvQpJiepvzCz",
+        "0FdTIYaE1DKvQpJiepvzLh",
+        "0FdTIYaE1DKvQpJiepvzOr",
+        "0FdTIYaE1DKvQpJiepvzQL"
+      ],
+      "images": [],
+      "durationMs": 84
+    },
+    "findObjects-2": {
+      "status": "ok",
+      "value": 51,
+      "images": [],
+      "durationMs": 92
+    },
+    "findObjects-3": {
+      "status": "ok",
+      "value": [
+        "048mvnhWPDHefuPHQ5uMBr",
+        "0BjZrEb7Bkr0EdHYywx_Mf",
+        "0FdTIYaE1DKvQpJiepvzCz"
+      ],
+      "images": [],
+      "durationMs": 110
+    },
+    "applyObjectSearch-1": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/applyObjectSearch-1.jpeg"
+      ],
+      "durationMs": 204
+    },
+    "setSearchVisualizationMode-1": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/setSearchVisualizationMode-1.jpeg"
+      ],
+      "durationMs": 2258
+    },
+    "zoomToSearchResult-1": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/zoomToSearchResult-1.jpeg"
+      ],
+      "durationMs": 1360
+    },
+    "resetObjectSearch-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "getObjectInfoForSearch-1": {
+      "status": "ok",
+      "value": {
+        "columns": [
+          "GUID",
+          "Name",
+          "Long Name",
+          "Description",
+          "IFC Type",
+          "Type Name",
+          "Link"
+        ],
+        "rows": [
+          {
+            "GUID": "2uYU4y7nP7g9mgpu4mkkNO",
+            "Name": "Cased Opening:ÖK10:2731493",
+            "Long Name": "2731493",
+            "Description": null,
+            "IFC Type": "Door",
+            "Type Name": "Cased Opening:ÖK10",
+            "Link": "https://app.streambim.com/webapp/default/#/viewer/objectinfo/ifc/object/2uYU4y7nP7g9mgpu4mkkNO?buildingId=1000&apply=true&goto=true&projectId=15974"
+          },
+          {
+            "GUID": "1NE2FAfsz5kedhy_IXrbxf",
+            "Name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668",
+            "Long Name": "2680668",
+            "Description": null,
+            "IFC Type": "Door",
+            "Type Name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M",
+            "Link": "https://app.streambim.com/webapp/default/#/viewer/objectinfo/ifc/object/1NE2FAfsz5kedhy_IXrbxf?buildingId=1000&apply=true&goto=true&projectId=15974"
+          },
+          {
+            "GUID": "2uYU4y7nP7g9mgpu4mkk8p",
+            "Name": "Overhead Sectional Door:Takskjutport 5500x5500:2730510",
+            "Long Name": "2730510",
+            "Description": null,
+            "IFC Type": "Door",
+            "Type Name": "Overhead Sectional Door:Takskjutport 5500x5500",
+            "Link": "https://app.streambim.com/webapp/default/#/viewer/objectinfo/ifc/object/2uYU4y7nP7g9mgpu4mkk8p?buildingId=1000&apply=true&goto=true&projectId=15974"
+          }
+        ]
+      },
+      "images": [],
+      "durationMs": 144
+    },
+    "getObjectInfoForSearch-2": {
+      "status": "ok",
+      "value": {
+        "status": 400,
+        "detail": "No filter provided"
+      },
+      "images": [],
+      "durationMs": 1
+    },
+    "quickSearch-1": {
+      "status": "ok",
+      "value": {
+        "system": null,
+        "kind": [
+          {
+            "name": "Door"
+          }
+        ],
+        "property": [
+          {
+            "name": "Pset_DoorCommon~IsExternal~bool",
+            "measure": "boolean",
+            "unit": "",
+            "datatype": "bool",
+            "basetype": "ifcelement"
+          },
+          {
+            "name": "Pset_DoorCommon~Reference~str",
+            "measure": "identifier",
+            "unit": "",
+            "datatype": "str",
+            "basetype": "ifcelement"
+          }
+        ],
+        "typeObject": [
+          {
+            "id": "1aeHga2kz2YnnljLiX9Z$X",
+            "name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M"
+          },
+          {
+            "id": "36$3X5RjRF6Yo4cWkcGlG6",
+            "name": "Overhead Sectional Door:Takskjutport 5500x5500"
+          },
+          {
+            "id": "3oWJ9_zlbhn5A681Nr11Dj",
+            "name": "Single Door:D8"
+          }
+        ],
+        "object": [
+          {
+            "id": "1NE2FAfsz5kedhy_IXrbxf",
+            "name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668",
+            "kind": "Door",
+            "longName": "2680668",
+            "description": ""
+          },
+          {
+            "id": "3UC4bnAgC$mR8FDPZwV2H4",
+            "name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668:1",
+            "kind": "Opening element",
+            "longName": "2680668",
+            "description": ""
+          },
+          {
+            "id": "2uYU4y7nP7g9mgpu4mkk8p",
+            "name": "Overhead Sectional Door:Takskjutport 5500x5500:2730510",
+            "kind": "Door",
+            "longName": "2730510",
+            "description": ""
+          }
+        ],
+        "classification": null,
+        "meta": {
+          "system": 0,
+          "typeObject": 14,
+          "object": 38,
+          "kind": 1,
+          "property": 2,
+          "classification": 0
+        }
+      },
+      "images": [],
+      "durationMs": 47
+    },
+    "colorCodeObjects-1": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/colorCodeObjects-1.jpeg"
+      ],
+      "durationMs": 2822
+    },
+    "colorCodeSpaces-1": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/colorCodeSpaces-1.jpeg"
+      ],
+      "durationMs": 3309
+    },
+    "colorCodeByProperty-1": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/colorCodeByProperty-1.jpeg"
+      ],
+      "durationMs": 1574
+    },
+    "getLayers-1": {
+      "status": "ok",
+      "value": {
+        "orexoventtest": true,
+        "UNDERTAK_REVIT_2025": true,
+        "grids": true,
+        "GRNSAKSSTIGEN24": true
+      },
+      "images": [],
+      "durationMs": 4
+    },
+    "setLayers-1": {
+      "status": "ok",
+      "value": {
+        "keep": "orexoventtest",
+        "during": {
+          "orexoventtest": true,
+          "UNDERTAK_REVIT_2025": false,
+          "grids": false,
+          "GRNSAKSSTIGEN24": false
+        }
+      },
+      "images": [],
+      "durationMs": 15
+    },
+    "showGrids-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "hideGrids-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "takeScreenshot-1": {
+      "status": "ok",
+      "value": {
+        "width": 1278,
+        "height": 1304,
+        "bytes": 393269
+      },
+      "images": [],
+      "durationMs": 40
+    },
+    "getMapImage-1": {
+      "status": "ok",
+      "value": "getMapImage timed out",
+      "images": [],
+      "durationMs": 5005
+    },
+    "getAnnotatedFloorplan-1": {
+      "status": "ok",
+      "value": {
+        "url": "https://app.streambim.com/project-15974/api/v1/annotated-files?fileId=floorplans-1017&markerX=-45.914234375&markerY=-20.840810546875&microtoken=…",
+        "status": 200,
+        "contentType": "application/pdf"
+      },
+      "images": [],
+      "durationMs": 1304
+    },
+    "setSkyColor-1": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/setSkyColor-1.jpeg"
+      ],
+      "durationMs": 113
+    },
+    "setNavigationMode-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "setStyles-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "applyStyles-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 2
+    },
+    "setShowExpandButton-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "setExpanded-1": {
+      "status": "ok",
+      "value": true,
+      "images": [],
+      "durationMs": 1
+    },
+    "makeApiRequest-1": {
+      "status": "ok",
+      "value": {
+        "id": "15974",
+        "type": "projects",
+        "description": "Project for demoing widgets"
+      },
+      "images": [],
+      "durationMs": 43
+    },
+    "makeApiRequest-2": {
+      "status": "ok",
+      "value": [
+        {
+          "GUID": "0FdTIYaE1DKvQpJiepvyYk",
+          "Name": "Single Window:9x13 Inåtgående:2110475"
+        },
+        {
+          "GUID": "0FdTIYaE1DKvQpJiepvyoi",
+          "Name": "Single Window:9x13 Inåtgående:2109449"
+        },
+        {
+          "GUID": "0FdTIYaE1DKvQpJiepvypZ",
+          "Name": "Single Window:9x13 Inåtgående:2109510"
+        }
+      ],
+      "images": [],
+      "durationMs": 102
+    },
+    "makeApiRequest-3": {
+      "status": "ok",
+      "value": {
+        "name": "DataCloneError",
+        "message": "Failed to execute 'postMessage' on 'MessagePort': XMLHttpRequest object could not be cloned."
+      },
+      "images": [],
+      "durationMs": 47
+    },
+    "setAuthToken-1": {
+      "status": "skipped",
+      "reason": "not executable in a side-panel widget"
+    },
+    "createObject-1": {
+      "status": "ok",
+      "value": "0cNP0TnuH3tRVcgHb$44hd",
+      "images": [],
+      "durationMs": 95
+    },
+    "highlightSystem-1": {
+      "status": "ok",
+      "value": "Method `highlightSystem` is not found.",
+      "images": [],
+      "durationMs": 1
+    },
+    "toggleShowAllFloors-1": {
+      "status": "ok",
+      "value": "Method `toggleShowAllFloors` is not found.",
+      "images": [],
+      "durationMs": 1
+    },
+    "applyViewpoint-1": {
+      "status": "ok",
+      "value": "Method `applyViewpoint` is not found.",
+      "images": [],
+      "durationMs": 0
+    },
+    "colorCodeObjectsWithLegends-1": {
+      "status": "ok",
+      "value": "Method `colorCodeObjectsWithLegends` is not found.",
+      "images": [],
+      "durationMs": 6
+    },
+    "colorCodeSpacesWithLegends-1": {
+      "status": "ok",
+      "value": "Method `colorCodeSpacesWithLegends` is not found.",
+      "images": [],
+      "durationMs": 1
+    },
+    "setViewLayout-1": {
+      "status": "ok",
+      "value": "Method `setViewLayout` is not found.",
+      "images": [],
+      "durationMs": 1
+    },
+    "clipToFloor-1": {
+      "status": "ok",
+      "value": "Method `clipToFloor` is not found.",
+      "images": [],
+      "durationMs": 1
+    },
+    "rest-api-from-widgets-1": {
+      "status": "ok",
+      "value": {
+        "id": "15974",
+        "type": "projects",
+        "attributes": [
+          "bcf-id",
+          "coords",
+          "created-at",
+          "deleted-at",
+          "description",
+          "external-id",
+          "is-hibernated",
+          "is-inactive",
+          "is-library",
+          "location_name",
+          "name",
+          "project-uri",
+          "salesforce-account-id",
+          "salesforce-account-name",
+          "salesforce-project-id",
+          "status",
+          "sync_template"
+        ]
+      },
+      "images": [],
+      "durationMs": 45
+    },
+    "rest-api-from-widgets-2": {
+      "status": "ok",
+      "value": [
+        {
+          "id": "2000",
+          "name": "open"
+        },
+        {
+          "id": "3000",
+          "name": "done"
+        },
+        {
+          "id": "4000",
+          "name": "closed"
+        },
+        {
+          "id": "4500",
+          "name": "notRelevant"
+        }
+      ],
+      "images": [],
+      "durationMs": 42
+    },
+    "rest-api-from-widgets-3": {
+      "status": "ok",
+      "value": [
+        {
+          "id": "4274",
+          "title": "area vägg",
+          "status": {
+            "id": "2000",
+            "type": "statuses"
+          },
+          "relationships": [
+            "assigned-to-group",
+            "assigned-to-user",
+            "attachments",
+            "building",
+            "changes",
+            "checklist-item-instance",
+            "comments",
+            "creation-author",
+            "document-revision",
+            "labels",
+            "object",
+            "preview-attachment",
+            "priority",
+            "status",
+            "topic-classifications",
+            "viewpoints",
+            "workflow"
+          ]
+        },
+        {
+          "id": "4273",
+          "title": "",
+          "status": {
+            "id": "2000",
+            "type": "statuses"
+          },
+          "relationships": [
+            "assigned-to-group",
+            "assigned-to-user",
+            "attachments",
+            "building",
+            "changes",
+            "checklist-item-instance",
+            "comments",
+            "creation-author",
+            "document-revision",
+            "labels",
+            "object",
+            "preview-attachment",
+            "priority",
+            "status",
+            "topic-classifications",
+            "viewpoints",
+            "workflow"
+          ]
+        }
+      ],
+      "images": [],
+      "durationMs": 91
+    },
+    "rest-api-from-widgets-4": {
+      "status": "ok",
+      "value": {
+        "searchId": "6893758730986978202",
+        "rows": [
+          {
+            "GUID": "0FdTIYaE1DKvQpJiepvyYk",
+            "Name": "Single Window:9x13 Inåtgående:2110475",
+            "Long Name": "2110475"
+          },
+          {
+            "GUID": "0FdTIYaE1DKvQpJiepvyoi",
+            "Name": "Single Window:9x13 Inåtgående:2109449",
+            "Long Name": "2109449"
+          },
+          {
+            "GUID": "0FdTIYaE1DKvQpJiepvypZ",
+            "Name": "Single Window:9x13 Inåtgående:2109510",
+            "Long Name": "2109510"
+          }
+        ]
+      },
+      "images": [],
+      "durationMs": 106
+    },
+    "rest-api-from-widgets-5": {
+      "status": "ok",
+      "value": {
+        "keys": [
+          "data",
+          "meta"
+        ]
+      },
+      "images": [],
+      "durationMs": 75
+    },
+    "rest-api-from-widgets-6": {
+      "status": "ok",
+      "value": {
+        "count": 32,
+        "first": {
+          "project_id": "13bb2290-302d-41b7-be74-d0f88ce37f29",
+          "name": "11909 - Podium"
+        }
+      },
+      "images": [],
+      "durationMs": 1505
+    },
+    "rest-api-from-widgets-7": {
+      "status": "ok",
+      "value": "Failed to execute 'postMessage' on 'MessagePort': XMLHttpRequest object could not be cloned.",
+      "images": [],
+      "durationMs": 43
+    },
+    "rest-api-from-widgets-8": {
+      "status": "ok",
+      "value": {
+        "microtoken": "GkHB…"
+      },
+      "images": [],
+      "durationMs": 40
+    },
+    "rest-api-from-widgets-9": {
+      "status": "ok",
+      "value": {
+        "name": "DataCloneError",
+        "message": "Failed to execute 'postMessage' on 'MessagePort': XMLHttpRequest object could not be cloned."
+      },
+      "images": [],
+      "durationMs": 40
+    },
+    "annotations-custom-objects-1": {
+      "status": "ok",
+      "value": {
+        "id": "2_gBGbsOr5IhOnI5YKNzTA",
+        "widgetPosition": [
+          -23.640774376590556,
+          -10.580858081397219,
+          21.783979926923017
+        ],
+        "storedCenter": [
+          -23.640774376590556,
+          21.783979926923017,
+          10.580858081397219
+        ],
+        "properties": {
+          "@kind": "Annotation",
+          "Name": "Docs example annotation"
+        },
+        "layer": ""
+      },
+      "images": [],
+      "durationMs": 80
+    },
+    "annotations-custom-objects-2": {
+      "status": "ok",
+      "value": {
+        "id": "09kOeA2yv9swf1lMzXvRd7",
+        "properties": {
+          "@kind": "Annotation",
+          "Name": "Model Lines:2588784",
+          "Long Name": "",
+          "Description": "",
+          "uri": "",
+          "Global Id": "09kOeA2yv9swf1lMzXvRd7",
+          "@Group Layer": "GRNSAKSSTIGEN24",
+          "@Document Id": 1000,
+          "@Building Id": 0,
+          "Timestamp": "2025-08-18 08:00:48 +0000 UTC",
+          "groups": null,
+          "BaseType": "ifcelement"
+        },
+        "groups": [
+          {
+            "label": "_Information",
+            "keys": [
+              "Höjd Bröstning",
+              "Längd"
+            ]
+          },
+          {
+            "label": "Location",
+            "keys": [
+              "Global Y",
+              "Global Z",
+              "Global X"
+            ]
+          },
+          {
+            "label": "BIP",
+            "keys": [
+              "StatusConstruction",
+              "Length"
+            ]
+          }
+        ],
+        "relationships": {
+          "attachments": [],
+          "building": {
+            "id": "1000",
+            "type": "buildings"
+          },
+          "classes": [],
+          "document": {
+            "id": "1000",
+            "type": "documents"
+          },
+          "duplicates": [],
+          "floors": [],
+          "spaces": []
+        }
+      },
+      "images": [],
+      "durationMs": 143
+    },
+    "annotations-custom-objects-3": {
+      "status": "ok",
+      "value": [
+        {
+          "id": "09kOeA2yv9swf1lMzXvRd7",
+          "name": "Model Lines:2588784",
+          "userCreated": false
+        },
+        {
+          "id": "0cNP0TnuH3tRVcgHb$44hd",
+          "name": "Widget test annotation",
+          "userCreated": true
+        },
+        {
+          "id": "0iuKUCTUHE5v8ERBpXPzpM",
+          "name": "Agent bridge test annotation",
+          "userCreated": true
+        },
+        {
+          "id": "1Op$uFGPv2Kxe2w1_moHPI",
+          "name": "Model Lines:2704768",
+          "userCreated": false
+        },
+        {
+          "id": "1RdkULdn961P83Qb7xhbwC",
+          "name": "Model Lines:2512953",
+          "userCreated": false
+        },
+        {
+          "id": "2U2960tA58aff4lecI2G0y",
+          "name": "Custom object",
+          "userCreated": true
+        },
+        {
+          "id": "2b798tP0HEpA23JeWb5sNX",
+          "name": "Custom object",
+          "userCreated": true
+        },
+        {
+          "id": "2_gBGbsOr5IhOnI5YKNzTA",
+          "name": "Docs example annotation",
+          "userCreated": true
+        }
+      ],
+      "images": [],
+      "durationMs": 93
+    },
+    "annotations-custom-objects-4": {
+      "status": "ok",
+      "value": {
+        "09kOeA2yv9swf1lMzXvRd7": [],
+        "0cNP0TnuH3tRVcgHb$44hd": [],
+        "0iuKUCTUHE5v8ERBpXPzpM": [],
+        "1Op$uFGPv2Kxe2w1_moHPI": [],
+        "1RdkULdn961P83Qb7xhbwC": [],
+        "2U2960tA58aff4lecI2G0y": [],
+        "2b798tP0HEpA23JeWb5sNX": [],
+        "2_gBGbsOr5IhOnI5YKNzTA": []
+      },
+      "images": [],
+      "durationMs": 494
+    },
+    "annotations-custom-objects-5": {
+      "status": "ok",
+      "value": {
+        "id": "3iMXGLpkHDlRbqb2$Gbg8C",
+        "groupsBefore": [
+          "Location",
+          "Geometry",
+          "Custom"
+        ],
+        "deleteResponse": "{\"data\":null}",
+        "groupsAfterDelete": [
+          "Location",
+          "Geometry"
+        ]
+      },
+      "images": [],
+      "durationMs": 290
+    },
+    "colorCodeObjects-2": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/colorCodeObjects-2.jpeg"
+      ],
+      "durationMs": 2839
+    },
+    "checklists-and-colour-by-value-1": {
+      "status": "ok",
+      "value": {
+        "checklist": {
+          "id": "1632",
+          "name": "Widget demo: door inspection",
+          "instancesTotal": 20,
+          "query": {
+            "id": "133",
+            "type": "ifc-query"
+          }
+        },
+        "items": [
+          {
+            "id": "3264",
+            "title": "Status",
+            "inputType": "singleselect",
+            "options": [
+              "OK",
+              "Deviation",
+              "Not inspected"
+            ]
+          }
+        ]
+      },
+      "images": [],
+      "durationMs": 353
+    },
+    "checklists-and-colour-by-value-2": {
+      "status": "ok",
+      "value": {
+        "queryId": "140",
+        "checklistId": "1637",
+        "itemId": "3269",
+        "workflow": {
+          "id": "2639",
+          "type": "workflows"
+        },
+        "isDraft": true,
+        "instancesTotal": 0,
+        "instancesListed": 31,
+        "deleted": "ok",
+        "stillListed": false
+      },
+      "images": [],
+      "durationMs": 1506
+    },
+    "checklists-and-colour-by-value-3": {
+      "status": "ok",
+      "value": {
+        "optionIds": {
+          "Deviation": "5",
+          "Not inspected": "6",
+          "OK": "4"
+        },
+        "instances": 20,
+        "writtenPerOptionId": {
+          "4": 14,
+          "5": 4,
+          "6": 2
+        }
+      },
+      "images": [],
+      "durationMs": 2504
+    },
+    "checklists-and-colour-by-value-4": {
+      "status": "ok",
+      "value": {
+        "total": 20,
+        "first": [
+          {
+            "object": "2uYU4y7nP7g9mgpu4mkkNO",
+            "name": "Cased Opening:ÖK10:2731493",
+            "title": "Cased Opening:ÖK10:2731493",
+            "status": "not started",
+            "floor": "Plan 2",
+            "spaces": "17, 10, Area:2737579",
+            "system": "",
+            "ifcType": "Door",
+            "topicsTotal": 0,
+            "topicsOpen": 0,
+            "topicsClosed": 0,
+            "closedDate": null,
+            "building": "<no name>",
+            "items": {
+              "1. Status": "4"
+            }
+          },
+          {
+            "object": "1NE2FAfsz5kedhy_IXrbxf",
+            "name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668",
+            "title": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668",
+            "status": "not started",
+            "floor": "PLAN 2",
+            "spaces": "Area:2737585",
+            "system": "",
+            "ifcType": "Door",
+            "topicsTotal": 0,
+            "topicsOpen": 0,
+            "topicsClosed": 0,
+            "closedDate": null,
+            "building": "<no name>",
+            "items": {
+              "1. Status": "4"
+            }
+          }
+        ]
+      },
+      "images": [],
+      "durationMs": 296
+    },
+    "checklists-and-colour-by-value-5": {
+      "status": "ok",
+      "value": {
+        "OK": {
+          "color": "#30a46c",
+          "count": 14,
+          "first": "2uYU4y7nP7g9mgpu4mkkNO"
+        },
+        "Deviation": {
+          "color": "#e5484d",
+          "count": 4,
+          "first": "0FdTIYaE1DKvQpJiepvzQL"
+        },
+        "Not inspected": {
+          "color": "#f5d90a",
+          "count": 2,
+          "first": "1OO1g5mfPB5P$hxiSHg6rh"
+        }
+      },
+      "images": [],
+      "durationMs": 493
+    },
+    "checklists-and-colour-by-value-6": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/checklists-and-colour-by-value-6.jpeg"
+      ],
+      "durationMs": 10774
+    },
+    "checklists-and-colour-by-value-7": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/checklists-and-colour-by-value-7.jpeg"
+      ],
+      "durationMs": 3815
+    },
+    "colorCodeSpaces-2": {
+      "status": "ok",
+      "value": "[image #1 returned as image content]",
+      "images": [
+        "images/colorCodeSpaces-2.jpeg"
+      ],
+      "durationMs": 2785
+    },
+    "colorCodeObjects-3": {
+      "status": "ok",
+      "value": {
+        "objects only": {
+          "magenta": 0,
+          "cyan": 0,
+          "highlightGreen": 4494
+        },
+        "property first, then objects": {
+          "magenta": 0,
+          "cyan": 0,
+          "highlightGreen": 0
+        },
+        "objects, then property": {
+          "magenta": 0,
+          "cyan": 0,
+          "highlightGreen": 0
+        },
+        "objects twice": {
+          "magenta": 0,
+          "cyan": 0,
+          "highlightGreen": 4494
+        }
+      },
+      "images": [],
+      "durationMs": 23314
+    },
+    "colorCodeSpaces-3": {
+      "status": "ok",
+      "value": [
+        {
+          "to": "red",
+          "callResolvedMs": 3,
+          "visibleAfterMs": 211
+        },
+        {
+          "to": "blue",
+          "callResolvedMs": 16,
+          "visibleAfterMs": 355
+        },
+        {
+          "to": "red",
+          "callResolvedMs": 5,
+          "visibleAfterMs": 393
+        },
+        {
+          "to": "blue",
+          "callResolvedMs": 19,
+          "visibleAfterMs": 259
+        }
+      ],
+      "images": [],
+      "durationMs": 4493
+    },
+    "colorCodeSpaces-4": {
+      "status": "ok",
+      "value": {
+        "updatesSent": 12,
+        "drawn": "B-RB-B-BR-B-B-R-B-R"
+      },
+      "images": [],
+      "durationMs": 7146
+    },
+    "checklists-and-colour-by-value-8": {
+      "status": "ok",
+      "value": {
+        "type": "map",
+        "data": {
+          "done": "7BBB3E",
+          "mixed": "BBA23E",
+          "open": "C14644"
+        },
+        "count": null,
+        "sum": 0
+      },
+      "images": [],
+      "durationMs": 241
+    }
+  }
+}

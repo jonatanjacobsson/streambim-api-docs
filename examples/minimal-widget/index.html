@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minimal StreamBIM widget</title>
+  <style>
+    :root { --bg: #fff; --fg: #1c1f24; --muted: #69707c; --line: #e3e5e9; --accent: #1f6feb; color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #16181c; --fg: #e6e8eb; --muted: #9aa1ad; --line: #2e323a; --accent: #4c8dff; } }
+    body { margin: 0; padding: 12px; background: var(--bg); color: var(--fg); font: 13px/1.45 system-ui, sans-serif; }
+    h1 { font-size: 15px; margin: 0 0 8px; }
+    .muted { color: var(--muted); }
+    button { font: inherit; padding: 6px 10px; margin: 0 6px 6px 0; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: inherit; cursor: pointer; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    section { border-top: 1px solid var(--line); padding-top: 10px; margin-top: 10px; }
+    table { border-collapse: collapse; width: 100%; font-size: 12px; }
+    td { border-bottom: 1px solid var(--line); padding: 3px 4px; vertical-align: top; word-break: break-word; }
+    td:first-child { color: var(--muted); width: 40%; }
+    img { max-width: 100%; border-radius: 6px; margin-top: 6px; }
+    .legend span { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Minimal StreamBIM widget</h1>
+  <p id="status" class="muted">Connecting to StreamBIM…</p>
+
+  <section>
+    <button class="primary" id="doors">Highlight doors</button>
+    <button id="floors">Colour rooms per floor</button>
+    <button id="reset">Reset</button>
+    <button id="shot">Screenshot</button>
+    <div id="legend" class="legend"></div>
+    <div id="out"></div>
+  </section>
+
+  <section>
+    <strong>Clicked object</strong> <span class="muted">(click something in the 3D view)</span>
+    <table id="props"></table>
+  </section>
+
+  <!-- penpal v7: served by the harness at /vendor/, or use
+       https://cdn.jsdelivr.net/npm/penpal@7.0.6/dist/penpal.min.js -->
+  <script src="/vendor/penpal.min.js"></script>
+  <script>
+    // Show errors in the widget itself: the iframe's console is easy to miss.
+    const showError = (e) => { const el = document.getElementById('error') || document.body.appendChild(Object.assign(document.createElement('pre'), { id: 'error', style: 'color:#e5484d;white-space:pre-wrap;font-size:12px' })); el.textContent = 'Error: ' + (e?.message || (typeof e === 'object' ? JSON.stringify(e) : e)); };
+    window.addEventListener('error', (e) => showError(e.error || e.message));
+    window.addEventListener('unhandledrejection', (e) => showError(e.reason));
+    const $ = (id) => document.getElementById(id);
+    let api; // StreamBIM widget API (penpal remote)
+
+    // Events StreamBIM sends to the widget. Only names listed here are called.
+    const callbacks = {
+      pickedObject: async ({ guid, point }) => {
+        const info = await api.getObjectInfo(guid);
+        const p = info.properties || {};
+        const rows = [['GUID', guid], ['Point', point ? point.map((v) => v.toFixed(2)).join(', ') : '—'],
+          ...['@kind', 'Name', 'Long Name', 'Type Object Global Id'].map((k) => [k, p[k]]),
+          ['Storey', p['@Building Storey'] && p['@Building Storey'].Name]];
+        $('props').innerHTML = rows.filter(([, v]) => v != null && v !== '').map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+      },
+      floorChanged: (floorId) => console.log('floor', floorId),
+    };
+
+    // Connect to the StreamBIM page this widget is embedded in (verified approach; the
+    // official helper's connectToParent fails because document.referrer is empty).
+    const messenger = new Penpal.WindowMessenger({
+      remoteWindow: window.parent,
+      allowedOrigins: [location.ancestorOrigins?.[0] || /^https:\/\/([a-z0-9-]+\.)?streambim\.com$/],
+    });
+    Penpal.connect({ messenger, methods: callbacks, timeout: 20000 }).promise.then(async (remote) => {
+      api = remote;
+      const [projectId, buildingId, email, floors] = await Promise.all([api.getProjectId(), api.getBuildingId(), api.getUserEmail(), api.getFloors()]);
+      $('status').textContent = `Project ${projectId} · building ${buildingId} · ${floors.length} floors · ${email}`;
+    }).catch((err) => { $('status').textContent = 'Not connected: open this page as a widget inside StreamBIM. (' + err.message + ')'; });
+
+    $('doors').onclick = async () => {
+      await api.applyObjectSearch({ key: '@kind', value: 'Door' });
+      await api.setSearchVisualizationMode('FADED');
+      await api.zoomToSearchResult();
+      const doors = await api.findObjects({ key: '@kind', value: 'Door', limit: 1000 });
+      $('out').textContent = doors.length + ' doors';
+    };
+
+    // Custom colours render for spaces in every flavour: group space GUIDs by floor.
+    $('floors').onclick = async () => {
+      const palette = ['#e5484d', '#30a46c', '#3e63dd', '#f5d90a', '#8e4ec6', '#12a594', '#f76b15'];
+      const spaces = await api.findObjects({ key: '@kind', value: 'Space', limit: 500 });
+      const infos = await Promise.all(spaces.map((g) => api.getObjectInfo(g)));
+      const byFloor = {};
+      infos.forEach((info, i) => {
+        const floor = info.properties?.['@Building Storey']?.Name || 'Unknown floor';
+        (byFloor[floor] = byFloor[floor] || []).push(spaces[i]);
+      });
+      const colors = {};
+      Object.entries(byFloor).forEach(([, guids], i) => guids.forEach((g) => (colors[g] = palette[i % palette.length])));
+      await api.colorCodeSpaces(colors);
+      await api.zoomToSearchResult();
+      $('legend').innerHTML = Object.entries(byFloor).map(([floor, guids], i) => `<div><span style="background:${palette[i % palette.length]}"></span>${floor} (${guids.length})</div>`).join('');
+    };
+
+    $('reset').onclick = async () => {
+      await api.colorCodeSpaces({}); // clears colour coding and the search
+      await api.resetObjectSearch();
+      $('legend').innerHTML = $('out').innerHTML = '';
+    };
+
+    $('shot').onclick = async () => {
+      $('out').innerHTML = `<img alt="Screenshot of the 3D view" src="${await api.takeScreenshot()}">`;
+    };
+  </script>
+</body>
+</html>

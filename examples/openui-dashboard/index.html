@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenUI door dashboard</title>
+  <!-- OpenUI browser bundle (https://www.openui.com), served by the harness at /vendor/openui/ -->
+  <link rel="stylesheet" href="/vendor/openui/openui-styles.css">
+  <style>
+    body { margin: 0; padding: 8px; font: 13px/1.45 system-ui, sans-serif; color-scheme: light dark; }
+    #status { color: #888; padding: 4px; }
+  </style>
+</head>
+<body>
+  <div id="status">Connecting to StreamBIM…</div>
+  <div id="root"></div>
+
+  <script src="/vendor/penpal.min.js"></script>
+  <script src="/vendor/openui/openui-bundle.min.js"></script>
+  <script>
+    // Show errors in the widget itself: the iframe's console is easy to miss.
+    const showError = (e) => { const el = document.getElementById('error') || document.body.appendChild(Object.assign(document.createElement('pre'), { id: 'error', style: 'color:#e5484d;white-space:pre-wrap;font-size:12px' })); el.textContent = 'Error: ' + (e?.message || (typeof e === 'object' ? JSON.stringify(e) : e)); };
+    window.addEventListener('error', (e) => showError(e.error || e.message));
+    window.addEventListener('unhandledrejection', (e) => showError(e.reason));
+    const { React, createRoot, Renderer, openuiChatLibrary } = window.__OpenUI;
+    const root = createRoot(document.getElementById('root'));
+    let api;
+
+    // Buttons call the viewer through @ToAssistant(label, {streambim: {method, args}}) or
+    // @OpenUrl("streambim://<method>/<arg>"). Other actions just log here.
+    async function onAction(action) {
+      const call = action?.params?.context?.streambim;
+      const url = action?.params?.url;
+      if (call) return api[call.method](...(call.args || []));
+      if (url?.startsWith('streambim://')) {
+        const [method, ...args] = url.slice('streambim://'.length).split('/').map(decodeURIComponent);
+        return api[method](...args);
+      }
+      console.log('OpenUI action', action);
+    }
+
+    // Build an OpenUI Lang program from live door data. An LLM could write the same text.
+    function doorProgram(doors) {
+      const q = JSON.stringify;
+      const ext = doors.filter((d) => d.external), int = doors.filter((d) => !d.external);
+      const byType = {};
+      for (const d of doors) byType[d.type] = (byType[d.type] || 0) + 1;
+      const types = Object.entries(byType).sort((a, b) => b[1] - a[1]);
+      const isolate = (list) => Object.fromEntries(list.map((d) => [d.guid, '#3e63dd']));
+      const viewer = (label, method, args, variant = 'secondary') =>
+        `Button(${q(label)}, @ToAssistant(${q(label)}, {streambim: {method: ${q(method)}, args: ${q(args)}}}), ${q(variant)}, "normal", "small")`;
+      return [
+        'root = Card([header, overview, chart, actions, list])',
+        `header = CardHeader("Doors", ${q(doors.length + ' doors · ' + types.length + ' types')})`,
+        'overview = OverviewCardBlock([cAll, cExt, cInt], "grid")',
+        `cAll = OverviewCardItem("all", IconText(Icon("door-open"), "info", "s", "Doors"), MetricIndicatorInline(${q(String(doors.length))}))`,
+        `cExt = OverviewCardItem("ext", IconText(Icon("sun"), "warning", "s", "External"), MetricIndicatorInline(${q(String(ext.length))}))`,
+        `cInt = OverviewCardItem("int", IconText(Icon("home"), "success", "s", "Internal"), MetricIndicatorInline(${q(String(int.length))}))`,
+        `chart = HorizontalBarChart(${q(types.map((t) => t[0]))}, [Series("Doors", ${q(types.map((t) => t[1]))})])`,
+        'actions = Buttons([bAll, bExt, bInt, bReset])',
+        `bAll = ${viewer('Show all doors', 'applyObjectSearch', [{ key: '@kind', value: 'Door' }], 'primary')}`,
+        `bExt = ${viewer('Only external', 'colorCodeObjects', [isolate(ext)])}`,
+        `bInt = ${viewer('Only internal', 'colorCodeObjects', [isolate(int)])}`,
+        `bReset = ${viewer('Reset', 'resetObjectSearch', [], 'tertiary')}`,
+        `list = ListBlock([${doors.map((_, i) => 'd' + i).join(', ')}], "number", "small")`,
+        ...doors.map((d, i) => `d${i} = ListItem(${q(d.type + ' · ' + d.floor)}, ${q([d.size, d.external ? 'external' : 'internal'].filter(Boolean).join(' · '))}, null, "Go to", @OpenUrl(${q('streambim://gotoObject/' + d.guid)}))`),
+      ].join('\n');
+    }
+
+    // Quantities can carry float noise (810.000000000001), so round to whole millimetres.
+    const size = (w, h) => (w && h ? `${Math.round(Number(w))} × ${Math.round(Number(h))} mm` : '');
+
+    async function load() {
+      const res = await api.getObjectInfoForSearch({ filter: { key: '@kind', value: 'Door' }, page: { limit: 1000 }, sort: { field: 'Name', descending: false }, fieldUnion: true });
+      const doors = res.data.map((d) => ({
+        guid: d.GUID,
+        type: d['BIP~TypeID'] || d['Type~Tag'] || d['Type Name'] || 'Door',
+        floor: d['Location~Floor by position'] || '',
+        size: size(d['BIP~Width'] || d['BaseQuantities~Width'], d['BIP~Height'] || d['BaseQuantities~Height']),
+        external: String(d['Pset_DoorCommon~IsExternal']).toLowerCase() === 'true',
+      }));
+      document.getElementById('status').remove();
+      root.render(React.createElement(Renderer, { response: doorProgram(doors), library: openuiChatLibrary, onAction }));
+    }
+
+    const messenger = new Penpal.WindowMessenger({
+      remoteWindow: window.parent,
+      allowedOrigins: [location.ancestorOrigins?.[0] || /^https:\/\/([a-z0-9-]+\.)?streambim\.com$/],
+    });
+    Penpal.connect({ messenger, methods: {}, timeout: 20000 }).promise
+      .then((remote) => { api = remote; return load(); })
+      .catch((err) => { document.getElementById('status').textContent = 'Error: ' + (err.message || JSON.stringify(err)); });
+  </script>
+</body>
+</html>

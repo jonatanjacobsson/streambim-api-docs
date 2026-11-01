@@ -1,0 +1,1456 @@
+{
+  "probedAt": "2026-11-01T15:50:41.800Z",
+  "origin": "https://app.streambim.com",
+  "projectId": "15974",
+  "buildingId": "1000",
+  "fixtures": {
+    "door": "048mvnhWPDHefuPHQ5uMBr",
+    "space": "0A0ainOlD3Dg0Lq_ZFZGQI",
+    "floorId": "1004",
+    "camera": {
+      "position": [
+        -29.051828043835457,
+        -11.831257739228485,
+        7.124982544118144
+      ],
+      "quaternion": [
+        -0.6314840304538661,
+        -0.21431036199874678,
+        0.7211678904736265,
+        -0.18765889739505096
+      ]
+    }
+  },
+  "results": [
+    {
+      "method": "getProjectId",
+      "args": [],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "string",
+      "shape": "string",
+      "sample": "15974"
+    },
+    {
+      "method": "getBuildingId",
+      "args": [],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "string",
+      "shape": "string",
+      "sample": "1000"
+    },
+    {
+      "method": "getUserEmail",
+      "args": [],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "string",
+      "shape": "string",
+      "sample": "user@example.com"
+    },
+    {
+      "method": "getCameraState",
+      "args": [],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "position": [
+          "number",
+          "…×3"
+        ],
+        "quaternion": [
+          "number",
+          "…×4"
+        ]
+      },
+      "sample": {
+        "position": [
+          -29.051828043835457,
+          -11.831257739228485,
+          7.124982544118144
+        ],
+        "quaternion": [
+          -0.6314840304538661,
+          -0.21431036199874678,
+          0.7211678904736265,
+          -0.18765889739505096
+        ]
+      }
+    },
+    {
+      "method": "getFloors",
+      "args": [],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "array",
+      "shape": [
+        {
+          "name": "string",
+          "height": "number",
+          "id": "string"
+        },
+        "…×17"
+      ],
+      "sample": [
+        {
+          "name": "PLAN 1",
+          "height": 0,
+          "id": "1004"
+        },
+        {
+          "name": "Plan 2",
+          "height": 2.55,
+          "id": "1000"
+        },
+        {
+          "name": "PLAN 2",
+          "height": 3,
+          "id": "1007"
+        },
+        {
+          "name": "PLAN 3",
+          "height": 6,
+          "id": "1012"
+        },
+        {
+          "name": "PLAN 4",
+          "height": 9,
+          "id": "1010"
+        },
+        {
+          "name": "PLAN 5",
+          "height": 12,
+          "id": "1013"
+        },
+        {
+          "name": "MARKNIVÅ",
+          "height": 14,
+          "id": "1011"
+        },
+        {
+          "name": "VÅNING 10 - BY 16",
+          "height": 15.76,
+          "id": "1014"
+        },
+        {
+          "name": "ACH",
+          "height": 17.91,
+          "id": "1018"
+        },
+        {
+          "name": "VÅNING 10 - BY 5, 7, 8",
+          "height": 18.61,
+          "id": "1015"
+        },
+        {
+          "name": "VÅNING 10 - BY 4",
+          "height": 18.82,
+          "id": "1019"
+        },
+        {
+          "name": "VÅNING 10 - BY 3",
+          "height": 19.25,
+          "id": "1008"
+        },
+        {
+          "name": "VÅNING 10 - BY 17",
+          "height": 19.33,
+          "id": "1009"
+        },
+        {
+          "name": "VÅNING 10 - BY 1",
+          "height": 19.66,
+          "id": "1020"
+        },
+        {
+          "name": "VÅNING 10 - BY 9, 10",
+          "height": 19.75,
+          "id": "1016"
+        },
+        {
+          "name": "VÅNING 10 - BY 10",
+          "height": 20.36,
+          "id": "1021"
+        },
+        {
+          "name": "VÅNING 10 - BY 2",
+          "height": 20.45,
+          "id": "1017"
+        }
+      ]
+    },
+    {
+      "method": "getSpaces",
+      "args": [],
+      "note": null,
+      "ms": 43,
+      "status": "resolved",
+      "type": "array",
+      "shape": [],
+      "sample": []
+    },
+    {
+      "method": "getViewportState",
+      "args": [],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "cameraState": {
+          "position": [
+            "number",
+            "…×3"
+          ],
+          "quaternion": [
+            "number",
+            "…×4"
+          ]
+        },
+        "hiddenObjects": [
+          "string",
+          "…×3"
+        ],
+        "highlightedObjects": [],
+        "hiddenLayers": [],
+        "highlightedLayers": "undefined",
+        "clippingPlanes": []
+      },
+      "sample": {
+        "cameraState": {
+          "position": [
+            -29.051828043835457,
+            -11.831257739228485,
+            7.124982544118144
+          ],
+          "quaternion": [
+            -0.6314840304538661,
+            -0.21431036199874678,
+            0.7211678904736265,
+            -0.18765889739505096
+          ]
+        },
+        "hiddenObjects": [
+          "0UWwXrStD1sgcpqIfI3tUp",
+          "3ywj1Zk99A0RqPhz4Xew9Y",
+          "3ywj1Zk99A0RqPhz4Xezte"
+        ],
+        "highlightedObjects": [],
+        "hiddenLayers": [],
+        "highlightedLayers": null,
+        "clippingPlanes": []
+      }
+    },
+    {
+      "method": "getLayers",
+      "args": [],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "orexoventtest": "boolean",
+        "UNDERTAK_REVIT_2025": "boolean",
+        "grids": "boolean",
+        "GRNSAKSSTIGEN24": "boolean"
+      },
+      "sample": {
+        "orexoventtest": true,
+        "UNDERTAK_REVIT_2025": true,
+        "grids": true,
+        "GRNSAKSSTIGEN24": true
+      }
+    },
+    {
+      "method": "getObjectInfo",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": null,
+      "ms": 1,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "layer": "string",
+        "properties": {
+          "@kind": "string",
+          "Name": "string",
+          "Long Name": "string",
+          "Description": "string",
+          "uri": "string",
+          "Global Id": "string",
+          "Type Object Global Id": "string",
+          "@Building Storey": {
+            "@iid": "string",
+            "Name": "string"
+          },
+          "@Group Layer": "string",
+          "@Document Id": "number",
+          "@Building Id": "number",
+          "Timestamp": "string",
+          "groups": "null",
+          "BaseType": "string"
+        },
+        "groups": [
+          {
+            "label": "string",
+            "source": "string",
+            "widget": "null",
+            "relativeContentURL": "string",
+            "absoluteContentURL": "string",
+            "content": {
+              "properties": [
+                "object",
+                "…×3"
+              ],
+              "children": "null"
+            }
+          },
+          "…×11"
+        ],
+        "center": [
+          "number",
+          "…×3"
+        ],
+        "bbox": [
+          "number",
+          "…×6"
+        ],
+        "boundary": "null",
+        "jobcreated": "number",
+        "jobdeleted": "number",
+        "classes": [],
+        "floors": [
+          "string",
+          "…×1"
+        ],
+        "spaces": [
+          "string",
+          "…×1"
+        ],
+        "document": "string",
+        "building": "string",
+        "duplicates": []
+      },
+      "sample": "{\"layer\":\"GRNSAKSSTIGEN24\",\"properties\":{\"@kind\":\"Door\",\"Name\":\"Single Door:D8:2649638\",\"Long Name\":\"2649638\",\"Description\":\"\",\"uri\":\"\",\"Global Id\":\"048mvnhWPDHefuPHQ5uMBr\",\"Type Object Global Id\":\"T~2Y5Yp$IeJununxjdY37DoD\",\"@Building Storey\":{\"@iid\":\"1004\",\"Name\":\"PLAN 1\"},\"@Group Layer\":\"GRNSAKSSTIGEN24\",\"@Document Id\":1000,\"@Building Id\":0,\"Timestamp\":\"2025-08-18 08:00:48 +0000 UTC\",\"groups\":null,\"BaseType\":\"ifcelement\"},\"groups\":[{\"label\":\"_Dörrar\",\"source\":\"GRAPH\",\"widget\":null,\"relativeContentURL\":\"\",\"absoluteContentURL\":\"\",\"content\":{\"properties\":[{\"key\":\"Höjd dörr\",\"value\":\"2090\",\"valueType\":\"float8\",\"valueItem\":\"\",\"measure\":\"length\",\"unit\":\"millimetre\"},{\"key\":\"Entreprenad\",\"value\":\"DE501\",\"valueType\":\"str\",\"valueItem\":\"aWZjZWxlbWVudH5fRMO2cnJhcn5FbnRyZXByZW5hZH5zdHJ-REU1MDE\",\"measure\":\"text\"},{\"key\":\"Bredd dörr\",\"value\":\"790\",\"valueType\":\"float8\",\"valueItem\":\"\",\"measure\":\"length\",\"unit\":\"millimetre\"}],\"children\":null}},{\"label\":\"Pset_QuantityTakeOff\",\"source\":\"GRAPH\",\"widget\":null,\"relativeContentURL\":\"\",\"absoluteContentURL\":\"\",\"content\":{\"properties\":[{\"key\":\"Reference\",\"value\":\"D8\",\"valueType\":\"str\",\"valueItem\":\"aWZjZWxlbWVudH5Qc2V0X1F1YW50aXR5VGFrZU9mZn5SZWZlcmVuY2V-c3RyfkQ4\",\"measure\":\"identifier\"}],\"children\":null}},{\"label\":\"Geometry\",\"source\":\"GRAPH\",\"widget\":null,\"relativeContentURL\":\"\",\"absoluteContentURL\":\"\",\"content\":{\"properties\":[{\"key\":\"Template Hi\",\"value\":\"0\",\"valueType\":\"\",\"valueItem\":\"\"},{\"key\":\"Faces Lo\",\"value\":\"48\",\"valueType\":\"\",\"valueItem\":\"\"}…"
+    },
+    {
+      "method": "getObjectInfo",
+      "args": [
+        "not-a-guid"
+      ],
+      "note": "invalid GUID",
+      "ms": 0,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "code",
+          "debug"
+        ],
+        "value": {
+          "code": "invalid",
+          "debug": "guid must be a valid 22 characters GUID string"
+        }
+      }
+    },
+    {
+      "method": "getObjectInfo",
+      "args": [
+        "0000000000000000000000"
+      ],
+      "note": "well-formed but unknown GUID",
+      "ms": 114,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "code",
+          "debug"
+        ],
+        "value": {
+          "code": "notFound",
+          "debug": "Requested resource cannot be found: object not found: get object: get object: no such object exists: no rows in result set"
+        }
+      }
+    },
+    {
+      "method": "findObjects",
+      "args": [
+        {
+          "key": "@kind",
+          "value": "Door",
+          "limit": 3
+        }
+      ],
+      "note": null,
+      "ms": 78,
+      "status": "resolved",
+      "type": "array",
+      "shape": [
+        "string",
+        "…×3"
+      ],
+      "sample": [
+        "048mvnhWPDHefuPHQ5uMBr",
+        "0FdTIYaE1DKvQpJiepvzCz",
+        "0FdTIYaE1DKvQpJiepvzLh"
+      ]
+    },
+    {
+      "method": "findObjects",
+      "args": [
+        {
+          "rules": [
+            [
+              {
+                "buildingId": "1000",
+                "propKey": "@kind",
+                "propValue": "Window"
+              }
+            ]
+          ],
+          "limit": 3
+        }
+      ],
+      "note": "rules form",
+      "ms": 84,
+      "status": "resolved",
+      "type": "array",
+      "shape": [
+        "string",
+        "…×3"
+      ],
+      "sample": [
+        "0FdTIYaE1DKvQpJiepvyYk",
+        "0FdTIYaE1DKvQpJiepvyoi",
+        "0FdTIYaE1DKvQpJiepvypZ"
+      ]
+    },
+    {
+      "method": "getObjectInfoForSearch",
+      "args": [
+        {
+          "filter": {
+            "key": "@kind",
+            "value": "Door"
+          },
+          "page": {
+            "limit": 2,
+            "skip": 0
+          },
+          "sort": {
+            "field": "Name",
+            "descending": false
+          }
+        }
+      ],
+      "note": null,
+      "ms": 169,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "header": [
+          {
+            "id": "string",
+            "datatype": "string",
+            "name": "string"
+          },
+          "…×7"
+        ],
+        "data": [
+          {
+            "GUID": "string",
+            "Name": "string",
+            "Long Name": "string",
+            "Description": "null",
+            "IFC Type": "string",
+            "Type Name": "string",
+            "Link": "string"
+          },
+          "…×2"
+        ],
+        "meta": {
+          "total": "string",
+          "heap-baseline": "string",
+          "heap-search": "string",
+          "heap-output": "string"
+        }
+      },
+      "sample": {
+        "header": [
+          {
+            "id": "GUID",
+            "datatype": "obj",
+            "name": "GUID"
+          },
+          {
+            "id": "Name",
+            "datatype": "str",
+            "name": "Name"
+          },
+          {
+            "id": "Long Name",
+            "datatype": "str",
+            "name": "Long Name"
+          },
+          {
+            "id": "Description",
+            "datatype": "str",
+            "name": "Description"
+          },
+          {
+            "id": "IFC Type",
+            "datatype": "kind",
+            "name": "IFC Type"
+          },
+          {
+            "id": "Type Name",
+            "datatype": "str",
+            "name": "Type Name"
+          },
+          {
+            "id": "Link",
+            "datatype": "url",
+            "name": "Link"
+          }
+        ],
+        "data": [
+          {
+            "GUID": "2uYU4y7nP7g9mgpu4mkkNO",
+            "Name": "Cased Opening:ÖK10:2731493",
+            "Long Name": "2731493",
+            "Description": null,
+            "IFC Type": "Door",
+            "Type Name": "Cased Opening:ÖK10",
+            "Link": "https://app.streambim.com/webapp/default/#/viewer/objectinfo/ifc/object/2uYU4y7nP7g9mgpu4mkkNO?buildingId=1000&apply=true&goto=true&projectId=15974"
+          },
+          {
+            "GUID": "1NE2FAfsz5kedhy_IXrbxf",
+            "Name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668",
+            "Long Name": "2680668",
+            "Description": null,
+            "IFC Type": "Door",
+            "Type Name": "Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M",
+            "Link": "https://app.streambim.com/webapp/default/#/viewer/objectinfo/ifc/object/1NE2FAfsz5kedhy_IXrbxf?buildingId=1000&apply=true&goto=true&projectId=15974"
+          }
+        ],
+        "meta": {
+          "total": "20",
+          "heap-baseline": "361985224",
+          "heap-search": "362088360",
+          "heap-output": "362090968"
+        }
+      }
+    },
+    {
+      "method": "getObjectInfoForSearch",
+      "args": [
+        {
+          "page": {
+            "limit": 2
+          }
+        }
+      ],
+      "note": "no filter",
+      "ms": 0,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "status",
+          "detail"
+        ],
+        "value": {
+          "status": 400,
+          "detail": "No filter provided"
+        }
+      }
+    },
+    {
+      "method": "quickSearch",
+      "args": [
+        "Door"
+      ],
+      "note": null,
+      "ms": 54,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "system": "null",
+        "kind": [
+          {
+            "name": "string"
+          },
+          "…×1"
+        ],
+        "property": [
+          {
+            "name": "string",
+            "measure": "string",
+            "unit": "string",
+            "datatype": "string",
+            "basetype": "string"
+          },
+          "…×2"
+        ],
+        "typeObject": [
+          {
+            "id": "string",
+            "name": "string"
+          },
+          "…×14"
+        ],
+        "object": [
+          {
+            "id": "string",
+            "name": "string",
+            "kind": "string",
+            "longName": "string",
+            "description": "string"
+          },
+          "…×38"
+        ],
+        "classification": "null",
+        "meta": {
+          "system": "number",
+          "typeObject": "number",
+          "object": "number",
+          "kind": "number",
+          "property": "number",
+          "classification": "number"
+        }
+      },
+      "sample": "{\"system\":null,\"kind\":[{\"name\":\"Door\"}],\"property\":[{\"name\":\"Pset_DoorCommon~IsExternal~bool\",\"measure\":\"boolean\",\"unit\":\"\",\"datatype\":\"bool\",\"basetype\":\"ifcelement\"},{\"name\":\"Pset_DoorCommon~Reference~str\",\"measure\":\"identifier\",\"unit\":\"\",\"datatype\":\"str\",\"basetype\":\"ifcelement\"}],\"typeObject\":[{\"id\":\"1aeHga2kz2YnnljLiX9Z$X\",\"name\":\"Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M\"},{\"id\":\"36$3X5RjRF6Yo4cWkcGlG6\",\"name\":\"Overhead Sectional Door:Takskjutport 5500x5500\"},{\"id\":\"3oWJ9_zlbhn5A681Nr11Dj\",\"name\":\"Single Door:D8\"},{\"id\":\"1SdOz$YQIMyt$kdG2Rp0eo\",\"name\":\"Single Door:D8\"},{\"id\":\"2Y5Yp$IeJununxjdY37DoD\",\"name\":\"Single Door:D8\"},{\"id\":\"1e_Va5FblBSryOQv4zIdwg\",\"name\":\"Single Door:D8\"},{\"id\":\"3yNeNGHtUZnebjVUTXqnrO\",\"name\":\"Single Door:D9\"},{\"id\":\"3tXMb5Axu7eM69BvWMWUsf\",\"name\":\"Single Door:D9\"},{\"id\":\"1yQCzRxuGW8u2smIeC16Ai\",\"name\":\"Single Door:D9\"},{\"id\":\"2csxeslEnOboCCAlxyy9xw\",\"name\":\"Single Door:YD9\"},{\"id\":\"1yGqbBJ4JsjDt1InYiiwt9\",\"name\":\"Single Door:YD9\"},{\"id\":\"33omOLKW$uYe9KnboKrJsP\",\"name\":\"Single Door:YD9\"},{\"id\":\"3tg0SZ6SctbOde4vJaTvLf\",\"name\":\"Single Door:YD9\"},{\"id\":\"2Wj5P76cD93HnXWGpVBkLb\",\"name\":\"Single Door:YD9\"}],\"object\":[{\"id\":\"1NE2FAfsz5kedhy_IXrbxf\",\"name\":\"Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668\",\"kind\":\"Door\",\"longName\":\"2680668\",\"description\":\"\"},{\"id\":\"3UC4bnAgC$mR8FDPZwV2H4\",\"name\":\"Doors_Door-Sets_Diplomat_Elvira-Glass-double-door:21Mx16M:2680668:1\",\"kind\":\"Opening element\",\"longName\":\"2680668\",\"description\":\"…"
+    },
+    {
+      "method": "quickSearch",
+      "args": [
+        ""
+      ],
+      "note": "empty text",
+      "ms": 0,
+      "status": "rejected",
+      "error": {
+        "kind": "string",
+        "value": "No freetext"
+      }
+    },
+    {
+      "method": "valuesForObjectProperty",
+      "args": [
+        "Name"
+      ],
+      "note": null,
+      "ms": 136,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "AeroFix 15:AeroFix 15 (DEL C):2193091": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193171": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193182": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193190": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193198": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193206": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193214": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193222": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193252": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193254": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193255": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193256": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193257": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193258": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193259": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193260": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193268": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193269": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193270": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193272": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193273": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193274": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193275": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193283": "number",
+        "AeroFix 15:AeroFix 15 (DEL C):2193284": "number"
+      },
+      "sample": "{\"AeroFix 15:AeroFix 15 (DEL C):2193091\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193171\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193182\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193190\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193198\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193206\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193214\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193222\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193252\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193254\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193255\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193256\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193257\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193258\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193259\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193260\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193268\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193269\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193270\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193272\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193273\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193274\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193275\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193283\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193284\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193285\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193286\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193287\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193288\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193289\":1,\"AeroFix 15:AeroFix 15 (DEL C):2193290\":1,\"Assembled Stair:Stair:2108201\":1,\"Assembled Stair:Stair:2108201 Landing 1\":1,\"Assembled Stair:Stair:2108201 Run 1\":1,\"Assembled Stair:Stair:2108201 Run 2\":1,\"Assembled Stair:Stair:2679575\":1,\"Asse…"
+    },
+    {
+      "method": "valuesForObjectProperty",
+      "args": [
+        "@kind"
+      ],
+      "note": null,
+      "ms": 109,
+      "status": "resolved",
+      "type": "object",
+      "shape": {
+        "Air terminal": "number",
+        "Annotation": "number",
+        "Beam": "number",
+        "Building element proxy": "number",
+        "Column": "number",
+        "Cooled beam": "number",
+        "Covering": "number",
+        "Curtain wall": "number",
+        "Damper": "number",
+        "Distribution element": "number",
+        "Door": "number",
+        "Duct fitting": "number",
+        "Duct segment": "number",
+        "Duct silencer": "number",
+        "Element assembly": "number",
+        "Fan": "number",
+        "Flow controller": "number",
+        "Flow terminal": "number",
+        "Furniture": "number",
+        "Grid": "number",
+        "Heat exchanger": "number",
+        "Member": "number",
+        "Opening element": "number",
+        "Pipe segment": "number",
+        "Plate": "number"
+      },
+      "sample": {
+        "Air terminal": 471,
+        "Annotation": 5,
+        "Beam": 23,
+        "Building element proxy": 81,
+        "Column": 12,
+        "Cooled beam": 23,
+        "Covering": 3711,
+        "Curtain wall": 1,
+        "Damper": 456,
+        "Distribution element": 1,
+        "Door": 20,
+        "Duct fitting": 2496,
+        "Duct segment": 3486,
+        "Duct silencer": 208,
+        "Element assembly": 1,
+        "Fan": 3,
+        "Flow controller": 2,
+        "Flow terminal": 50,
+        "Furniture": 72,
+        "Grid": 3,
+        "Heat exchanger": 5,
+        "Member": 45,
+        "Opening element": 64,
+        "Pipe segment": 1,
+        "Plate": 15,
+        "Railing": 10,
+        "Reinforcing bar": 4,
+        "Roof": 7,
+        "Slab": 14,
+        "Stair": 4,
+        "Stair flight": 5,
+        "Valve": 1,
+        "Wall": 82,
+        "Window": 31
+      }
+    },
+    {
+      "method": "takeScreenshot",
+      "args": [],
+      "note": null,
+      "ms": 78,
+      "status": "resolved",
+      "type": "string",
+      "shape": "string(dataURL image/png, 897678 chars)",
+      "sample": "data:image/png;base64,iVBORw0KGgoAAAANSU…"
+    },
+    {
+      "method": "getMapImage",
+      "args": [
+        {
+          "width": 300,
+          "height": 200,
+          "resolution": 0.5
+        }
+      ],
+      "note": null,
+      "ms": 6010,
+      "status": "never-settled"
+    },
+    {
+      "method": "getAnnotatedFloorplan",
+      "args": [
+        "[circular]"
+      ],
+      "note": null,
+      "ms": 45,
+      "status": "resolved",
+      "type": "string",
+      "shape": "string",
+      "sample": "https://app.streambim.com/project-15974/api/v1/annotated-files?fileId=floorplans-1012&markerX=-56.650453125&markerY=-23.32176171875&microtoken=REDACTED"
+    },
+    {
+      "method": "makeApiRequest",
+      "args": [
+        {
+          "url": "/mgw/api/v3/projects/15974"
+        }
+      ],
+      "note": null,
+      "ms": 50,
+      "status": "resolved",
+      "type": "string",
+      "shape": "string",
+      "sample": "{\"data\":{\"id\":\"15974\",\"type\":\"projects\",\"attributes\":{\"bcf-id\":\"a5e3652a-227e-44ea-9681-1db9100ba323\",\"coords\":\"\",\"created-at\":\"2024-03-15T13:45:16.830354Z\",\"deleted-at\":null,\"description\":\"Project for demoing widgets\",\"external-id\":\"\",\"is-hibernated\":false,\"is-inactive\":false,\"is-library\":false,\"location_name\":\"\",\"name\":\"Widgets\",\"project-uri\":\"app.streambim.com/webapp/default/#/?projectId=15974\",\"salesforce-account-id\":null,\"salesforce-account-name\":null,\"salesforce-project-id\":null,\"status\":\"\",\"sync_template\":null},\"relationships\":{\"customer\":{\"data\":null},\"features\":{\"data\":[]},\"owner\":{\"data\":{\"id\":\"user@afry.com\",\"type\":\"users\"}},\"providers\":{\"data\":[]}}}}\n"
+    },
+    {
+      "method": "makeApiRequest",
+      "args": [
+        {
+          "url": "/project-15974/api/v1/does-not-exist"
+        }
+      ],
+      "note": "HTTP error",
+      "ms": 44,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "DataCloneError",
+        "message": "Failed to execute 'postMessage' on 'MessagePort': XMLHttpRequest object could not be cloned."
+      }
+    },
+    {
+      "method": "setCameraState",
+      "args": [
+        "[circular]"
+      ],
+      "note": null,
+      "ms": 1,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setCameraState",
+      "args": [
+        {
+          "position": [
+            0,
+            0
+          ]
+        }
+      ],
+      "note": "invalid state",
+      "ms": 3,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "code",
+          "debug"
+        ],
+        "value": {
+          "code": "invalid",
+          "debug": "state.position must be an array of 3 floats"
+        }
+      }
+    },
+    {
+      "method": "setCameraPosition",
+      "args": [
+        "[circular]"
+      ],
+      "note": null,
+      "ms": 6008,
+      "status": "never-settled"
+    },
+    {
+      "method": "setCameraPosition",
+      "args": [
+        [
+          1,
+          2
+        ]
+      ],
+      "note": "invalid position",
+      "ms": 1,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "code",
+          "debug"
+        ],
+        "value": {
+          "code": "invalid",
+          "debug": "position must be an array of 3 floats"
+        }
+      }
+    },
+    {
+      "method": "setViewportState",
+      "args": [
+        {
+          "cameraState": {
+            "position": [
+              -29.051828043835457,
+              -11.831257739228485,
+              7.124982544118144
+            ],
+            "quaternion": [
+              -0.6314840304538661,
+              -0.21431036199874678,
+              0.7211678904736265,
+              -0.18765889739505096
+            ]
+          },
+          "hiddenObjects": [
+            "0UWwXrStD1sgcpqIfI3tUp",
+            "3ywj1Zk99A0RqPhz4Xew9Y",
+            "3ywj1Zk99A0RqPhz4Xezte"
+          ],
+          "highlightedObjects": [],
+          "hiddenLayers": [],
+          "highlightedLayers": null,
+          "clippingPlanes": []
+        }
+      ],
+      "note": null,
+      "ms": 2,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setViewportState",
+      "args": [
+        {
+          "hiddenObjects": [
+            "short"
+          ]
+        }
+      ],
+      "note": "invalid GUID in hiddenObjects",
+      "ms": 2,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "code",
+          "debug"
+        ],
+        "value": {
+          "code": "invalid",
+          "debug": "guid must be a valid 22 characters GUID string"
+        }
+      }
+    },
+    {
+      "method": "highlightObject",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": null,
+      "ms": 6,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "deHighlightObject",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": null,
+      "ms": 1,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "code",
+          "debug"
+        ],
+        "value": {
+          "code": "unknown",
+          "debug": {
+            "error": "e.get(...).deSelectObject is not a function",
+            "stack": "TypeError: e.get(...).deSelectObject is not a function\n    at https://app.streambim.com/webapp/default/assets/rendrao-04499cb3cb711a99330749d44f28741b.js:2719:108\n    at https://app.streambim.com/webapp/default/assets/rendrao-04499cb3cb711a99330749d44f28741b.js:2707:12\n    at new Promise (<anonymous>)\n    at d (https://app.streambim.com/webapp/default/assets/rendrao-04499cb3cb711a99330749d44f28741b.js:2705:56)\n    at https://app.streambim.com/webapp/default/assets/rendrao-04499cb3cb711a99330749d44f28741b.js:2718:200\n    at c (https://app.streambim.com/webapp/default/assets/vendor-cf0f3c5e07c6f80e4aa231d9766fec80.js:22830:13)\n    at #s (https://app.streambim.com/webapp/default/assets/vendor-cf0f3c5e07c6f80e4aa231d9766fec80.js:22910:56)"
+          }
+        }
+      }
+    },
+    {
+      "method": "highlightObject",
+      "args": [
+        "bad"
+      ],
+      "note": "invalid GUID",
+      "ms": 0,
+      "status": "rejected",
+      "error": {
+        "kind": "object",
+        "keys": [
+          "code",
+          "debug"
+        ],
+        "value": {
+          "code": "invalid",
+          "debug": "guid must be a valid 22 characters GUID string"
+        }
+      }
+    },
+    {
+      "method": "deHighlightAllObjects",
+      "args": [],
+      "note": null,
+      "ms": 6013,
+      "status": "never-settled"
+    },
+    {
+      "method": "hideObject",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": null,
+      "ms": 1,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "hideObject",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "already hidden",
+      "ms": 1,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": false
+    },
+    {
+      "method": "showObject",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": null,
+      "ms": 1,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "showAllObjects",
+      "args": [],
+      "note": null,
+      "ms": 1,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "applyObjectSearch",
+      "args": [
+        {
+          "key": "@kind",
+          "value": "Door"
+        }
+      ],
+      "note": null,
+      "ms": 87,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setSearchVisualizationMode",
+      "args": [
+        "FADED"
+      ],
+      "note": null,
+      "ms": 12,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setSearchVisualizationMode",
+      "args": [
+        "NOT_A_MODE"
+      ],
+      "note": "unknown mode",
+      "ms": 9,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "zoomToSearchResult",
+      "args": [],
+      "note": null,
+      "ms": 8,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "resetObjectSearch",
+      "args": [],
+      "note": null,
+      "ms": 4,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "colorCodeObjects",
+      "args": [
+        {
+          "048mvnhWPDHefuPHQ5uMBr": "#ff0000"
+        }
+      ],
+      "note": null,
+      "ms": 19,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "colorCodeObjects",
+      "args": [
+        {}
+      ],
+      "note": "clear",
+      "ms": 11,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "colorCodeSpaces",
+      "args": [
+        {
+          "0A0ainOlD3Dg0Lq_ZFZGQI": "#00ff00"
+        }
+      ],
+      "note": null,
+      "ms": 5,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "colorCodeSpaces",
+      "args": [
+        {}
+      ],
+      "note": "clear",
+      "ms": 9,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "colorCodeByProperty",
+      "args": [
+        {
+          "propertyKey": "@kind"
+        }
+      ],
+      "note": null,
+      "ms": 29,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "resetObjectSearch",
+      "args": [],
+      "note": "after colorCodeByProperty",
+      "ms": 9,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setLayers",
+      "args": [
+        {
+          "orexoventtest": true,
+          "UNDERTAK_REVIT_2025": true,
+          "grids": true,
+          "GRNSAKSSTIGEN24": true
+        }
+      ],
+      "note": null,
+      "ms": 11,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "showGrids",
+      "args": [],
+      "note": null,
+      "ms": 58,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "hideGrids",
+      "args": [],
+      "note": null,
+      "ms": 12,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setSkyColor",
+      "args": [
+        "#dde7f3"
+      ],
+      "note": null,
+      "ms": 5,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setNavigationMode",
+      "args": [
+        1
+      ],
+      "note": null,
+      "ms": 1,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setStyles",
+      "args": [
+        "/* probe */"
+      ],
+      "note": null,
+      "ms": 10,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "applyStyles",
+      "args": [
+        "/* probe */"
+      ],
+      "note": "undocumented alias",
+      "ms": 6000,
+      "status": "never-settled"
+    },
+    {
+      "method": "setShowExpandButton",
+      "args": [
+        true
+      ],
+      "note": null,
+      "ms": 2,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setExpanded",
+      "args": [
+        false
+      ],
+      "note": null,
+      "ms": 0,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "gotoObject",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": null,
+      "ms": 7,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "gotoSpace",
+      "args": [
+        "0A0ainOlD3Dg0Lq_ZFZGQI"
+      ],
+      "note": null,
+      "ms": 65,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "gotoFloor",
+      "args": [
+        "1004"
+      ],
+      "note": null,
+      "ms": 3,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "goHome",
+      "args": [],
+      "note": null,
+      "ms": 10,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "setCameraState",
+      "args": [
+        "[circular]"
+      ],
+      "note": "restore camera",
+      "ms": 4,
+      "status": "resolved",
+      "type": "boolean",
+      "shape": "boolean",
+      "sample": true
+    },
+    {
+      "method": "highlightSystem",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "expected missing",
+      "ms": 12,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "PenpalError",
+        "message": "Method `highlightSystem` is not found."
+      }
+    },
+    {
+      "method": "toggleShowAllFloors",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "expected missing",
+      "ms": 2,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "PenpalError",
+        "message": "Method `toggleShowAllFloors` is not found."
+      }
+    },
+    {
+      "method": "applyViewpoint",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "expected missing",
+      "ms": 1,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "PenpalError",
+        "message": "Method `applyViewpoint` is not found."
+      }
+    },
+    {
+      "method": "colorCodeObjectsWithLegends",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "expected missing",
+      "ms": 8,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "PenpalError",
+        "message": "Method `colorCodeObjectsWithLegends` is not found."
+      }
+    },
+    {
+      "method": "colorCodeSpacesWithLegends",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "expected missing",
+      "ms": 7,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "PenpalError",
+        "message": "Method `colorCodeSpacesWithLegends` is not found."
+      }
+    },
+    {
+      "method": "setViewLayout",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "expected missing",
+      "ms": 204,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "PenpalError",
+        "message": "Method `setViewLayout` is not found."
+      }
+    },
+    {
+      "method": "clipToFloor",
+      "args": [
+        "048mvnhWPDHefuPHQ5uMBr"
+      ],
+      "note": "expected missing",
+      "ms": 74,
+      "status": "rejected",
+      "error": {
+        "kind": "Error",
+        "name": "PenpalError",
+        "message": "Method `clipToFloor` is not found."
+      }
+    }
+  ]
+}

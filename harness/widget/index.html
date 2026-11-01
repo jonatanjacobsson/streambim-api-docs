@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Bridge</title>
+  <link rel="stylesheet" href="widget.css">
+</head>
+<body>
+  <header>
+    <div class="title">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 2 3 7v10l9 5 9-5V7l-9-5Zm0 2.3 6.8 3.8L12 11.8 5.2 8.1 12 4.3ZM5 9.8l6 3.3v6.6l-6-3.3V9.8Zm8 9.9v-6.6l6-3.3v6.6l-6 3.3Z"/></svg>
+      <span>Agent Bridge</span>
+    </div>
+    <label class="switch" title="Allow MCP agents to run code in this viewer">
+      <input type="checkbox" id="allow" checked>
+      <span class="track"><span class="thumb"></span></span>
+      <span class="switch-label">Agent control</span>
+    </label>
+  </header>
+
+  <section class="status">
+    <div class="pill" id="pill-sb"><span class="dot"></span>StreamBIM <b>connecting…</b></div>
+    <div class="pill" id="pill-ws"><span class="dot"></span>MCP bridge <b>connecting…</b></div>
+  </section>
+  <dl class="meta" id="meta"></dl>
+
+  <section class="agent-area">
+    <div class="section-head"><span>Agent panel</span><button class="link" id="clear-panel" type="button">Clear</button></div>
+    <div id="agent-panel"><p class="hint">Anything the agent renders with <code>streambim_render_panel</code> appears here.</p></div>
+  </section>
+
+  <section class="activity">
+    <div class="section-head"><span>Activity</span><button class="link" id="clear-log" type="button">Clear</button></div>
+    <ol id="log"></ol>
+  </section>
+
+  <footer>
+    <span>MCP endpoint</span> <code id="mcp-url"></code>
+  </footer>
+
+  <script src="vendor/penpal.min.js"></script>
+  <script src="widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,1188 @@
+{
+  "sweptAt": "2026-11-01T15:56:07.175Z",
+  "projectId": "15974",
+  "buildingId": "1000",
+  "results": [
+    {
+      "template": "/api/v1/ping",
+      "url": "/api/v1/ping",
+      "jsonapi": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v3/projects/{projectId}",
+      "url": "/mgw/api/v3/projects/15974",
+      "jsonapi": {
+        "ok": true,
+        "ms": 45,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": "projects",
+        "firstAttributes": [
+          "bcf-id",
+          "coords",
+          "created-at",
+          "deleted-at",
+          "description",
+          "external-id",
+          "is-hibernated",
+          "is-inactive",
+          "is-library",
+          "location_name",
+          "name",
+          "project-uri"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v3/projects?page[limit]=2",
+      "url": "/mgw/api/v3/projects?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 1861,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 65,
+        "firstType": "projects",
+        "firstAttributes": [
+          "bcf-id",
+          "coords",
+          "created-at",
+          "deleted-at",
+          "description",
+          "external-id",
+          "is-hibernated",
+          "is-inactive",
+          "is-library",
+          "location_name",
+          "name",
+          "project-uri"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v3/project-links?filter[active]=true&page[limit]=2",
+      "url": "/mgw/api/v3/project-links?filter[active]=true&page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 55,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 65,
+        "firstType": "project-links",
+        "firstAttributes": [
+          "description",
+          "external-id",
+          "is-hibernated",
+          "is-library",
+          "name",
+          "project-uri"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v3/project-members?page[limit]=2",
+      "url": "/mgw/api/v3/project-members?page[limit]=2",
+      "jsonapi": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v3/users?page[limit]=2",
+      "url": "/mgw/api/v3/users?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 42,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 1,
+        "firstType": "users",
+        "firstAttributes": [
+          "allowed-providers",
+          "expiration-date",
+          "first-name",
+          "guest",
+          "language",
+          "last-login",
+          "last-name",
+          "name",
+          "organization",
+          "phone",
+          "role",
+          "time-zone"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v3/user-organizations?page[limit]=2",
+      "url": "/mgw/api/v3/user-organizations?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 431,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 1151,
+        "firstType": "user-organizations",
+        "firstAttributes": [
+          "country",
+          "external-id",
+          "name",
+          "number"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 40,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v3/customer-projects?page[limit]=2",
+      "url": "/mgw/api/v3/customer-projects?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 52,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 65,
+        "firstType": "customer-projects",
+        "firstAttributes": [
+          "description",
+          "external-id",
+          "is-hibernated",
+          "is-inactive",
+          "name",
+          "project-template-id"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/mgw/api/v2/user-profiles",
+      "url": "/mgw/api/v2/user-profiles",
+      "jsonapi": {
+        "ok": true,
+        "ms": 38,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 1,
+        "firstType": "user-profiles",
+        "firstAttributes": [
+          "display-name",
+          "family-name",
+          "given-name",
+          "language",
+          "must-update-password",
+          "must-update-profile",
+          "organization",
+          "phone",
+          "role",
+          "time-zone",
+          "title"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/bcf/2.1/projects",
+      "url": "/bcf/2.1/projects",
+      "jsonapi": {
+        "ok": false,
+        "ms": 36,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": true,
+        "ms": 1786,
+        "json": true,
+        "topKeys": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ],
+        "dataIsArray": false,
+        "count": 32,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      }
+    },
+    {
+      "template": "/cmv3/converter-jobs?filter[project]={projectId}&page[limit]=2",
+      "url": "/cmv3/converter-jobs?filter[project]=15974&page[limit]=2",
+      "jsonapi": {
+        "ok": false,
+        "ms": 36,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/projects/{projectId}",
+      "url": "/project-15974/api/v1/v2/projects/15974",
+      "jsonapi": {
+        "ok": true,
+        "ms": 47,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": "projects",
+        "firstAttributes": [
+          "bcf-id",
+          "coords",
+          "created-at",
+          "deleted-at",
+          "description",
+          "external-id",
+          "is-hibernated",
+          "is-inactive",
+          "is-library",
+          "location_name",
+          "name",
+          "project-uri"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 42,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/project-stats/{projectId}",
+      "url": "/project-15974/api/v1/v2/project-stats/15974",
+      "jsonapi": {
+        "ok": true,
+        "ms": 41,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": "project-stats",
+        "firstAttributes": [
+          "custom-floorplans",
+          "error",
+          "from-template-id",
+          "ifc-file-size",
+          "num-actual-topics",
+          "num-buildings",
+          "num-checklists",
+          "num-closed-topics",
+          "num-documents",
+          "num-done-topics",
+          "num-folders",
+          "num-groups"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 40,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/configs",
+      "url": "/project-15974/api/v1/v2/configs",
+      "jsonapi": {
+        "ok": true,
+        "ms": 43,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 4,
+        "firstType": "configs",
+        "firstAttributes": [
+          "value",
+          "version"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/last-modifieds/{buildingId}",
+      "url": "/project-15974/api/v1/v2/last-modifieds/1000",
+      "jsonapi": {
+        "ok": true,
+        "ms": 43,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": "last-modifieds",
+        "firstAttributes": [
+          "last-modified-app",
+          "last-modified-conversion"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 39,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/sync-statuses",
+      "url": "/project-15974/api/v1/v2/sync-statuses",
+      "jsonapi": {
+        "ok": true,
+        "ms": 43,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 0,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/project-members?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/project-members?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 57,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 11,
+        "firstType": "project-members",
+        "firstAttributes": [
+          "email",
+          "expiration-date",
+          "family-name",
+          "given-name",
+          "guest",
+          "invited",
+          "last-login",
+          "organization",
+          "password",
+          "phone",
+          "privilege-level",
+          "project-guid"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 53,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/users?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/users?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 63,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 11,
+        "firstType": "users",
+        "firstAttributes": [
+          "allowed-providers",
+          "expiration-date",
+          "first-name",
+          "guest",
+          "language",
+          "last-login",
+          "last-name",
+          "name",
+          "organization",
+          "phone",
+          "role",
+          "time-zone"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 44,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/groups",
+      "url": "/project-15974/api/v1/v2/groups",
+      "jsonapi": {
+        "ok": true,
+        "ms": 56,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 3,
+        "firstType": "groups",
+        "firstAttributes": [
+          "description",
+          "is-imported",
+          "is-read-only",
+          "name",
+          "organization"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 46,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/user-organizations",
+      "url": "/project-15974/api/v1/v2/user-organizations",
+      "jsonapi": {
+        "ok": true,
+        "ms": 51,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 0,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 47,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/topics?page[limit]=2&page[skip]=0",
+      "url": "/project-15974/api/v1/v2/topics?page[limit]=2&page[skip]=0",
+      "jsonapi": {
+        "ok": true,
+        "ms": 85,
+        "json": true,
+        "topKeys": [
+          "data",
+          "meta"
+        ],
+        "dataIsArray": true,
+        "count": 2,
+        "firstType": "topics",
+        "firstAttributes": [
+          "access",
+          "channel",
+          "closed-date",
+          "cost",
+          "creation-date",
+          "description",
+          "due-date",
+          "guid",
+          "is-deleted",
+          "is-draft",
+          "last-modified",
+          "public-id"
+        ],
+        "meta": {
+          "hasBasicPrivate": false,
+          "hasBasicPublic": true,
+          "labelIds": {},
+          "total": 3,
+          "workflowIds": {
+            "1000": true,
+            "1194": true
+          }
+        }
+      },
+      "json": {
+        "ok": false,
+        "ms": 46,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/topic-statuses",
+      "url": "/project-15974/api/v1/v2/topic-statuses",
+      "jsonapi": {
+        "ok": true,
+        "ms": 49,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 4,
+        "firstType": "statuses",
+        "firstAttributes": [
+          "name"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/topic-labels",
+      "url": "/project-15974/api/v1/v2/topic-labels",
+      "jsonapi": {
+        "ok": true,
+        "ms": 41,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 0,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/topic-priorities",
+      "url": "/project-15974/api/v1/v2/topic-priorities",
+      "jsonapi": {
+        "ok": true,
+        "ms": 40,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 3,
+        "firstType": "topic-priorities",
+        "firstAttributes": [
+          "name"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/workflows",
+      "url": "/project-15974/api/v1/v2/workflows",
+      "jsonapi": {
+        "ok": true,
+        "ms": 116,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 2,
+        "firstType": "workflows",
+        "firstAttributes": [
+          "access",
+          "can-edit",
+          "cost",
+          "description",
+          "due-days",
+          "for-creation",
+          "name",
+          "positionless",
+          "send-notification",
+          "title",
+          "workflow-type"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 40,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/checklists?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/checklists?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 374,
+        "json": true,
+        "topKeys": [
+          "data",
+          "meta"
+        ],
+        "dataIsArray": true,
+        "count": 122,
+        "firstType": "checklists",
+        "firstAttributes": [
+          "copy-for-object",
+          "copy-item",
+          "copy-item-meta-description",
+          "copy-item-meta-title",
+          "creation-date",
+          "days-in-month",
+          "days-of-week",
+          "end-date",
+          "field-for-title",
+          "group-by",
+          "instances-done",
+          "instances-in-progress"
+        ],
+        "meta": {
+          "count": 122,
+          "isDraft": "",
+          "onWagonFlag": "",
+          "prefixFilter": "",
+          "total": 122
+        }
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/documents?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/documents?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 65,
+        "json": true,
+        "topKeys": [
+          "data",
+          "meta"
+        ],
+        "dataIsArray": true,
+        "count": 2,
+        "firstType": "documents",
+        "firstAttributes": [
+          "deleted-date",
+          "description",
+          "external-id",
+          "filename",
+          "filesize",
+          "is-deleted",
+          "last-modified",
+          "num-revisions",
+          "path",
+          "revision",
+          "revision-external-id",
+          "scale"
+        ],
+        "meta": {
+          "labelIds": {
+            "1004": true,
+            "1007": true,
+            "1012": true
+          },
+          "timestamp": "1793548563597631875",
+          "total": 37
+        }
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/document-revisions?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/document-revisions?page[limit]=2",
+      "jsonapi": {
+        "ok": false,
+        "ms": 41,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 40,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/document-labels",
+      "url": "/project-15974/api/v1/v2/document-labels",
+      "jsonapi": {
+        "ok": true,
+        "ms": 41,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 14,
+        "firstType": "document-labels",
+        "firstAttributes": [
+          "name"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 40,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/folders?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/folders?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 52,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 25,
+        "firstType": "folders",
+        "firstAttributes": [
+          "access-level",
+          "copy-from",
+          "created-date",
+          "deleted-date",
+          "description",
+          "external-id",
+          "is-deleted",
+          "last-modified",
+          "name"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/labels",
+      "url": "/project-15974/api/v1/v2/labels",
+      "jsonapi": {
+        "ok": true,
+        "ms": 45,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 14,
+        "firstType": "labels",
+        "firstAttributes": [
+          "autogenerated",
+          "document-label",
+          "name",
+          "topic-label"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 41,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/label-groups",
+      "url": "/project-15974/api/v1/v2/label-groups",
+      "jsonapi": {
+        "ok": true,
+        "ms": 51,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 3,
+        "firstType": "label-groups",
+        "firstAttributes": [
+          "allow-non-admins-to-edit",
+          "name"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/ifc-files?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/ifc-files?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 41,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 4,
+        "firstType": "ifc-files",
+        "firstAttributes": [
+          "active-layer",
+          "currently-active",
+          "errors",
+          "layer",
+          "marked-for-deletion"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 39,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/trains?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/trains?page[limit]=2",
+      "jsonapi": {
+        "ok": true,
+        "ms": 118,
+        "json": true,
+        "topKeys": [
+          "data"
+        ],
+        "dataIsArray": true,
+        "count": 10,
+        "firstType": "trains",
+        "firstAttributes": [
+          "color",
+          "copy-train",
+          "days-of-week",
+          "duration",
+          "end-date",
+          "field-for-title",
+          "group-by",
+          "ignore-breaks",
+          "is-draft",
+          "name",
+          "order-by",
+          "process-report-id"
+        ],
+        "meta": null
+      },
+      "json": {
+        "ok": false,
+        "ms": 37,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/v2/attachments?page[limit]=2",
+      "url": "/project-15974/api/v1/v2/attachments?page[limit]=2",
+      "jsonapi": {
+        "ok": false,
+        "ms": 39,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/topics/export/json/",
+      "url": "/project-15974/api/v1/topics/export/json/",
+      "jsonapi": {
+        "ok": false,
+        "ms": 38,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 47,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/documents/export/json/",
+      "url": "/project-15974/api/v1/documents/export/json/",
+      "jsonapi": {
+        "ok": false,
+        "ms": 44,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 44,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/checklists/export/json/",
+      "url": "/project-15974/api/v1/checklists/export/json/",
+      "jsonapi": {
+        "ok": false,
+        "ms": 46,
+        "error": "HTTP error (status hidden)"
+      },
+      "json": {
+        "ok": false,
+        "ms": 45,
+        "error": "HTTP error (status hidden)"
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/ifcfiles/export/json/",
+      "url": "/project-15974/api/v1/ifcfiles/export/json/",
+      "jsonapi": {
+        "ok": true,
+        "ms": 1226,
+        "json": true,
+        "topKeys": [
+          "data",
+          "meta"
+        ],
+        "dataIsArray": true,
+        "count": 4,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": {
+          "total": 4,
+          "title": "Ifc files export"
+        }
+      },
+      "json": {
+        "ok": true,
+        "ms": 890,
+        "json": true,
+        "topKeys": [
+          "data",
+          "meta"
+        ],
+        "dataIsArray": true,
+        "count": 4,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": {
+          "total": 4,
+          "title": "Ifc files export"
+        }
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/users/export/json/",
+      "url": "/project-15974/api/v1/users/export/json/",
+      "jsonapi": {
+        "ok": true,
+        "ms": 102,
+        "json": true,
+        "topKeys": [
+          "data",
+          "meta"
+        ],
+        "dataIsArray": true,
+        "count": 2,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": {
+          "title": "Users export",
+          "total": 2,
+          "hasNext": false,
+          "page": {
+            "skip": 0,
+            "limit": 0
+          }
+        }
+      },
+      "json": {
+        "ok": true,
+        "ms": 103,
+        "json": true,
+        "topKeys": [
+          "data",
+          "meta"
+        ],
+        "dataIsArray": true,
+        "count": 2,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": {
+          "title": "Users export",
+          "total": 2,
+          "hasNext": false,
+          "page": {
+            "skip": 0,
+            "limit": 0
+          }
+        }
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/sync",
+      "url": "/project-15974/api/v1/sync",
+      "jsonapi": {
+        "ok": true,
+        "ms": 43,
+        "json": true,
+        "topKeys": [
+          "started-at"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      },
+      "json": {
+        "ok": true,
+        "ms": 50,
+        "json": true,
+        "topKeys": [
+          "started-at"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      }
+    },
+    {
+      "template": "/project-{projectId}/api/v1/microtoken",
+      "url": "/project-15974/api/v1/microtoken",
+      "jsonapi": {
+        "ok": true,
+        "ms": 47,
+        "json": true,
+        "topKeys": [
+          "microtoken"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      },
+      "json": {
+        "ok": true,
+        "ms": 45,
+        "json": true,
+        "topKeys": [
+          "microtoken"
+        ],
+        "dataIsArray": false,
+        "count": null,
+        "firstType": null,
+        "firstAttributes": null,
+        "meta": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+node_modules/
+harness/widget/vendor/
+harness/scratch/
+.DS_Store
+*.log

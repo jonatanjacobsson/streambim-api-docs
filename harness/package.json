@@ -1,0 +1,26 @@
+{
+  "name": "streambim-widget-harness",
+  "version": "0.1.0",
+  "scripts": {
+    "postinstall": "node tools/vendor.mjs",
+    "start": "node server/index.mjs",
+    "start:stdio": "node server/index.mjs --stdio",
+    "example": "node server/index.mjs --serve",
+    "status": "node test/smoke.mjs",
+    "verify": "node tools/verify-examples.mjs",
+    "build-docs": "node tools/build-widget-docs.mjs"
+  },
+  "license": "MIT",
+  "description": "Local MCP server + StreamBIM widget: let AI agents (and you) drive a live StreamBIM viewer through the widget API",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "@openuidev/browser-bundle": "^0.2.1",
+    "penpal": "^7.0.6",
+    "ws": "^8.22.1",
+    "zod": "^4.6.7"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  }
+}

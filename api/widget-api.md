@@ -1,5 +1,11 @@
 # StreamBIM Widget API
 
+> **Superseded by [`widget/`](../widget/README.md)**, which has one verified page per method, tested
+> against app.streambim.com. This file is a summary of the official README and contains claims
+> that turned out wrong in testing: `connectToParent(window)` fails inside StreamBIM, errors are
+> `{ code, debug }`, several methods never resolve or don't exist on the default flavour, and
+> `/pgw/` REST paths failed. Kept for reference.
+
 JavaScript library for interacting with the StreamBIM 3D viewer from within an embedded widget or by embedding StreamBIM in your own page/app.
 
 **Source:** [github.com/streambim/streambim-widget-api](https://github.com/streambim/streambim-widget-api) (MIT License, Rendra AS)

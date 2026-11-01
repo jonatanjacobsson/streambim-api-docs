@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checklist colours</title>
+  <style>
+    :root { --bg: #fff; --fg: #1c1f24; --muted: #69707c; --line: #e3e5e9; --accent: #1f6feb; color-scheme: light dark; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #16181c; --fg: #e6e8eb; --muted: #9aa1ad; --line: #2e323a; --accent: #4c8dff; } }
+    body { margin: 0; padding: 12px; background: var(--bg); color: var(--fg); font: 13px/1.45 system-ui, sans-serif; }
+    h1 { font-size: 15px; margin: 0 0 8px; }
+    label { display: block; margin: 8px 0 2px; color: var(--muted); font-size: 12px; }
+    select, button { font: inherit; width: 100%; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--line); background: transparent; color: inherit; }
+    button { cursor: pointer; margin-top: 8px; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .muted { color: var(--muted); }
+    .legend button { display: flex; gap: 8px; align-items: center; text-align: left; margin-top: 4px; }
+    .legend .swatch { width: 14px; height: 14px; border-radius: 3px; flex: none; }
+    .legend b { margin-left: auto; }
+  </style>
+</head>
+<body>
+  <h1>Colour by checklist answer</h1>
+  <p id="status" class="muted">Connecting to StreamBIM…</p>
+  <label for="checklist">Checklist</label>
+  <select id="checklist" disabled></select>
+  <label for="item">Checklist item</label>
+  <select id="item" disabled></select>
+  <button class="primary" id="run" disabled>Colour model</button>
+  <p id="mode" class="muted"></p>
+  <div id="legend" class="legend"></div>
+  <button id="reset">Reset</button>
+
+  <!-- penpal v7: served by the harness at /vendor/, or https://cdn.jsdelivr.net/npm/penpal@7.0.6/dist/penpal.min.js -->
+  <script src="/vendor/penpal.min.js"></script>
+  <script>
+    // Show errors in the widget itself: the iframe's console is easy to miss.
+    const showError = (e) => { const el = document.getElementById('error') || document.body.appendChild(Object.assign(document.createElement('pre'), { id: 'error', style: 'color:#e5484d;white-space:pre-wrap;font-size:12px' })); el.textContent = 'Error: ' + (e?.message || (typeof e === 'object' ? JSON.stringify(e) : e)); };
+    window.addEventListener('error', (e) => showError(e.error || e.message));
+    window.addEventListener('unhandledrejection', (e) => showError(e.reason));
+    const $ = (id) => document.getElementById(id);
+    const PALETTE = ['30a46c', 'e5484d', 'f5d90a', '3e63dd', '8e4ec6', '12a594', 'f76b15', 'd6409f'];
+    let api, v2, groups = {}, colorOf = {}, painter;
+
+    // JSON:API GET through the user's StreamBIM session (see widget/guides/rest-api-from-widgets.md).
+    const get = async (path) => JSON.parse(await api.makeApiRequest({ url: v2 + path })).data;
+
+    // Does this StreamBIM flavour have the object-colour method? (Only the taskctrl flavour does.)
+    async function hasObjectColours() {
+      try {
+        await Promise.race([api.colorCodeObjectsWithLegends({ data: {}, legends: {} }), new Promise((r) => setTimeout(r, 1500))]);
+        return true;
+      } catch { return false; }
+    }
+
+    async function init() {
+      v2 = '/project-' + (await api.getProjectId()) + '/api/v1/v2/';
+      // Drafts are listed too: they can already have answers (and API-created checklists may stay drafts).
+      const checklists = (await get('checklists')).filter((c) => c.attributes.name)
+        .sort((a, b) => a.attributes.name.localeCompare(b.attributes.name));
+      $('checklist').innerHTML = checklists.map((c) => `<option value="${c.id}">${c.attributes.name}${c.attributes['is-draft'] ? ' (draft)' : ''}</option>`).join('');
+      $('checklist').disabled = false;
+      $('checklist').onchange = loadItems;
+      $('status').textContent = checklists.length + ' checklists';
+      await loadItems();
+    }
+
+    async function loadItems() {
+      const items = (await get('checklist-items?filter[checklist]=' + $('checklist').value)).filter((i) => i.attributes['item-type'] === 'item');
+      $('item').innerHTML = items.map((i) => `<option value="${i.id}">${i.attributes.title} (${i.attributes['input-type']})</option>`).join('');
+      $('item').disabled = $('run').disabled = !items.length;
+    }
+
+    async function run() {
+      const checklistId = $('checklist').value, itemId = $('item').value;
+      const optionName = Object.fromEntries((await get('checklist-options')).map((o) => [o.id, o.attributes.name]));
+      const instances = (await get('checklist-item-instances?page[limit]=10000&filter[checklist]=' + checklistId))
+        .filter((i) => i.relationships['checklist-item'].data.id === itemId);
+      // One instance per object: group object GUIDs by answer.
+      groups = {};
+      for (const inst of instances) {
+        const a = inst.attributes;
+        const raw = a.options || (a['option-number'] ?? '') + '' || (a['option-date'] ?? '');
+        const value = optionName[raw] || raw || 'No answer';
+        (groups[value] = groups[value] || []).push(inst.relationships.object.data.id);
+      }
+      // Meaningful colours for common answers (English/Swedish), palette for the rest.
+      const semantic = (v) => (v === 'No answer' ? '8b8d98'
+        : /(not inspected|ej kontrollerad|pending|todo|ongoing|pågår)/i.test(v) ? 'f5d90a'
+        : /^(ok|yes|ja|done|klar|godkänd|approved|pass)\b/i.test(v) ? '30a46c'
+        : /^(deviation|avvikelse|no|nej|fail|underkänd|rejected|error)\b/i.test(v) ? 'e5484d'
+        : null);
+      const free = PALETTE.slice(3);
+      colorOf = Object.fromEntries(Object.keys(groups).map((v, i) => [v, semantic(v) || free[i % free.length]]));
+
+      // Pick how to paint: spaces always take custom colours; other objects only in taskctrl.
+      const first = Object.values(groups)[0]?.[0];
+      const isSpace = first && (await api.getObjectInfo(first)).properties?.['@kind'] === 'Space';
+      if (isSpace) painter = { mode: 'Rooms coloured with colorCodeSpaces', paint: (vals) => api.colorCodeSpaces(mapFor(vals, '#')) };
+      else if (await hasObjectColours()) painter = { mode: 'Objects coloured with colorCodeObjectsWithLegends (taskctrl flavour)', paint: (vals) => api.colorCodeObjectsWithLegends({ data: mapFor(vals, ''), legends: Object.fromEntries(vals.map((v) => [v, colorOf[v]])) }) };
+      else painter = { mode: 'This flavour cannot colour objects: click a value to isolate it (open the project in /webapp/taskctrl/ for colours)', paint: (vals) => api.colorCodeObjects(mapFor(vals, '#')) };
+
+      $('mode').textContent = `${instances.length} objects · ${painter.mode}`;
+      $('legend').innerHTML = Object.entries(groups).map(([v, g]) =>
+        `<button data-v="${encodeURIComponent(v)}"><span class="swatch" style="background:#${colorOf[v]}"></span>${v}<b>${g.length}</b></button>`).join('') +
+        '<button data-v="*">Show all values</button>';
+      await paint(Object.keys(groups));
+    }
+
+    const mapFor = (values, prefix) => Object.fromEntries(values.flatMap((v) => groups[v].map((g) => [g, prefix + colorOf[v]])));
+    async function paint(values) {
+      await painter.paint(values);
+      await api.zoomToSearchResult();
+    }
+
+    $('run').onclick = run;
+    $('legend').onclick = (e) => {
+      const v = e.target.closest('button')?.dataset.v;
+      if (v) paint(v === '*' ? Object.keys(groups) : [decodeURIComponent(v)]);
+    };
+    $('reset').onclick = async () => { await api.colorCodeSpaces({}); await api.resetObjectSearch(); };
+
+    const messenger = new Penpal.WindowMessenger({
+      remoteWindow: window.parent,
+      allowedOrigins: [location.ancestorOrigins?.[0] || /^https:\/\/([a-z0-9-]+\.)?streambim\.com$/],
+    });
+    Penpal.connect({ messenger, methods: {}, timeout: 20000 }).promise
+      .then((remote) => { api = remote; return init(); })
+      .catch((err) => { $('status').textContent = 'Error: ' + (err.message || JSON.stringify(err)); });
+  </script>
+</body>
+</html>
