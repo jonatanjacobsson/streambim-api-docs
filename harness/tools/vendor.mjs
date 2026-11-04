@@ -10,6 +10,8 @@ const pkgDir = (name) => fileURLToPath(new URL(`../node_modules/${name}/`, impor
 
 const files = [
   [join(pkgDir('penpal'), 'dist/penpal.min.js'), join(vendor, 'penpal.min.js')],
+  // Preact + hooks + htm in one ES module: the widget's chat UI, no build step.
+  [join(pkgDir('htm'), 'preact/standalone.module.js'), join(vendor, 'preact-htm.js')],
   [join(pkgDir('@openuidev/browser-bundle'), 'dist/openui-bundle.min.js'), join(vendor, 'openui/openui-bundle.min.js')],
   [join(pkgDir('@openuidev/browser-bundle'), 'dist/openui-styles.css'), join(vendor, 'openui/openui-styles.css')],
 ];

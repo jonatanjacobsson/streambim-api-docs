@@ -15,6 +15,7 @@ import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { Bridge } from './bridge.mjs';
 import { loadDocs } from './docs.mjs';
 import { createMcpServer } from './mcp.mjs';
+import { AgentRunner } from './agent.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const HARNESS_WIDGET = join(ROOT, 'widget');
@@ -32,7 +33,8 @@ const log = (...a) => console.error('[streambim-mcp]', ...a);
 
 // Docs live at the repository root: api/ (REST), widget/ (widget API), openui/.
 const docs = ['api', 'widget', 'openui'].flatMap((dir) => loadDocs(join(ROOT, '..', dir), dir));
-const bridge = new Bridge({ log });
+const agent = new AgentRunner({ mcpUrl: `http://localhost:${PORT}/mcp`, log });
+const bridge = new Bridge({ log, agent });
 
 const LOCAL_HOSTS = new Set([`localhost:${PORT}`, `127.0.0.1:${PORT}`, `[::1]:${PORT}`]);
 const WIDGET_ORIGINS = [...LOCAL_HOSTS].map((h) => `http://${h}`);
@@ -62,6 +64,12 @@ async function readJson(req) {
   return text ? JSON.parse(text) : undefined;
 }
 
+function scopedBridge(clientId) {
+  const scoped = Object.create(bridge);
+  scoped.request = (type, payload, opts = {}) => bridge.request(type, payload, { ...opts, clientId: opts.clientId || clientId });
+  return scoped;
+}
+
 // Streamable HTTP sessions: one transport + McpServer per session id.
 const sessions = new Map();
 
@@ -86,7 +94,9 @@ async function handleMcp(req, res) {
         onsessioninitialized: (id) => { sessions.set(id, transport); log(`mcp: session ${id} opened`); },
       });
       transport.onclose = () => { if (transport.sessionId) sessions.delete(transport.sessionId); };
-      await createMcpServer({ bridge, docs, version: VERSION }).connect(transport);
+      // /mcp?client=<id> (used by the widget prompt box) makes that widget the default target.
+      const client = new URL(req.url, 'http://x').searchParams.get('client');
+      await createMcpServer({ bridge: client ? scopedBridge(client) : bridge, docs, version: VERSION }).connect(transport);
     }
     await transport.handleRequest(req, res, body);
     return;

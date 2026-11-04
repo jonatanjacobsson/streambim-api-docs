@@ -7,8 +7,9 @@ import { randomUUID } from 'node:crypto';
 const MAX_EVENTS = 500;
 
 export class Bridge {
-  constructor({ log = () => {} } = {}) {
+  constructor({ log = () => {}, agent = null } = {}) {
     this.log = log;
+    this.agent = agent; // AgentRunner for prompts typed in the widget
     this.clients = new Map(); // clientId -> { ws, info, connectedAt, lastSeen }
     this.pending = new Map(); // requestId -> { resolve, reject, timer }
     this.events = []; // ring buffer of viewer events
@@ -51,11 +52,14 @@ export class Bridge {
         msg.ok ? p.resolve(msg) : p.reject(Object.assign(new Error(msg.error?.message || 'Widget error'), { detail: msg.error, logs: msg.logs }));
       } else if (msg.type === 'event') {
         this.#pushEvent({ clientId, name: msg.name, data: msg.data, at: new Date().toISOString() });
+      } else if (msg.type?.startsWith('agent-')) {
+        this.agent?.handle(clientId, ws, msg);
       }
     });
 
     ws.on('close', () => {
       this.clients.delete(clientId);
+      this.agent?.forget(clientId);
       this.log(`bridge: widget ${clientId} disconnected`);
     });
   }

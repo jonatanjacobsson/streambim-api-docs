@@ -17,14 +17,14 @@ what the agent sends.
 ## Run
 
 ```bash
-npm install          # also copies penpal + the OpenUI bundle into widget/vendor/
+npm install          # also copies penpal, Preact/htm and the OpenUI bundle into widget/vendor/
 npm start            # widget + MCP on http://localhost:3000
 ```
 
 1. Open a StreamBIM project that has the **localhost** widget enabled (it loads `http://localhost:3000/`):
    `https://app.streambim.com/webapp/default/#/viewer/objectinfo/widget/localhost?projectId=<id>`
-2. The panel shows **StreamBIM connected** and **MCP bridge connected**.
-3. Connect your MCP client:
+2. The panel header shows green **Viewer** and **Bridge** dots.
+3. Type in the chat box at the bottom (see [Chat in the widget](#chat-in-the-widget)), or connect your own MCP client:
 
 ```bash
 claude mcp add --transport http streambim http://localhost:3000/mcp
@@ -41,6 +41,20 @@ Run one instance per port. `PORT` and `HOST` override `3000` / `127.0.0.1`.
 | `npm run status` | Quick MCP client check: lists tools and connected widgets |
 | `npm run verify` | Run every documented example live (see Contributing in the root README) |
 | `npm run build-docs` | Regenerate `../widget/` from the spec and verification results |
+
+## Chat in the widget
+
+The widget is a chat window. A prompt typed there runs your local Claude Code CLI headlessly
+(`claude -p`), connected back to this server's `/mcp` with **only** the `streambim_*` tools (no
+shell, no file access). Replies stream in; tool calls collapse into one line; anything the agent
+renders with `streambim_render_openui` / `streambim_render_panel` shows inside its reply.
+Follow-ups keep the conversation until **+** (new chat). The activity log is behind the list icon.
+
+- Needs `claude` on `PATH` and logged in. `CLAUDE_BIN` overrides the binary, `AGENT_MODEL` the model.
+- The agent's MCP session is scoped to the widget that sent the prompt (`/mcp?client=<id>`), so
+  with several widgets open it renders into the right one.
+- The UI is Preact + htm (vendored single file, no build step) in `widget/app.js`; the runtime
+  (StreamBIM connection, bridge, request handling) stays in `widget/widget.js`.
 
 ## MCP tools
 
@@ -104,7 +118,7 @@ This runs agent-written JS with the signed-in user's StreamBIM session. That's t
 so it's meant for local development and hackathons:
 
 - HTTP binds to `127.0.0.1`. `/mcp` rejects non-local `Host` headers and foreign browser `Origin`s (DNS-rebinding guard).
-- `/bridge` only accepts WebSockets from the widget page's own origin.
+- `/bridge` only accepts WebSockets from the widget page's own origin. Chat prompts arrive over it and run `claude -p` limited to the `streambim_*` MCP tools.
 - Penpal only talks to the StreamBIM parent origin.
 - The **Agent control** switch in the panel refuses all agent requests while it's off, and every run shows in the Activity log.
 - Tools that write to the project (`verify -- --include-writes`, the checklist guide's examples) are opt-in. Run them on a test project.
@@ -114,9 +128,10 @@ so it's meant for local development and hackathons:
 ```
 server/index.mjs   HTTP server: static widget, /vendor, /bridge WebSocket, /mcp, --stdio, --serve <dir>
 server/bridge.mjs  request/response + event buffer between MCP and widget(s)
+server/agent.mjs   chat prompts from the widget -> headless `claude -p` with this server's MCP tools
 server/mcp.mjs     tools, resources, agent instructions
 server/docs.mjs    doc loader + section search over ../api, ../widget, ../openui
-widget/            the agent widget page (index.html, widget.js, widget.css; vendor/ is generated)
+widget/            the agent widget: app.js (chat UI, Preact), widget.js (runtime), widget.css; vendor/ is generated
 tools/             scripts listed above
 test/smoke.mjs     minimal MCP client: node test/smoke.mjs <tool> '<json args>'
 ```

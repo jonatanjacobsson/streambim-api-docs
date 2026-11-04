@@ -97,7 +97,7 @@ first. See [harness/README.md](harness/README.md).
   Edit `widget/spec/*.mjs`, verify with `npm run verify -- --only <name>` in `harness/`, then
   `npm run build-docs`.
 - `api/` is plain markdown.
-- Code style: plain ES modules, no build step, no framework in widgets.
+- Code style: plain ES modules, no build step. Example widgets use no framework; the harness chat UI uses vendored Preact + htm.
 
 ## Before shipping a widget
 

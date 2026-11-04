@@ -7,7 +7,6 @@
   const MAX_LOG_ENTRIES = 200;
   // Fallback when the browser has no location.ancestorOrigins (Firefox).
   const STREAMBIM_ORIGIN = /^https:\/\/([a-z0-9-]+\.)?streambim\.com$/;
-  const $ = (id) => document.getElementById(id);
 
   const state = {
     streambim: false,
@@ -18,54 +17,57 @@
     userState: {}, // ctx.state, persists between runs
   };
 
-  // ---------- UI ----------
+  // ---------- UI store ----------
+  // The chat UI (app.js, Preact) renders this store through window.bridgeUI. The runtime below
+  // only updates the store; it never touches the DOM, except the agent panel element.
+
+  const panelEl = document.createElement('div'); // what the agent renders (HTML or OpenUI)
+  panelEl.className = 'agent-panel';
+
+  const ui = {
+    conn: { viewer: ['pending', 'connecting…'], bridge: ['pending', 'connecting…'] },
+    meta: [],
+    log: [], // newest first
+    unseen: 0,
+    unseenErr: false,
+    allow: true,
+    busy: false,
+    messages: [], // { id, role: 'user'|'assistant', text?, parts?, error?, snapshot? }
+    panelOwner: null, // id of the assistant message that hosts panelEl
+  };
+  const listeners = new Set();
+  let msgSeq = 0;
+  let emitQueued = false;
+  function emit() {
+    if (emitQueued) return;
+    emitQueued = true;
+    queueMicrotask(() => { emitQueued = false; for (const fn of listeners) fn(); });
+  }
 
   function setPill(id, status, text) {
-    const el = $(id);
-    el.classList.toggle('ok', status === 'ok');
-    el.classList.toggle('err', status === 'err');
-    el.querySelector('b').textContent = text;
+    ui.conn[id === 'pill-sb' ? 'viewer' : 'bridge'] = [status, text];
+    emit();
   }
 
   function renderMeta() {
-    const rows = [
+    ui.meta = [
       ['Project', state.info.projectId],
       ['Building', state.info.buildingId],
       // No user e-mail here: the pane ends up in screenshots and screen recordings.
       ['Client', state.clientId],
+      ['MCP', location.origin + '/mcp'],
     ].filter(([, v]) => v != null && v !== '');
-    $('meta').replaceChildren(...rows.flatMap(([k, v]) => {
-      const dt = document.createElement('dt'); dt.textContent = k;
-      const dd = document.createElement('dd'); dd.textContent = String(v); dd.title = String(v);
-      return [dt, dd];
-    }));
+    emit();
   }
 
+  let logSeq = 0;
   function logEntry(kind, cls, msg, detail) {
-    const li = document.createElement('li');
-    li.className = cls;
-    const row = document.createElement('div'); row.className = 'row';
-    const t = document.createElement('time'); t.textContent = new Date().toLocaleTimeString();
-    const k = document.createElement('span'); k.className = 'kind'; k.textContent = kind;
-    const m = document.createElement('span'); m.className = 'msg'; m.textContent = msg; m.title = msg;
-    row.append(t, k, m);
-    li.append(row);
-    if (detail) {
-      const d = document.createElement('details');
-      const s = document.createElement('summary'); s.textContent = 'details';
-      const pre = document.createElement('pre'); pre.textContent = detail;
-      d.append(s, pre);
-      li.append(d);
-    }
-    const log = $('log');
-    log.prepend(li);
-    while (log.children.length > MAX_LOG_ENTRIES) log.lastChild.remove();
+    ui.log.unshift({ id: ++logSeq, time: new Date().toLocaleTimeString(), kind, cls, msg, detail });
+    if (ui.log.length > MAX_LOG_ENTRIES) ui.log.length = MAX_LOG_ENTRIES;
+    ui.unseen++;
+    if (cls === 'err') ui.unseenErr = true;
+    emit();
   }
-
-  $('clear-log').onclick = () => $('log').replaceChildren();
-  $('clear-panel').onclick = () => renderPanel('');
-  $('mcp-url').textContent = location.origin + '/mcp';
-  $('allow').onchange = (e) => logEntry(e.target.checked ? 'on' : 'off', e.target.checked ? 'ok' : 'err', e.target.checked ? 'Agent control enabled' : 'Agent control disabled; requests will be refused');
 
   // ---------- Serialisation ----------
 
@@ -176,7 +178,7 @@
   async function runCode(code, timeoutMs, logs) {
     const fn = new AsyncFunction('api', 'rest', 'ctx', 'console', 'panel', 'events', 'sleep', code);
     const ctx = { ...state.info, state: state.userState };
-    return withTimeout(fn(api(), rest, ctx, makeConsole(logs), $('agent-panel'), state.events.slice(-100), sleep), timeoutMs);
+    return withTimeout(fn(api(), rest, ctx, makeConsole(logs), panelEl, state.events.slice(-100), sleep), timeoutMs);
   }
 
   // ---------- OpenUI (https://www.openui.com) ----------
@@ -251,7 +253,7 @@
 
   async function renderOpenUI({ source, append = false, streamMs = 0 }) {
     const { React, createRoot, Renderer, openuiChatLibrary } = await loadOpenUI();
-    const panel = $('agent-panel');
+    const panel = panelEl;
     if (!openui.host || !panel.contains(openui.host)) {
       openui.root?.unmount();
       panel.innerHTML = '';
@@ -286,12 +288,13 @@
   }
 
   function renderPanel(html) {
-    const panel = $('agent-panel');
+    const panel = panelEl;
     openui.root?.unmount();
     openui.root = null;
     openui.host = null;
+    emit();
     if (!html) {
-      panel.innerHTML = '<p class="hint">Anything the agent renders with <code>streambim_render_panel</code> appears here.</p>';
+      panel.replaceChildren();
       return;
     }
     panel.innerHTML = html;
@@ -317,7 +320,7 @@
     const reply = (body) => send({ type: 'result', id: msg.id, durationMs: Math.round(performance.now() - started), ...body });
     let label = msg.type;
     try {
-      if (!$('allow').checked) throw new Error('The user has turned off "Agent control" in the StreamBIM widget.');
+      if (!ui.allow) throw new Error('The user has turned off "Agent control" in the StreamBIM widget.');
       let value;
       if (msg.type === 'exec') {
         label = 'run';
@@ -333,10 +336,12 @@
         value = await withTimeout(rest(msg.path, msg.opts), msg.timeoutMs || 60000);
       } else if (msg.type === 'render') {
         label = 'render';
+        claimPanel();
         renderPanel(msg.html);
         value = { rendered: msg.html.length };
       } else if (msg.type === 'openui') {
         label = 'openui';
+        claimPanel();
         value = await withTimeout(renderOpenUI(msg), msg.timeoutMs || 60000);
       } else if (msg.type === 'openui-spec') {
         label = 'openui spec';
@@ -354,6 +359,100 @@
       reply({ ok: false, error, logs });
     }
   }
+
+  // ---------- Chat (local Claude Code agent, see server/agent.mjs) ----------
+  // A prompt adds a user message and an assistant message. The assistant message collects text
+  // parts and a tool summary as they stream in. Output the agent renders lands in the message
+  // that is running; when a later message takes the panel over, the old one keeps a snapshot.
+
+  let current = null; // assistant message of the running prompt
+  let textPart = null;
+
+  function claimPanel() {
+    let owner = current;
+    const last = ui.messages[ui.messages.length - 1];
+    // Renders from an outside MCP client (no prompt running) get their own message.
+    if (!owner && last?.external && ui.panelOwner === last.id) owner = last;
+    if (owner && ui.panelOwner === owner.id) return;
+    const prev = ui.messages.find((m) => m.id === ui.panelOwner);
+    if (prev && panelEl.childNodes.length) prev.snapshot = panelEl.innerHTML;
+    if (!owner) {
+      owner = { id: ++msgSeq, role: 'assistant', parts: [], external: true };
+      ui.messages.push(owner);
+    }
+    ui.panelOwner = owner.id;
+    emit();
+  }
+
+  function onAgentMessage(msg) {
+    if (msg.kind === 'start') {
+      ui.busy = true;
+      current = { id: ++msgSeq, role: 'assistant', parts: [] };
+      textPart = null;
+      ui.messages.push(current);
+    } else if (msg.kind === 'text-start') {
+      textPart = null;
+    } else if (msg.kind === 'text' && current) {
+      if (!textPart) current.parts.push((textPart = { type: 'text', text: '' }));
+      textPart.text += msg.text;
+    } else if (msg.kind === 'tool' && current) {
+      textPart = null;
+      let tools = current.parts.find((p) => p.type === 'tools');
+      if (!tools) current.parts.push((tools = { type: 'tools', counts: {} }));
+      tools.counts[msg.name] = (tools.counts[msg.name] || 0) + 1;
+    } else if (msg.kind === 'done' || msg.kind === 'stopped' || msg.kind === 'error') {
+      ui.busy = false;
+      const target = current ?? ui.messages[ui.messages.length - 1];
+      if (msg.kind === 'stopped' && target) target.stopped = true;
+      if (msg.kind === 'error') {
+        if (target?.role === 'assistant') target.error = msg.message;
+        else ui.messages.push({ id: ++msgSeq, role: 'assistant', parts: [], error: msg.message });
+      }
+      current = textPart = null;
+    } else if (msg.kind === 'reset') {
+      ui.busy = false;
+      ui.messages = [];
+      ui.panelOwner = null;
+      current = textPart = null;
+      renderPanel('');
+    }
+    emit();
+  }
+
+  function sendPrompt(text) {
+    text = text.trim();
+    if (!text || ui.busy) return false;
+    ui.messages.push({ id: ++msgSeq, role: 'user', text });
+    if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
+      ui.messages.push({ id: ++msgSeq, role: 'assistant', parts: [], error: 'The MCP bridge is offline. Is the harness running?' });
+    } else {
+      send({ type: 'agent-prompt', text });
+    }
+    emit();
+    return true;
+  }
+
+  window.bridgeUI = {
+    get: () => ui,
+    panel: panelEl,
+    subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); },
+    sendPrompt,
+    stop: () => send({ type: 'agent-stop' }),
+    newChat: () => (ui.busy ? null : send({ type: 'agent-reset' })),
+    clearOutput: () => renderPanel(''),
+    clearLog: () => { ui.log = []; emit(); },
+    markSeen() {
+      if (!ui.unseen && !ui.unseenErr) return;
+      ui.unseen = 0;
+      ui.unseenErr = false;
+      emit();
+    },
+    setAllow(on) {
+      ui.allow = on;
+      logEntry(on ? 'on' : 'off', on ? 'ok' : 'err', on ? 'Agent control enabled' : 'Agent control disabled; requests will be refused');
+    },
+  };
+  window.dispatchEvent(new Event('bridgeui'));
 
   // ---------- MCP bridge (WebSocket) ----------
 
@@ -373,10 +472,12 @@
     ws.onmessage = (e) => {
       const msg = JSON.parse(e.data);
       if (msg.type === 'welcome') { state.clientId = msg.clientId; renderMeta(); return; }
+      if (msg.type === 'agent') return onAgentMessage(msg);
       if (msg.id) handleRequest(msg);
     };
     ws.onclose = () => {
       setPill('pill-ws', 'err', 'offline, retrying');
+      if (ui.busy) onAgentMessage({ kind: 'error', message: 'Bridge disconnected; the agent run was stopped.' });
       setTimeout(connectBridge, Math.min(10000, 500 * 2 ** retry++));
     };
   }
