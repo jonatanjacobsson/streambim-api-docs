@@ -137,7 +137,7 @@ Returned data: URLs of images (e.g. screenshots) are returned as images. Large r
 
   server.registerTool('streambim_render_panel', {
     title: 'Render HTML in the widget pane',
-    description: 'Replace the agent area of the widget pane with HTML (tables, legends, buttons). Inline <script> tags are executed with `api` in scope, so buttons can drive the viewer. Pass empty string to clear.',
+    description: 'Replace the agent area of the widget pane with HTML (tables, legends, buttons). Inline <script> tags are executed with `api` in scope, so buttons can drive the viewer. Pass empty string to clear. The pane follows the light/dark theme: do not hard-code text or background colours; use var(--text), var(--muted), var(--surface), var(--border), var(--accent) (data colours such as legend swatches are fine).',
     inputSchema: { html: z.string(), clientId: clientIdArg },
   }, ({ html, clientId }) => run(async () => toContent(await bridge.request('render', { html }, { clientId, timeoutMs: 10000 }))));
 

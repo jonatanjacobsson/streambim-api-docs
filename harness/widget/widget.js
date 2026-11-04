@@ -32,6 +32,8 @@
     unseenErr: false,
     allow: true,
     busy: false,
+    backends: null, // [{ id, label }] from the server; null until it answers
+    backend: null, // chosen backend id
     messages: [], // { id, role: 'user'|'assistant', text?, parts?, error?, snapshot? }
     panelOwner: null, // id of the assistant message that hosts panelEl
   };
@@ -384,8 +386,20 @@
     emit();
   }
 
+  const BACKEND_KEY = 'agent-bridge.backend';
+  function pickBackend(id) {
+    ui.backend = id;
+    try { localStorage.setItem(BACKEND_KEY, id); } catch {}
+    emit();
+  }
+
   function onAgentMessage(msg) {
-    if (msg.kind === 'start') {
+    if (msg.kind === 'backends') {
+      ui.backends = msg.backends;
+      let saved = null;
+      try { saved = localStorage.getItem(BACKEND_KEY); } catch {}
+      ui.backend = msg.backends.some((b) => b.id === saved) ? saved : msg.backends[0]?.id ?? null;
+    } else if (msg.kind === 'start') {
       ui.busy = true;
       current = { id: ++msgSeq, role: 'assistant', parts: [] };
       textPart = null;
@@ -426,7 +440,7 @@
     if (!state.ws || state.ws.readyState !== WebSocket.OPEN) {
       ui.messages.push({ id: ++msgSeq, role: 'assistant', parts: [], error: 'The MCP bridge is offline. Is the harness running?' });
     } else {
-      send({ type: 'agent-prompt', text });
+      send({ type: 'agent-prompt', text, backend: ui.backend });
     }
     emit();
     return true;
@@ -437,6 +451,7 @@
     panel: panelEl,
     subscribe(fn) { listeners.add(fn); return () => listeners.delete(fn); },
     sendPrompt,
+    setBackend: pickBackend,
     stop: () => send({ type: 'agent-stop' }),
     newChat: () => (ui.busy ? null : send({ type: 'agent-reset' })),
     clearOutput: () => renderPanel(''),

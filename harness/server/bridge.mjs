@@ -37,6 +37,7 @@ export class Bridge {
     this.clients.set(clientId, client);
     this.log(`bridge: widget ${clientId} connected`);
     ws.send(JSON.stringify({ type: 'welcome', clientId }));
+    this.agent?.hello(ws);
 
     ws.on('message', (raw) => {
       let msg;

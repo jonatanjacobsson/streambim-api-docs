@@ -44,17 +44,44 @@ Run one instance per port. `PORT` and `HOST` override `3000` / `127.0.0.1`.
 
 ## Chat in the widget
 
-The widget is a chat window. A prompt typed there runs your local Claude Code CLI headlessly
-(`claude -p`), connected back to this server's `/mcp` with **only** the `streambim_*` tools (no
-shell, no file access). Replies stream in; tool calls collapse into one line; anything the agent
-renders with `streambim_render_openui` / `streambim_render_panel` shows inside its reply.
+The widget is a chat window. A prompt typed there runs a local coding-agent CLI headlessly,
+connected back to this server's `/mcp` with **only** the `streambim_*` tools (no shell, no file
+access, empty working directory). Replies stream in; tool calls collapse into one line; anything
+the agent renders with `streambim_render_openui` / `streambim_render_panel` shows inside its reply.
 Follow-ups keep the conversation until **+** (new chat). The activity log is behind the list icon.
 
-- Needs `claude` on `PATH` and logged in. `CLAUDE_BIN` overrides the binary, `AGENT_MODEL` the model.
+| Agent | Needs | Model override |
+|---|---|---|
+| Claude Code | `claude` on `PATH`, logged in | `CLAUDE_MODEL` |
+| Codex (ChatGPT account or OpenAI key) | `codex` on `PATH`, logged in (`codex login`) | `CODEX_MODEL` |
+
+The server checks which CLIs are installed at startup; with both, a picker appears next to the
+send button (the choice is remembered per browser). `AGENT_CLI=codex` makes Codex the default.
+`CLAUDE_BIN` / `CODEX_BIN` point at a specific binary.
+
+- Codex runs with `--ignore-user-config`, a read-only sandbox, the shell/apps/browser tools
+  disabled, and the StreamBIM tools pre-approved (`codex exec` cannot ask). Your login is reused.
 - The agent's MCP session is scoped to the widget that sent the prompt (`/mcp?client=<id>`), so
   with several widgets open it renders into the right one.
+- Works on Windows: the CLIs are started through `cross-spawn` (npm `.cmd` shims), the prompt
+  goes over stdin, and Stop kills the whole process tree.
 - The UI is Preact + htm (vendored single file, no build step) in `widget/app.js`; the runtime
   (StreamBIM connection, bridge, request handling) stays in `widget/widget.js`.
+
+### Using Codex or Claude Code as your own MCP client
+
+Instead of the chat box you can drive the viewer from a full agent session:
+
+```bash
+claude mcp add --transport http streambim http://localhost:3000/mcp
+```
+
+```toml
+# ~/.codex/config.toml (Windows: %USERPROFILE%\.codex\config.toml)
+[mcp_servers.streambim]
+url = "http://localhost:3000/mcp"
+default_tools_approval_mode = "approve"   # needed for `codex exec`; interactive codex can ask instead
+```
 
 ## MCP tools
 
@@ -118,7 +145,7 @@ This runs agent-written JS with the signed-in user's StreamBIM session. That's t
 so it's meant for local development and hackathons:
 
 - HTTP binds to `127.0.0.1`. `/mcp` rejects non-local `Host` headers and foreign browser `Origin`s (DNS-rebinding guard).
-- `/bridge` only accepts WebSockets from the widget page's own origin. Chat prompts arrive over it and run `claude -p` limited to the `streambim_*` MCP tools.
+- `/bridge` only accepts WebSockets from the widget page's own origin. Chat prompts arrive over it and run `claude -p` or `codex exec` limited to the `streambim_*` MCP tools.
 - Penpal only talks to the StreamBIM parent origin.
 - The **Agent control** switch in the panel refuses all agent requests while it's off, and every run shows in the Activity log.
 - Tools that write to the project (`verify -- --include-writes`, the checklist guide's examples) are opt-in. Run them on a test project.
@@ -128,7 +155,7 @@ so it's meant for local development and hackathons:
 ```
 server/index.mjs   HTTP server: static widget, /vendor, /bridge WebSocket, /mcp, --stdio, --serve <dir>
 server/bridge.mjs  request/response + event buffer between MCP and widget(s)
-server/agent.mjs   chat prompts from the widget -> headless `claude -p` with this server's MCP tools
+server/agent.mjs   chat prompts from the widget -> headless `claude -p` / `codex exec` with this server's MCP tools
 server/mcp.mjs     tools, resources, agent instructions
 server/docs.mjs    doc loader + section search over ../api, ../widget, ../openui
 widget/            the agent widget: app.js (chat UI, Preact), widget.js (runtime), widget.css; vendor/ is generated

@@ -121,27 +121,48 @@ function Messages({ ui }) {
 function Composer({ ui }) {
   const [text, setText] = useState('');
   const ref = useRef();
-  useLayoutEffect(() => {
+  const fit = () => {
     const el = ref.current;
     el.style.height = 'auto';
     el.style.height = Math.min(el.scrollHeight, 160) + 'px';
-  }, [text]);
+  };
+  useLayoutEffect(fit);
+  // The panel can start narrow (StreamBIM animates it open), so re-fit when the width changes.
+  useEffect(() => {
+    let width = 0;
+    const ro = new ResizeObserver(([e]) => {
+      if (e.contentRect.width !== width) { width = e.contentRect.width; fit(); }
+    });
+    ro.observe(ref.current);
+    return () => ro.disconnect();
+  }, []);
   const submit = (e) => {
     e?.preventDefault();
     if (ui.busy) return window.bridgeUI.stop();
     if (window.bridgeUI.sendPrompt(text)) setText('');
   };
   const offline = ui.conn.bridge[0] !== 'ok';
+  const none = ui.backends && !ui.backends.length;
+  const placeholder = offline ? 'Waiting for the MCP bridge…'
+    : none ? 'No agent CLI found: install Claude Code or Codex'
+    : 'Message the agent';
   return html`<form class="composer" onSubmit=${submit}>
     <textarea
       ref=${ref}
       rows="1"
       value=${text}
-      placeholder=${offline ? 'Waiting for the MCP bridge…' : 'Message the agent'}
+      placeholder=${placeholder}
       aria-label="Message the agent"
       onInput=${(e) => setText(e.currentTarget.value)}
       onKeyDown=${(e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) submit(e); }}
     ></textarea>
+    ${ui.backends?.length > 1 && html`<select
+      class="backend"
+      title="Which agent answers"
+      value=${ui.backend}
+      disabled=${ui.busy}
+      onChange=${(e) => window.bridgeUI.setBackend(e.currentTarget.value)}
+    >${ui.backends.map((b) => html`<option value=${b.id}>${b.label}</option>`)}</select>`}
     <button class="send ${ui.busy ? 'stop' : ''}" type="submit" title=${ui.busy ? 'Stop' : 'Send (Enter)'} disabled=${!ui.busy && !text.trim()}>
       ${ui.busy
         ? html`<svg viewBox="0 0 24 24" width="14" height="14"><rect x="6" y="6" width="12" height="12" rx="2" fill="currentColor"/></svg>`
