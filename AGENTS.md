@@ -84,6 +84,28 @@ await StreamBIM.API.setNavigationMode(1);
 - `makeApiRequest` reports 201/204 as `DataCloneError` even when the write succeeded.
 - Full list: [corrections to the official README](widget/README.md#corrections-to-the-official-readme).
 
+## Rate limiting and fair use
+
+StreamBIM publishes no numeric rate limits, but the backend is sized for the load the StreamBIM
+app itself generates, and abusive clients get blocked (see
+[api/README.md](api/README.md#rate-limiting-and-fair-use)). Agents loop fast, so keep to these
+defaults unless the user asks otherwise:
+
+- **Run requests one at a time.** If you need parallelism, cap it at a few concurrent requests.
+- **Don't tight-loop.** Space bulk reads and writes (e.g. a few requests per second at most), and
+  stop to ask before jobs that touch thousands of objects.
+- **Back off on errors.** On `429` or `5xx`, honour `Retry-After` if present, otherwise retry with
+  exponential backoff (1 s, 2 s, 4 s…) and give up after a few attempts. Never retry a failed
+  write in a loop without checking whether it actually landed (see the `makeApiRequest` 201/204 trap above).
+- **Poll slowly, or not at all.** Prefer [realtime events (SSE)](api/realtime.md); if you must
+  poll (converter jobs, sync status), wait several seconds between calls.
+- **Keep default pagination.** Don't raise `page[limit]` far beyond the defaults; page through instead.
+- **Cache what doesn't change** (project ID, IFC property catalogue, user lists) instead of re-fetching per step.
+- **Throttle viewer calls too.** `cameraChanged` and similar events fire continuously; debounce
+  handlers that call the API.
+
+Questions about heavier workloads: `cto@rendra.io`.
+
 ## Live viewer access (harness)
 
 If the user runs `cd harness && npm start` and opens a project with the `localhost` widget, the
